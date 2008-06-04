@@ -1,0 +1,18 @@
+[submodule "vendor/rails"]
+	path = vendor/rails
+	url = git@selfamusementpark.com:rails.git
+[submodule "vendor/plugins/haml"]
+	path = vendor/plugins/haml
+	url = git@selfamusementpark.com:haml.git
+[submodule "vendor/plugins/rspec"]
+	path = vendor/plugins/rspec
+	url = git@selfamusementpark.com:rspec.git
+[submodule "vendor/plugins/rspec-rails"]
+	path = vendor/plugins/rspec-rails
+	url = git@selfamusementpark.com:rspec-rails.git
+[submodule "vendor/plugins/exception_notification"]
+	path = vendor/plugins/exception_notification
+	url = git@selfamusementpark.com:exception_notification.git
+[submodule "vendor/plugins/restful-authentication"]
+	path = vendor/plugins/restful-authentication
+	url = git@selfamusementpark.com:restful-authentication.git
