@@ -1,0 +1,29 @@
+<h1>Listing questions</h1>
+
+<table>
+  <tr>
+    <th>Ack'd</th>
+    <th>Done</th>
+    <th>Email</th>
+    <th>Question</th>
+    <th/>
+  </tr>
+
+<% for question in @questions %>
+  <tr>
+    <td><%= question.acknowledged ? "Yes" : "No" %></td>
+    <td><%= question.done ? "Yes" : "No" %></td>
+    <td><%= mail_to question.email, h(question.email) %></td>
+    <td><%= h(question.question[0..40]) %></td>
+    <td>
+      <%= link_to 'Show', question_path(question) %>
+      <%= link_to 'Edit', edit_question_path(question) %>
+      <%= link_to 'Destroy', question, :confirm => 'Are you sure?', :method => :delete %>
+    </td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New question', feedback_path %>

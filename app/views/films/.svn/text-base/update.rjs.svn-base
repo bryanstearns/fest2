@@ -1,0 +1,15 @@
+if @updated
+  # Empty the new-film form and show the button.
+  page.replace_html 'festival_film_form', :text => ''
+  page['new_festival_film'].show
+
+  # Refresh the film list
+  page.replace_html 'festival_films', :partial => 'films/films_in_festival',
+                    :locals => { :festival => @festival, 
+                                 :films => @festival.films.sort_by(&:name) }
+else
+  # Emit the same form with errors
+  page.replace_html 'festival_film_form', :partial => "films/film_form_in_festival",
+                    :locals => { :festival => @festival, 
+                                 :film => @film }
+end

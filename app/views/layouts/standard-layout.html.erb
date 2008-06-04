@@ -1,0 +1,57 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+       "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <meta http-equiv="content-type" content="text/html;charset=UTF-8" />
+  <% title = yield :title -%>
+  <title><%= title %><%= ": " unless title.blank? %><%= _[:Festival] %> Fanatic<%= " (#{ENV['RAILS_ENV']})" if ENV['RAILS_ENV'] != 'production' %></title>
+  <link rel="alternate" type="application/rss+xml" title="<%= _[:Festival] %>Fanatic.com News" href="<%= formatted_announcements_url(:rss) %>" />
+  <%= javascript_include_tag :defaults %>
+  <% cpath = controller.controller_path
+     if cpath.index("admin/") == 0 and cpath != "admin/admin" %>
+     <%= active_scaffold_includes %>
+  <% end -%>
+  <%= stylesheet_link_tag 'style', 'rails_stuff', 'rounded', 'filmlist', 'festedit', :media => 'screen, print' %>
+  <%= yield :additional_stylesheets %>
+  <%= stylesheet_link_tag 'print', :media => 'print' %>
+  <script type="text/javascript">
+    <%= @content_for_page_scripts %>
+  </script>
+</head>
+<body>
+<div class="navigation">
+  <% 
+  linknames = ["Home", "FAQ", "Feedback"]
+	if logged_in?
+	  linknames << "Log out" 
+  else
+    linknames << "Sign up"
+    linknames << "Log in"
+  end
+  %>
+  <%= linknames.map do |name|
+    url_name = name.gsub(/ /,'').downcase
+    url = send("#{url_name}_url".to_sym)
+    link_to name, url unless current_page? url
+  end.compact.join(' | ')
+  %>
+</div>
+<h1 class="sitename">
+<% if logged_in? %>
+<%= current_user.login %> is a 
+<% end %>
+<%= link_to "#{_[:festival]} fanatic!", home_url %>
+</h1>
+
+<%= yield :header %>
+
+<% for name in [:notice, :warning, :message ] %>
+  <% if flash[name] %>
+    <div id="<%=name %>" class="flash <%= name %>"><%= flash[name] %></div>
+  <% end %>
+<% end %>
+
+<%= yield  %>
+
+</body>
+</html>

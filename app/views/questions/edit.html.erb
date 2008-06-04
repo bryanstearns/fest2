@@ -1,0 +1,15 @@
+<h1>Editing question</h1>
+
+<%= error_messages_for :question %>
+
+<% form_for @question do |f| %>
+<p>Email address: <%= f.text_field :email, :size => 40 %></p>
+<%= f.text_area :question, :size => "70x20" %><br/>
+<label>Acknowledged:</label><%= f.check_box :acknowledged %>
+<label>Done:</label><%= f.check_box :done %>
+<br/>
+<%= f.submit "Update" %>
+<% end %>
+
+<%= link_to 'Show', @question %> |
+<%= link_to 'Back', questions_path %>

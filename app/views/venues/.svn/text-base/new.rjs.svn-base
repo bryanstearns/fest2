@@ -1,0 +1,9 @@
+page.replace_html 'festival_venue_form', 
+                  :partial => "venues/venue_form_in_festival",
+                  :locals => { :venue => @venue,
+                               :festival => @festival }
+page['new_festival_venue'].hide
+
+# Change focus to the venue form (the first field that'll 
+# likely be filled in: the name)
+page['venue_name'].activate          

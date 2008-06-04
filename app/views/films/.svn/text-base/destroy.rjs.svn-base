@@ -1,0 +1,4 @@
+# Refresh the film list
+page.replace_html 'festival_films', :partial => 'films/films_in_festival',
+                  :locals => { :festival => @festival, 
+                               :films => @festival.films.sort_by(&:name) }

@@ -1,0 +1,90 @@
+<html>
+<head>
+  <meta http-equiv="refxresh" content="5"/>
+  <script type="text/javascript" src="public/javascripts/prototype.js"></script>
+  <script type="text/javascript">
+  
+  var metrics = {};
+  
+  function align(screeningElement, timeElement) {
+    var scr = $(screeningElement);
+    var tim = $(timeElement);
+    var newTop = tim.offsetTop - scr.offsetTop;
+    scr.setStyle({ left: '0px', top: newTop + 'px' });
+  }
+  
+  function timeoffset(screeningElement, hour, minute) {
+    var cache = screeningElement.parentNode.parentNode; // cache metrics on the TR we're in.  
+  }
+  
+  function position_screening(screeningElement, startPct, endPct) {
+    var scr = $(screeningElement);
+    var cache = scr.parentNode.parentNode; // cache metrics on the TR we're in.
+    var hourBase = cache.hourBase || -1;
+    if (hourBase == -1) {
+      cache.hourBase = 0;
+    }
+    if (cache.hourBase != -1) {
+      alert('bad');
+    }
+  }
+  
+  function update_screenings() {
+    position_screening('s1', 13, 0, 15, 0);
+    position_screening('s2', 11, 0, 14, 0);
+    // position_screening('s3', 15, 45, 18, 0);
+  } 
+  
+  Event.observe(window, "load", update_screenings);
+  </script>
+  <style>
+    table.grid {
+      border: thin solid red;
+      overflow: hidden;
+    }
+    table.grid td {
+      vertical-align: top;
+    }
+    td.times div {
+      font-size: 12px;
+      font-weight: bold;
+      padding-bottom: 24px;
+      position: relative;
+    }
+    div.screening {
+      position: relative;
+      background: #bbb;
+    }
+  </style>
+</head>
+<body>
+  <table class="grid">
+    <tr>
+      <th>&nbsp;</th>
+      <th>A</th>
+      <th>B</th>
+    </tr>
+    <tr>
+      <td class="times">
+        <div id="t10">10:00 am</div>
+        <div id="t11">11:00</div>
+        <div id="t12">12:00 pm</div>
+        <div id="t13">1:00</div>
+        <div id="t14">2:00</div>
+        <div id="t15">3:00</div>
+        <div id="t16">4:00</div>
+        <div id="t17">5:00</div>
+        <div id="t18">6:00</div>
+        <div id="t19">7:00</div>
+      </td>
+      <td class="venueColumn">
+        <div id="s1" class="screening">Screening1<br/>(1:00pm-3:00pm)</div>
+      </td>
+      <td class="venueColumn">
+        <div id="s2" class="screening">Screening2<br/>(11:00am-2:00pm)</div>
+        <div id="s3" class="screening">Screening3<br/>(3:45pm-6:00pm)</div>
+      </td>
+    </tr>
+  </table>
+</body>
+</html>

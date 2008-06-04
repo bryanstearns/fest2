@@ -1,0 +1,29 @@
+<%# The Amazon admin film list -%>
+<% content_for :title do %>Amazon Lookup<% end %>
+<% content_for :additional_stylesheets do %>
+  <%= stylesheet_link_tag 'amazon_admin', :media => 'screen, print' %>
+<% end %>
+
+<% content_for :header do %>
+  <% round_corners :width => "100%" do |rc| %>
+    <h2>Film links to Amazon</h2>
+  <% end %>
+<% end %>
+
+<%= button_to "Lookup", amazon_lookup_films_url %>
+
+<% if @festivals.empty? %>
+<p>(No films with pending or current Amazon ads. Click the Lookup button to search Amazon for products.)</p>
+<% else %>
+  <% @festivals.each_pair do |festival, films| %>
+  <h3><%= festival.name %></h3>
+  <table class="amazon_table">
+    <tr>
+      <th>Film</th>
+      <th>Current Ad</th>
+      <th>Proposed Ad(s)</th>
+    </tr>
+    <%= render :partial => "film_at_amazon", :collection => films.sort_by(&:sort_name) %>
+  </table>
+  <% end %>
+<% end %>

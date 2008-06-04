@@ -1,0 +1,7 @@
+<%# A publicly-visible announcement -%>
+<% content_for :header do %><%= render :partial => "header" %><% end %>
+
+<ul>
+<%= render :partial => 'announcement', :object => @announcement, 
+    :locals => { :announcement_limit => nil } %>
+</ul>

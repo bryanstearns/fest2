@@ -1,0 +1,21 @@
+<%# The feedback form %>
+<% content_for :title do %>Feedback<% end %>
+<% content_for :header do %>
+  <% round_corners :width => "100%" do |rc| %>
+    <h2>Let us know what you think</h2>
+    <ul style="margin: 0px; padding-bottom: 10px;">
+      <li>Your email address is required, but we'll only use it to contact you about this message; 
+          we'll never sell it or give it to anyone else.</li>
+    </ul>
+  <% end %>
+<% end %>
+
+<br/>
+<%= error_messages_for :question %>
+
+<% form_for @question do |f| %>
+<p>Your email address: <%= f.text_field :email, :size => 40 %></p>
+<p>Your comments, suggestions, complaints:</p>
+<%= f.text_area :question, :size => "70x20" %><br/>
+<%= f.submit "Send" %>
+<% end %>

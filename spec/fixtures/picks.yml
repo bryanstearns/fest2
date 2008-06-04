@@ -1,0 +1,28 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+quentin_one:
+  festival: intramonth
+  film: one_flew
+  user: quentin
+  screening: early_one
+  priority: 1
+
+quentin_two:
+  festival: intramonth
+  film: two_moon
+  user: quentin
+  screening: late_two
+  priority: 2
+
+quentin_three:
+  festival: intramonth
+  film: third_man
+  user: quentin
+  screening: nil
+  priority: 3
+
+aaron_three:
+  festival: intramonth
+  film: third_man
+  user: aaron
+  priority: 3
+  

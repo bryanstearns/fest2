@@ -1,0 +1,52 @@
+8
+
+dir
+1099
+svn+vssh://selfamusementpark.com/var/svn/Projects/fest/trunk/spec/views
+svn+vssh://selfamusementpark.com/var/svn
+
+
+
+2008-03-27T06:49:46.920045Z
+913
+stearns
+
+
+svn:special svn:externals svn:needs-lock
+
+
+
+
+
+
+
+
+
+
+
+f1d42042-9971-b740-a048-9680619ed6bd
+
+festivals
+dir
+
+screenings
+dir
+
+venues
+dir
+
+picks
+dir
+
+films
+dir
+
+questions
+dir
+
+welcome
+dir
+
+announcements
+dir
+

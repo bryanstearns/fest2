@@ -1,0 +1,117 @@
+<% content_for :title do %>Frequently-Asked Questions<% end %>
+<% content_for :header do %>
+  <% round_corners :width => "100%" do |rc| %>
+    <h2>Frequently-Asked Questions</h2>
+    <ul style="margin: 0px; padding-bottom: 10px;">
+      <li>Got a question that we missed? Ask us using the 
+          <%= link_to "Feedback Page", feedback_url %>, and we'll 
+          get you an answer; maybe we'll add it here!</li>
+    </ul>
+  <% end %>
+<% end %>
+
+<ul>
+  
+<li>
+  <h4>What's this all about?</h4>
+  <p><%= link_to "Festival Fanatic", "http://festivalfanatic.com" %> and 
+  <%= link_to "Conference Fanatic", "http://conferencefanatic.com" %> 
+  (we're two sides of the same coin) seek
+  to improve the experience of attending these events.</p>
+  
+  <p>Film festival attendees usually have just a few screening opportunities
+  to see each film, so our automatic scheduling mechanism can help you see 
+  more of the films you really want to see. Conference attendees don't have
+  this problem, but it's still handy to have a tool to help you plan your
+  sessions.</p>
+  
+  <p>As time goes on, we'll add features for
+  coordinating your schedule with your friends', and for discussing
+  the films you've seen (or presentations you've attended) with others. We'd 
+  also like to work more closely with event organizers to promote community
+  among attendees.</p>
+</li>
+
+<% unless conference_mode %>
+<li>
+  <h4>How do I use automatic scheduling?</h4>
+  <p>Click on a festival in the list on the home page; this will take you
+  to the list of films for that festival.</p>
+  <p>(This next part is easier if you've got the paper schedule for 
+  the festival; alternatively, you can open the festival's own 
+  site in another browser window.) For each of the films in the festival,
+  decide how interested you are in seeing that film. Enter your choice by
+  clicking on the Films page.</p>
+  <p>When you're done prioritizing the films, click the "Schedule 
+  Automatically" button. Your priorities will be used to select screenings of
+  as many of the films you picked as possible.</p>
+  <p>Switch to the Schedule page for the festival: you'll see the 
+  schedule arranged on grids, one per day, with the selected screenings
+  color-coded.</p>
+  <p>You can make manual changes to the screening selections by clicking
+  on the grid.</p>
+</li>
+
+<li>
+  <h4>How does the automatic scheduling really work?</h4>
+  <p>In computer science, there's this thing called the "traveling salesman 
+  problem": given a salesman who wants to visit a bunch of cities, how can you
+  determine an optimal route?</p>
+  <p>It turns out that this problem is really hard, and the problem of finding
+  an optimal schedule for seeing preferred movies at a film festival is just 
+  as hard.</p>
+  <p>So, this site takes the easy way out, and doesn't try to solve the 
+  problem perfectly; it just tries to do a pretty good job: the site makes a list of
+  the films you've ranked, but haven't picked screenings for; it sorts this list
+  by a combination of your ranking and the number of remaining screenings
+  (the fewer remaining, the higher in the list the film goes), then tries to
+  assign screenings in that order, without ever letting two assigned screenings
+  conflict.</p>
+  <p>There are probably better strategies, but this one seems to work pretty
+  well.</p>
+</li>
+<% end %>
+
+<li>
+  <h4>Can I add my own favorite <%= _[:festival] %>?</h4>
+  <p>Not by yourself, just yet, but we're working on it. In the meantime, drop
+  us a line on the <%= link_to "Feedback Page", feedback_url %> and we'll set something up.</p>
+</li>
+
+<li>
+  <h4>What other features are you working on?</h4>
+  <p>The short list includes (in no particular order) <% unless conference_mode %>letting you sort 
+  the films in different ways on the films page (by how you've ranked them, for instance), <% end %>
+  better printed formatting, <% unless conference_mode %>letting you say what days or times you can 
+  attend a festival (to restrict the automatic screening process),<% end %> and formatting a tiny 
+  schedule page for your iPhone or Treo. Again, if you can think of something to add to the list, 
+  <%= link_to "we'd love to hear about it", feedback_url %>.
+  </p>
+  <p>Down the line, we want to make good on the promises in the banner on the front page, adding 
+  discussions<%= ", ratings for films," unless conference_mode %> and other community features. 
+  We'd also like to work more directly with <%= _[:festival] %> organizers, too, helping
+  to improve the social experience around <%= _[:festivals] %> (so if you're running a 
+  <%= _[:festival] %>, <%= link_to "please contact us!", feedback_url %>).</p>
+<li>
+  <h4>Where'd you get the nifty icons?</h4>
+  <p>The <% unless conference_mode %>flags (<%= %w{us br dk np ke au}.map {|co| flag_icon_tag co }.join(" ") %>)
+  and many of the other <% end %>icons we use (like <%= image_tag "fam3silk/film_go.png" %> 
+  and <%= image_tag "fam3silk/date.png" %>) come from web developer Mark James, who asks only that we 
+  <%= link_to "link to his site", "http://www.famfamfam.com/lab/icons/silk/" %> to use them - done, and thanks, Mark!
+   </p>
+</li>
+
+<li>
+  <h4>Who created this, and why?</h4>
+  <%= image_tag "bryanstearns.png", :width => 100, :height => 100, :style => "float: left; padding-right: 10px;" %>
+  <p>"We" is really just me: I'm Bryan Stearns, a software developer based in Portland, Oregon.
+  I created this site because I want to get more out of the events that I attend, and to help my friends as well.</p>
+  
+  <p>I also wanted to develop and show off my expertise at web 
+  application development using the Ruby programming language and the Rails framework. 
+  I'm hoping that my next job will use these skills. (For more 
+  information, see my <a href="http://www.linkedin.com/in/bryanstearns" target="_blank">LinkedIn</a>
+  profile; you can contact me through the <%= link_to "Feedback Page", feedback_url %>.)</p>
+</li>
+
+</ul>

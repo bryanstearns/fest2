@@ -1,0 +1,27 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+one_flew:
+  name: "One Flew Over the Cuckoo's Nest"
+  festival: intramonth
+  countries: us
+  url_fragment: 1
+
+two_moon:
+  name: "Two Moon Junction"
+  festival: intramonth
+  countries: us
+  url_fragment: "http://example.com/films/TwoMoon"
+
+third_man:
+  name: "The Third Man"
+  countries: us
+  festival: intramonth
+
+four_bin:
+  name: "The Forbin Project"
+  festival: intramonth
+
+five_easy:
+  name: "Five Easy Pieces"
+  countries: us
+  festival: intramonth
+ 

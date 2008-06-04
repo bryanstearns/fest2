@@ -1,0 +1,10 @@
+<html>
+  <body>
+    <p>Received from <%= mail_to @question.email %>:</p>
+    <blockquote>
+      <% h(@question.question).split("\n").each do |s| %>
+        <p><%= s %></p>
+      <% end %>
+    </blockquote>
+  </body>
+</html>

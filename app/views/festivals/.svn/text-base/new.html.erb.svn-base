@@ -1,0 +1,18 @@
+<%# Create a new festival -%>
+<% content_for :title do %>New <%= _[:Festival] %><% end %>
+<% content_for :header do %>
+  <% round_corners :context => self, :width => "100%" do |rc| %>
+    New <%= _[:Festival] %>
+  <% end %>
+<% end %>
+
+<%= error_messages_for :festival %>
+
+<% form_for(@festival) do |f| %>
+  <%= render :partial => "form", :locals => { :f => f } %>
+  <p>
+    <%= f.submit "Create" %>
+  </p>
+<% end %>
+
+<%= link_to 'Back', poly_festivals_path %>

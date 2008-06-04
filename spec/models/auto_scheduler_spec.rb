@@ -1,0 +1,63 @@
+require File.dirname(__FILE__) + '/../spec_helper'
+
+context "Auto_scheduling setup" do
+  
+  fixtures :festivals, :picks, :screenings, :users
+  before do
+    @sched = AutoScheduler.new(users(:quentin).id, festivals(:intramonth).id)
+    #pp @sched.all_screenings
+    #pp @sched.all_picks
+  end
+
+  it "should collect picks for one user" do
+    @sched.all_picks.to_set.should == [
+      picks(:quentin_one), 
+      picks(:quentin_two), 
+      picks(:quentin_three)
+    ].to_set
+  end
+
+  it "should collect screening costs" do
+    @sched.screening_costs.size.should == 7
+    { :early_one => nil, :early_two => nil, :early_three => nil,
+      :mid_three => -3,
+      :late_one => nil, :late_two => nil, :late_three => nil }.each_pair do |s,c|
+      #puts "#{s.to_s} => #{c}, expected #{@sched.screening_costs[screenings(s)]}"
+      @sched.screening_costs[screenings(s)].should == c
+    end
+  end
+
+  it "should detect conflicts between screenings" do
+    [ [ :early_one, :early_two, :early_three ],
+      [ :late_one, :late_two, :late_three ] ].each do |sn|
+      screening_trio = sn.map { |ss| screenings(ss) }
+      screening_trio.each do |s|
+        @sched.screening_conflicts[s].to_set.should == screening_trio.reject {|o| o == s}.to_set
+      end
+    end
+  end
+end
+
+#context "first pass" do
+#  fixtures :festivals, :picks, :screenings, :users
+#  before do
+#    @sched = AutoScheduler.new(users(:quentin).id, festivals(:intramonth).id)
+#  end
+#  
+#  it "should auto-schedule picked screenings without conflicts" do
+#    before = @sched.prioritized_unselected_picks.size
+#    @sched.pass1
+#    @sched.prioritized_unselected_picks.size.should == (before - 1)
+#  end
+#end
+
+#context "second pass" do
+#  fixtures :festivals, :picks, :screenings, :users
+#  before do
+#    @sched = AutoScheduler.new(users(:quentin).id, festivals(:intramonth).id)
+#  end
+#
+#  it "should do something" do
+#    @sched.pass2
+#  end
+#end

@@ -1,0 +1,15 @@
+<%# The header for publicly-visible Festival pages: 
+    /festivals/x, /festivals/x/films/, etc. -%>
+  <% round_corners :context => self, :tabs => !hide_tabs, :width => "100%" do |rc| %>
+    <div>
+      <span class="festivalname"><%= @festival.name %></span>
+      <span class="festivaldates"><%= @festival.dates %></span>
+    </div>
+    <%
+    rc.tabs do
+      rc.tab "Schedule", poly_festival_path(@festival)
+      rc.tab "Films", poly_festival_films_path(@festival)
+      #rc.tab "Buddies"
+    end unless hide_tabs
+    %>
+  <% end %>

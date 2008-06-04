@@ -1,0 +1,33 @@
+<%
+  # One day on the schedule, either from /festivals/x/show or /festivals/x/update_days
+  datecode = day.date.strftime("%m%d")
+  show_times = true
+  venueWidth = 100 / day.venues.size
+  day_time_label = false ? ": #{day.starts.to_time_label} - #{day.ends.to_time_label}" : ""
+  page_break = day.page_break_before ? "style=\"page-break-before: always\"" : ""
+%>
+<h3 <%=page_break %>><%= day.date.strftime("%A, %B #{day.date.day}") %><%= day_time_label %></h3>
+<table class="daygrid" id="day<%= datecode %>">
+  <tr>
+    <% if show_times %>
+    <th width="30"/>
+    <% end -%>
+    <% day.venues.each do |v| %>
+    <th class="venuename" width="<%= venueWidth %>%"><%= v[0].name %></th>
+    <% end -%>
+  </tr>
+  <tr>
+    <% if show_times %>
+    <td class="times">
+      <% day.starts.step(day.ends, 60 * 60) do |t| %>
+      <div style="height: <%= (day.hour_height - 1).to_i %>px"><%= t.to_time_label(false) %></div>
+      <% end -%>
+    </td>
+    <% end -%>
+    <% day.venues.each do |v| -%>
+    <td>
+      <%= render :partial => "viewing_info", :collection => day.venue_viewings[v], :locals => { :day => day } -%>
+    </td>
+    <% end -%>    
+  </tr>    
+</table>

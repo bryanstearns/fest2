@@ -1,0 +1,4 @@
+page.replace_html 'festival_screening_form', :partial => "screenings/screening_form_in_festival",
+                  :locals => { :film => @film, :festival => @festival,
+                               :screening => @screening }
+page['new_festival_screening'].hide

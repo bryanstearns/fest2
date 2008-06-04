@@ -1,0 +1,13 @@
+      <% 
+      form_id = "#{dom_id(film)}_pick"
+      form_for [film, picks[film.id]],
+               :html => { :class => "priority", 
+                          :id => form_id } do |f| %>
+        <% (0..4).each do |p| %>
+          <%= f.radio_button :priority, p, :title => ranking_hints[p], :id => "#{form_id}_#{p}" %>
+        <% end %>
+      <% end %>
+      <%= observe_form(form_id, :method => :post, 
+                       :url => poly_film_picks_path(film),
+                       :with => 'value',
+                       :action => :create) %>

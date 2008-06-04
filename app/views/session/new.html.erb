@@ -1,0 +1,35 @@
+<% content_for :title do %>Log in<% end %>
+<% content_for :header do %>
+  <% round_corners :width => "100%" do |rc| %>
+    <h2>Welcome back</h2>
+    <ul style="margin: 0px; padding-bottom: 10px;">
+      <li>New here? Use the 
+          <%= link_to "Signup Page", signup_url %>, to set up your login and password.</li>
+      <li>Having trouble logging back in? Use the 
+          <%= link_to "Feedback Page", feedback_url %> and we'll help.</li>
+    </ul>
+  <% end %>
+<% end %>
+
+<% form_tag session_path, :id => "login_form" do -%>
+
+<p><label for="login">Login</label><br/>
+<%= text_field_tag 'login' %></p>
+
+<p><label for="password">Password</label><br/>
+<%= password_field_tag 'password' %></p>
+
+<p><label for="remember_me">Remember me:</label>
+<%= check_box_tag 'remember_me' %></p>
+
+<p><%= submit_tag 'Log in' %></p>
+
+<p>
+  <i>Forgot your password? Fill in your login name, then
+  <%= link_to_function "click here" do |page|
+    page[:login_form].action = send_password_reset_path
+    page[:login_form].submit
+  end %>;
+  we'll email you a link to reset it.</i>
+</p>
+<% end -%>

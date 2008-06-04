@@ -1,0 +1,19 @@
+
+<div>
+  <label>From:</label>
+  <%= mail_to @question.email, h(@question.email) %>
+</div>
+<blockquote>
+  <% h(@question.question).split("\n").each do |s| %>
+    <p><%= s %></p>
+  <% end %>
+</blockquote>
+<div>
+  <label>Acknowledged:</label><%= @question.acknowledged ? "Yes" : "No" %>
+</div>
+<div>
+  <label>Done:</label><%= @question.done ? "Yes" : "No" %>
+</div>
+
+<%= link_to 'Edit', edit_question_path(@question) %> |
+<%= link_to 'Back', questions_path %>

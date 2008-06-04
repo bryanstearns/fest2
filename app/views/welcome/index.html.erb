@@ -1,0 +1,67 @@
+<% content_for :header do %>
+  <% round_corners :width => "100%" do |rc| %>
+    <% if conference_mode %>
+      <h2>Get more out of your conference experience</h2>
+      <ul style="margin: 0px; padding-bottom: 10px;">
+        <li>Keep track of the sessions you really want to attend</li>
+      </ul>
+    <% else %>
+      <h2>Get more out of your film festival experience</h2>
+      <ul style="margin: 0px; padding-bottom: 10px;">
+        <li>Prioritize and schedule more films</li>
+        <li>Discuss the films you've seen</li>
+        <li>Get the buzz on this year's don't-miss movies</li>
+      </ul>
+    <% end %>
+  <% end %>
+<% end %>
+
+<noscript>
+  <blockquote style="border: 1px solid red; padding: 4px">
+  <h3>Uh-oh: Your browser doesn't like us!</h3>    
+  <p>Your browser doesn't support Javascript (or you've turned it off), and most of this site won't work right without it. <%= link_to "Send us feedback", feedback_path %> - this will influence us to implement the Javascript-free support sooner.</p>
+  </blockquote>
+</noscript>
+
+<% unless @amazon_films.empty? %>
+<div class="ad_section">
+  <iframe src="http://rcm.amazon.com/e/cm?t=festivalfcom-20&o=1&p=20&l=ur1&category=dvd&banner=130ZQ0QAXHY8DR8Z9GR2&f=ifr" width="120" height="90" scrolling="no" border="0" marginwidth="0" style="border:none;" frameborder="0"></iframe>
+  These festival films are available on DVD from Amazon:
+  <ul>
+  <%= render :partial => "films/amazon", :collection => @amazon_films,
+             :locals => { :amazon_limit => @amazon_limit } %>
+  </ul>
+</div>
+
+<% end %>
+<div class="festival_section">
+  <% if @upcoming_festivals.empty? %>
+  <p>More <%= _[:festivals] %> coming soon -- if you're interested in one in particular, tell us about it on the feedback page.</p>
+  <% else %>
+  <h3>Click an upcoming <%= _[:festival] %>:</h3>
+  <ul id="upcomingfestivals">
+  <%= render :partial => 'festival', :collection => @upcoming_festivals.sort_by {|f| f.starts } %>
+  </ul>
+  <% end %>
+
+  <% unless @past_festivals.empty? %>
+  <h3>Past <%= @past_festivals.size == 1 ? "festival" : "festivals" %>:</h3>
+  <ul id="pastfestivals">
+  <%= render :partial => 'festival', :collection => @past_festivals.sort_by {|f| f.starts }.reverse %>
+  </ul>
+  <% end %>
+</div>      
+
+<% unless @announcements.empty? %>
+<div class="news_section">
+  <h3>News <%= link_to icon_tag("feed", :style=>"border: none"), formatted_announcements_url(:rss) %></h3>
+  <ul class="announcements">
+    <%= render :partial => 'announcements/announcement', :collection => @announcements,
+               :locals => { :announcement_limit => @announcement_limit } %>
+  </ul>
+</div>
+<% end %>
+
+<div id="copyright">
+  Copyright &copy; 2007-2008 The Thomas Eliot Company; all rights reserved.
+</div>

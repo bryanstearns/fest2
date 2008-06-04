@@ -1,0 +1,5 @@
+# Update the schedule on /festivals/x/show
+page.replace_html 'days', :partial => 'days', 
+                          :locals => { :width => params['width'],
+                                       :festival => @festival }
+page << "observe_screening_clicks();" if logged_in?

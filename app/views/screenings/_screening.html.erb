@@ -1,0 +1,5 @@
+<%# One screening for a film in the public film list -%>
+<li class="screening">
+  <%= screening.date_and_times %>: <%= h(screening.venue.name) %>
+  <%= " (selected)" if pick and pick.screening == screening %>
+</li>

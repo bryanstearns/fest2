@@ -1,0 +1,32 @@
+<%= error_messages_for :announcement %>
+
+<% form_for(announcement) do |f| %>
+  <table>
+    <tr>
+      <td>Subject</td>
+      <td><%= f.text_field :subject, :size => 80 %></td>
+    </tr>
+    <tr>
+      <td>Published</td>
+      <td><%= f.check_box :published %></td>
+    </tr>
+    <tr>
+      <td>Show with Festivals</td>
+      <td><%= f.check_box :for_festival %></td>
+    </tr>
+    <tr>
+      <td>Show with Conferences</td>
+      <td><%= f.check_box :for_conference %></td>
+    </tr>
+    <tr>
+      <td>Publication Date</td>
+      <td><%= f.date_select :published_at %></td>
+    </tr>
+    <tr>
+      <td colspan="2"><%= f.text_area :contents, :size => "80x25" %></td>
+    </tr>
+  </table>
+  <p>
+    <%= f.submit "Save" %>
+  </p>
+<% end %>

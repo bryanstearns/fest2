@@ -1,0 +1,28 @@
+<% content_for :title do %>Sign up<% end %>
+<% content_for :header do %>
+  <% round_corners :width => "100%" do |rc| %>
+    <h2>Sign up!</h2>
+    <ul style="margin: 0px; padding-bottom: 10px;">
+      <li>Your email address is required, but we'll only use it to contact you about this site; 
+          we'll never sell it or give it to anyone else.</li>
+    </ul>
+  <% end %>
+<% end %>
+
+<%= error_messages_for :user %>
+
+<% form_for(@user) do |f| -%>
+<p><label for="login">Login</label><br/>
+<%= f.text_field :login %></p>
+
+<p><label for="email">Email</label><br/>
+<%= f.text_field :email %></p>
+
+<p><label for="password">Password</label><br/>
+<%= f.password_field :password %></p>
+
+<p><label for="password_confirmation">Confirm Password</label><br/>
+<%= f.password_field :password_confirmation %></p>
+
+<p><%= submit_tag 'Sign up' %></p>
+<% end -%>

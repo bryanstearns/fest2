@@ -1,0 +1,9 @@
+page.replace_html 'festival_screening_form', 
+                  :partial => "screenings/screening_form_in_festival",
+                  :locals => { :screening => @screening, :film => @film, 
+                               :festival => @festival }
+page['new_festival_screening'].hide
+
+# Change focus to the screening form (the first field that'll 
+# likely be filled in: the day of month)
+page['screening_starts_3i'].activate          

@@ -1,0 +1,26 @@
+<%# The venue-editing form in /festivals/edit.html.erb -%>
+<% venue ||= venue_form_in_festival -%>
+<div id="venue_form" class="form">
+<%= error_messages_for :venue %>
+<% form_for [festival, venue] do |f| %>
+  <table>
+  	<tr>
+  	  <th rowspan="2"><%= venue.new_record? ? "New" : "Edit" %> Venue:</th>
+  		<th>Name</th>
+  		<th>Abbrev</th>
+  	</tr>
+		<tr>
+		  <td><%= f.text_field :name, :size => 30 %></td>
+		  <td><%= f.text_field :abbrev, :size => 10 %></td>
+			<td>
+				<%= submit_to_remote "save", "Save",
+            :url => venue.new_record? ? poly_festival_venues_url(festival) : poly_festival_venue_url(festival, venue) %>
+				<%= link_to_function "Cancel" do |page| 
+              page['new_festival_venue'].show
+              page['festival_venue_form'].replace_html ''
+            end %>
+			</td>
+		</tr>
+  </table>
+<% end %>
+</div>

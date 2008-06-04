@@ -1,0 +1,34 @@
+<%# The screening-editing form in /festivals/edit.html.erb -%>
+<% screening ||= screening_form_in_festival -%>
+<div id="screening_form" class="form">
+<%= error_messages_for :screening %>
+<% form_for [film, screening] do |f| %>
+  <table>
+  	<tr>
+  	  <th rowspan="2"><%= screening.new_record? ? "New" : "Edit" %> Screening:</th>
+  		<th>Starts</th>
+  		<th>Venue</th>
+  	</tr>
+		<tr>
+		  <td>
+		    <%= f.datetime_select :starts %>
+        <% javascript_tag do %>
+          <%# Enable +/- for screening date; (screening_starts_2i is month, _3i is day) %>
+          Event.observe($('screening_starts_3i'), 'keydown', 
+                        screening_date_key.bindAsEventListener($('screening_starts_3i')));
+        <% end %>
+      </td>
+		  <td><%= select 'screening', 'venue_id', 
+              festival.venues.collect {|v| [v.name, v.id]} %></td>
+			<td>
+				<%= submit_to_remote "save", "Save",
+            :url => screening.new_record? ? poly_film_screenings_url(film) : poly_film_screening_url(film, screening) %>
+				<%= link_to_function "Cancel" do |page| 
+              page['new_festival_screening'].show
+              page['festival_screening_form'].replace_html ''
+            end %>
+			</td>
+		</tr>
+  </table>
+<% end %>
+</div>

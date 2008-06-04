@@ -1,0 +1,21 @@
+if @updated
+  # Empty the new-screening form and show the button.
+  page.replace_html 'festival_screening_form', :text => ''
+  page['new_festival_screening'].show
+
+  # Refresh the screenings list
+  page.replace_html 'festival_screenings', :partial => 'screenings/screenings_in_festival',
+                    :locals => { :festival => @festival, :film => @film, 
+                                 :screenings => @film.screenings }
+
+  # Refresh the film's screening list, and the film's entry 
+  # in the films list
+  page.replace_html 'festival_films', :partial => 'films/films_in_festival',
+                    :locals => { :festival => @festival, 
+                                 :films => @festival.films }
+else
+  # Emit the same form with errors
+  page.replace_html 'festival_screening_form', :partial => "screenings/screening_form_in_festival",
+                    :locals => { :festival => @festival, 
+                                 :film => @film }
+end

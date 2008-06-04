@@ -1,0 +1,11 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+primero:
+  festival: intramonth
+  name: Cinema Primero
+segundo:
+  festival: intramonth
+  name: Segundo Theater
+tercero:
+  festival: intramonth
+  name: Tercero Auditorium
+  

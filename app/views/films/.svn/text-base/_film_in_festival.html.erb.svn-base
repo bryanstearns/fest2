@@ -1,0 +1,18 @@
+<%# Partial used to render one film in /festivals/n/edit's film list %>
+<% film ||= film_in_festival -%>
+	  <% content_tag_for :tr, film do %>
+		  <td><%= h(film.name) %> <%= flag_icon_tag film.countries %></td>
+		  <td><%= film.minutes %></td>
+		  <td><%= film.screenings.size %></td>
+		  <td><%= link_to h(film.url_fragment), festival.external_film_url(film), :target => "_blank" \
+	            unless film.url_fragment.blank? or festival.film_url_format.blank? %></td>
+			<td>
+				<%= link_to_remote "Edit",
+	          :url => poly_edit_festival_film_url(festival, film),
+	          :method => :get %>
+				<%= link_to_remote "Delete",
+	          :url => poly_festival_film_url(festival, film),
+	          :method => :delete,
+	          :confirm => "Are you sure you want to delete \"#{film.name}\"?" %>
+			</td>
+		<% end %>

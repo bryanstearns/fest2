@@ -1,0 +1,7 @@
+
+<h2>Administration Pages</h2>
+<ul>
+<% ['Festivals', 'Films', 'Picks', 'Screenings', 'Subscriptions', 'Users', 'Venues'].each do |c| %>
+  <li><%= link_to c, :controller => "admin/#{c.downcase}" %></li>
+<% end %>
+</ul>

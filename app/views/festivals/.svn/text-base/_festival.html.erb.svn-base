@@ -1,0 +1,14 @@
+<%# One festival in the table on /festivals -%>
+  <tr>
+    <td><%=h festival.name %></td>
+    <td><%=h festival.slug %></td>
+    <td><%=h festival.location %></td>
+    <td><%=h festival.dates %></td>
+    <% if logged_in? and current_user.admin %>
+    <td><%= festival.public ? "Yes" : "No" %></td>
+    <td><%= festival.scheduled ? "Yes" : "No" %></td>
+    <% end %>
+    <td><%= link_to 'Show', poly_festival_path(festival) %></td>
+    <td><%= link_to 'Edit', poly_edit_festival_path(festival) %></td>
+    <td><%= link_to 'Destroy', poly_festival_path(festival), :confirm => 'Are you sure?', :method => :delete %></td>
+  </tr>

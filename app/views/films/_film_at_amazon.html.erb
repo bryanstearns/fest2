@@ -1,0 +1,30 @@
+<%# Partial used to render one film's Amazon status on the amazon review page %>
+<% film ||= film_at_amazon %>
+<% break_tag = "<br/>" %>
+	  <% content_tag_for :tr, film do %>
+		  <td>
+		    <%= link_to h(film.name), film.festival.external_film_url(film), :target => "_blank" %> <%= flag_icon_tag film.countries %>
+        <%= link_to icon_tag(:information), Amazon.info_url(film.name), :target => "_blank" %>
+      </td>
+      <td>
+		    <% unless film.amazon_url.blank? %>
+          <%= link_to_remote icon_tag(:cancel), :url => amazon_confirm_film_url(film), :html => { :method => :post }, :with => "'choice=cancel'" %>
+          <%= render :partial => "films/amazon", :object => film %>
+        <% end %>
+      </td>
+		  <td>
+		    <% unless film.amazon_data.blank? %>
+          <%= link_to_remote(icon_tag(:delete) + "None of these", :url => amazon_confirm_film_url(film), :html => { :method => :post }, :with => "'choice=delete'") %>
+          <ul>
+            <% YAML.load(film.amazon_data).each do |info| %>
+              <%= render(:partial => "films/amazon", :object => info, :locals => { 
+                    :preamble => (link_to_remote(icon_tag(:accept), :url => amazon_confirm_film_url(film), 
+                                                :html => { :method => :post }, 
+                                                :with => "'choice=#{info[:asin]}'") + break_tag),
+                    :postamble => (break_tag + info[:director].to_s)
+                  }) %>
+            <% end %>
+          </ul>
+        <% end %>
+      </td>
+		<% end %>

@@ -1,0 +1,4 @@
+page.replace_html 'festival_venue_form', :partial => "venues/venue_form_in_festival",
+                  :locals => { :festival => @festival,
+                               :venue => @venue }
+page['new_festival_venue'].hide

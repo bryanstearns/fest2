@@ -1,0 +1,28 @@
+if @saved
+  # We just created the new film - put the new film in the "edit" form,
+  # with the new-screening form visible and focused, and the new-screening button hidden.
+  new_screening = @film.screenings.new
+  new_screening.starts = @festival.starts.to_datetime + 12.hours
+  page.replace_html 'festival_film_form', :partial => "films/film_form_in_festival",
+                    :locals => { :festival => @festival, 
+                                 :film => @film }
+  page.replace_html 'festival_screening_form', :partial => "screenings/screening_form_in_festival",
+                    :locals => { :festival => @festival, 
+                                 :film => @film,
+                                 :screening => new_screening }
+  page['new_festival_screening'].hide
+
+  # Refresh the film list
+  page.replace_html 'festival_films', :partial => 'films/films_in_festival',
+                    :locals => { :festival => @festival, 
+                                 :films => @festival.films }
+  
+  # Change focus to the screening form (the first field that'll 
+  # likely be filled in: the day of month)
+  page['screening_starts_3i'].activate
+else
+  # Emit the same form with errors
+  page.replace_html 'festival_film_form', :partial => "films/film_form_in_festival",
+                    :locals => { :festival => @festival, 
+                                 :film => @film }
+end

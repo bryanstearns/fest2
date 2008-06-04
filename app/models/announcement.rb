@@ -1,0 +1,19 @@
+class Announcement < ActiveRecord::Base
+  scope_out :unlimited, :conditions => [], :order => "published_at desc"
+  scope_out :conferences, :conditions => ['published = ? and for_conference=?', true, true], :order => "published_at desc"
+  scope_out :festivals, :conditions => ['published = ? and for_festival=?', true, true], :order => "published_at desc"
+  
+  def targets
+    if for_conference
+      if for_festival
+        "(both)" 
+      else
+        "(conference)"
+      end
+    elsif for_festival
+      "(festival)"
+    else
+      "(neither)"
+    end
+  end
+end

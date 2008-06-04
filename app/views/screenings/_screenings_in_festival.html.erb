@@ -1,0 +1,15 @@
+<%# The partial used to render the screenings list for a film, as part of /festivals/1/edit %>
+<% screenings ||= screenings_in_festival -%>
+<table id="festival_screenings">
+  <% if screenings.empty? %>
+	<tr><td><i>(No screenings of "<%= film.name %>" yet)</i></td></tr>
+  <% else %>
+	<tr>
+    <th>When</th>
+    <th>Venue</th>
+  </tr>
+  <%= render :partial => "screenings/screening_in_festival",
+             :collection => screenings.sort_by(&:starts),
+             :locals => { :festival => festival, :film => film } %>
+  <% end %>
+</table>

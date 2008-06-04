@@ -1,0 +1,27 @@
+<%# The (admin) festival list -%>
+<% content_for :title do %><%= _[:Festivals] %><% end %>
+
+<% content_for :header do %>
+  <% round_corners :context => self, :width => "100%" do |rc| %>
+    All <%= _[:Festivals] %>
+  <% end %>
+<% end %>
+
+<table>
+  <tr>
+    <th>Name</th>
+    <th>Slug</th>
+    <th>Location</th>
+    <th>Dates</th>
+    <% if logged_in? and current_user.admin %>
+    <th>Public</th>
+    <th>Scheduled</th>
+    <% end %>
+  </tr>
+
+<%= render :partial => @festivals %>
+</table>
+
+<br />
+
+<%= link_to("New #{_[:festival]}", poly_new_festival_path) if logged_in? and current_user.admin %>

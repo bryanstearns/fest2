@@ -3,6 +3,12 @@
 # Uncomment below to force Rails into production mode when
 # you don't control web/app server and can't set it the proper way
 # ENV['RAILS_ENV'] ||= 'production'
+require 'fileutils'
+path = FileUtils.pwd.split('/')
+if path[-3] == 'releases'
+  app_with_env = path[-4]
+  ENV['RAILS_ENV'] = app_with_env[app_with_env.rindex(".")+1 .. -1]
+end
 
 # Specifies gem version of Rails to use when vendor/rails is not present
 RAILS_GEM_VERSION = '2.1.0' unless defined? RAILS_GEM_VERSION
@@ -56,6 +62,9 @@ Rails::Initializer.run do |config|
   # which shouldn't be used to store highly confidential information
   # (create the session table with "rake db:sessions:create")
   # config.action_controller.session_store = :active_record_store
+  # BJS: was using :memory_store (see: http://wiki.rubyonrails.org/rails/pages/HowtoChangeSessionStore),
+  # but now switched back to the default cookie store.
+  # config.action_controller.session_store = :memory_store
 
   # Use SQL instead of Active Record's schema dumper when creating the test database.
   # This is necessary if your schema can't be completely dumped by the schema dumper,
@@ -64,4 +73,11 @@ Rails::Initializer.run do |config|
 
   # Activate observers that should always be running
   # config.active_record.observers = :cacher, :garbage_collector
+  
+  # BJS: Configure mailer
+  config.action_mailer.delivery_method = :smtp
+  config.action_mailer.smtp_settings = {
+    :domain => "festivalfanatic.com",
+    :address => "selfamusementpark.com"
+  }
 end

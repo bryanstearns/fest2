@@ -1,0 +1,4 @@
+# Refresh the venues list
+page.replace_html 'festival_venues', :partial => 'venues/venues_in_festival',
+                  :locals => { :festival => @festival, 
+                               :venues => @festival.venues }

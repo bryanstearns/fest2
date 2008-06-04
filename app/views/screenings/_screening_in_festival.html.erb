@@ -1,0 +1,15 @@
+<%# The partial used to render one screening for a film, as part of /festivals/1/edit %>
+<% screening ||= screening_in_festival -%>
+  <% content_tag_for :tr, screening do %>
+    <td><%= screening.date_and_times %></td>
+    <td><%= h screening.venue.name %></td>
+		<td>
+				<%= link_to_remote "Edit",
+	          :url => poly_edit_film_screening_url(film, screening),
+	          :method => :get %>
+				<%= link_to_remote "Delete",
+	          :url => poly_film_screening_url(film, screening),
+	          :method => :delete,
+	          :confirm => "Are you sure you want to delete the #{screening.date_and_times} screening of \"#{film.name}\"?" %>			
+		</td>
+  <% end %>

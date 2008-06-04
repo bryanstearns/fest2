@@ -1,0 +1,52 @@
+8
+
+dir
+1099
+svn+vssh://selfamusementpark.com/var/svn/Projects/fest/trunk/app/views/users
+svn+vssh://selfamusementpark.com/var/svn
+
+
+
+2008-04-18T08:09:28.573218Z
+944
+stearns
+
+
+svn:special svn:externals svn:needs-lock
+
+
+
+
+
+
+
+
+
+
+
+f1d42042-9971-b740-a048-9680619ed6bd
+
+new.html.erb
+file
+
+
+
+
+2008-04-18T08:09:28.000000Z
+a433119427f134a203ac95891a6cabb4
+2008-04-18T08:09:28.573218Z
+944
+stearns
+
+reset_password.html.erb
+file
+
+
+
+
+2008-04-18T08:09:28.000000Z
+7862e82855ed7f9baf98fae02861aa68
+2008-04-18T08:09:28.573218Z
+944
+stearns
+
