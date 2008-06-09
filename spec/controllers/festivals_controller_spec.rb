@@ -17,7 +17,7 @@ describe FestivalsController do
     
     Festival.stub!(:new).and_return(@festival)
     Festival.stub!(:find_by_slug).and_return(@festival)
-    Festival.stub!(:find_festivals).and_return(@festivals)
+    Festival.stub!(:festivals).and_return(@festivals)
   end
   
   describe "in general," do
@@ -44,7 +44,7 @@ describe FestivalsController do
     end
     
     it "should find all public festivals" do
-      Festival.should_receive(:find_festivals).and_return([@festival])
+      Festival.should_receive(:festivals).and_return([@festival])
       do_get
     end
     
@@ -71,7 +71,7 @@ describe FestivalsController do
     end
   
     it "should find all festivals" do
-      Festival.should_receive(:find_festivals).and_return(@festivals)
+      Festival.should_receive(:festivals).and_return(@festivals)
       do_get
     end
     

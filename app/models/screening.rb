@@ -46,10 +46,7 @@ class Screening < ActiveRecord::Base
   def conflicting_picks(user)
     # Find this user's picks for screenings that conflict with this one
     # (the resulting list will include this one too).
-    result = Pick.find_all_by_festival_id_and_user_id(festival_id, user.id,
-        :include => [:screening, :film], :conditions => [
-           "starts < :ends AND ends > :starts",
-           { :starts => starts, :ends => ends }])
+    result = Pick.conflicting(self, user.id)
     result
   end
   

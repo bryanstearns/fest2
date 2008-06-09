@@ -1,11 +1,8 @@
 require File.dirname(__FILE__) + '/../spec_helper'
 
+include IconHelper
+
 describe IconHelper do
-  it "should include the IconHelper" do
-    included_modules = self.metaclass.send :included_modules
-    included_modules.should include(IconHelper)
-  end
-  
   it "should return the image tag, with title, for a known country" do
     tag = flag_icon_tag "us"
     tag.should match(%r{src="/images/fam3flags/us\.png})

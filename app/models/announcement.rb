@@ -1,7 +1,7 @@
 class Announcement < ActiveRecord::Base
-  scope_out :unlimited, :conditions => [], :order => "published_at desc"
-  scope_out :conferences, :conditions => ['published = ? and for_conference=?', true, true], :order => "published_at desc"
-  scope_out :festivals, :conditions => ['published = ? and for_festival=?', true, true], :order => "published_at desc"
+  named_scope :unlimited, :conditions => [], :order => "published_at desc"
+  named_scope :conferences, :conditions => ['published = ? and for_conference=?', true, true], :order => "published_at desc"
+  named_scope :festivals, :conditions => ['published = ? and for_festival=?', true, true], :order => "published_at desc"
   
   def targets
     if for_conference

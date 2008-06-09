@@ -29,9 +29,9 @@ class Festival < ActiveRecord::Base
   # "slug" is now an independent (required) field.
   # before_save {|festival| festival.slug = festival.name.gsub(/[^a-z0-9]+/i, '-') }
   
-  scope_out :unlimited, :conditions => [], :order => "starts desc"
-  scope_out :conferences, :conditions => ['public = ? and is_conference = ?', true, true], :order => "starts desc"
-  scope_out :festivals, :conditions => ['public = ? and is_conference = ?', true, false], :order => "starts desc"
+  named_scope :unlimited, :conditions => [], :order => "starts desc"
+  named_scope :conferences, :conditions => ['public = ? and is_conference = ?', true, true], :order => "starts desc"
+  named_scope :festivals, :conditions => ['public = ? and is_conference = ?', true, false], :order => "starts desc"
   
   def dates
     startish = "#{Date::MONTHNAMES[starts.month]} #{starts.day}"

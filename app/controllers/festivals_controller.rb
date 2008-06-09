@@ -6,7 +6,7 @@ class FestivalsController < ApplicationController
   # GET /festivals
   # GET /festivals.xml
   def index
-    @festivals = Festival.send(find_scope, :all) || raise(RecordNotFound)
+    @festivals = Festival.send(find_scope) || raise(RecordNotFound)
 
     respond_to do |format|
       format.html # index.html.erb

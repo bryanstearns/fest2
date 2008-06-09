@@ -8,7 +8,7 @@ class Film < ActiveRecord::Base
   validates_presence_of :duration
   validates_presence_of :festival_id
 
-  scope_out :amazon, :conditions => 'amazon_ad is not null'
+  named_scope :on_amazon, :conditions => 'amazon_ad is not null'
 
   def minutes
     self[:duration] && (self[:duration] / 60)

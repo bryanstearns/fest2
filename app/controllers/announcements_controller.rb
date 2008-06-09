@@ -4,7 +4,7 @@ class AnnouncementsController < ApplicationController
   # GET /announcements
   # GET /announcements.xml
   def index
-    @announcements = Announcement.send(find_scope, :all)
+    @announcements = Announcement.send(find_scope)
 
     respond_to do |format|
       format.html # index.html.erb
@@ -16,7 +16,7 @@ class AnnouncementsController < ApplicationController
   # GET /announcements/1
   # GET /announcements/1.xml
   def show
-    @announcement = Announcement.send(find_scope, params[:id])
+    @announcement = Announcement.send(find_scope).find(params[:id])
     render(:file => "#{RAILS_ROOT}/public/404.html", :status => 404) and return \
       unless (@announcement.published or (@current_user.admin rescue false))
 

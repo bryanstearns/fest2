@@ -9,7 +9,7 @@ module IconHelper
     options[:alt] ||= name
     path = "fam3silk/#{name}.png"
     raise(MissingIcon, "Not found: #{path}") \
-      if RAILS_ENV != "production" and not File.exists?("images/#{path}")
+      if RAILS_ENV != "production" and not File.exists?("#{RAILS_ROOT}/public/images/#{path}")
     image_tag path, options
   end
 

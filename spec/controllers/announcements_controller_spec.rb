@@ -7,12 +7,13 @@ describe AnnouncementsController do
       @announcement = mock_model(Announcement, :published => true, 
         :to_param => "1", :for_festival => true, :for_conference => true)
       @announcements = [@announcement]
-      Announcement.stub!(:find_festivals).and_return(@announcement)
+      @announcements.stub!(:find).and_return(@announcement)
+      Announcement.stub!(:festivals).and_return(@announcements)
   end
   
   def make_announcements
       @announcements = [@announcement]
-      Announcement.stub!(:find_festivals).and_return(@announcements)
+      Announcement.stub!(:festivals).and_return(@announcements)
   end
   
   describe "handling GET /announcements" do
@@ -36,7 +37,7 @@ describe AnnouncementsController do
     end
   
     it "should find all published announcements" do
-      Announcement.should_receive(:find_festivals).and_return(@announcements)
+      Announcement.should_receive(:festivals).and_return(@announcements)
       do_get
     end
   
@@ -65,7 +66,7 @@ describe AnnouncementsController do
     end
 
     it "should find all published announcements" do
-      Announcement.should_receive(:find_festivals).and_return(@announcements)
+      Announcement.should_receive(:festivals).and_return(@announcements)
       do_get
     end
   
@@ -97,7 +98,7 @@ describe AnnouncementsController do
     end
   
     it "should find the announcement requested" do
-      Announcement.should_receive(:find_festivals).with("1").and_return(@announcement)
+      @announcements.should_receive(:find).with("1").and_return(@announcement)
       do_get
     end
   
@@ -125,7 +126,7 @@ describe AnnouncementsController do
     end
   
     it "should find the announcement requested" do
-      Announcement.should_receive(:find_festivals).with("1").and_return(@announcement)
+      @announcements.should_receive(:find).with("1").and_return(@announcement)
       do_get
     end
   

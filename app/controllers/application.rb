@@ -37,11 +37,6 @@ class ApplicationController < ActionController::Base
                 :login_from_cookie,
                 :admin_check
   
-  # Set up ActiveScaffold defaults
-  ActiveScaffold.set_defaults do |config|
-    config.ignore_columns.add [:created_at, :updated_at, :lock_version]
-  end
-  
   def admin_check
     # Is the user required to be an admin for this page?
     admin_required = self.class.controller_path.starts_with?("admin/")
@@ -79,12 +74,10 @@ class ApplicationController < ActionController::Base
   end
 
   def find_scope(unlimited_if_admin=true)
-    # Returns the name of the finder method to use, based on our mode:
-    # find_unlimited if we're an admin, else find_festivals or find_conferences.
     if (unlimited_if_admin and (current_user.admin rescue false))
-      :find_unlimited
+      :unlimited
     else
-      "find_#{_[:festivals]}".to_sym
+      _[:festivals].to_sym
     end
   end
 

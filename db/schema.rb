@@ -1,5 +1,5 @@
 # This file is auto-generated from the current state of the database. Instead of editing this file, 
-# please use the migrations feature of ActiveRecord to incrementally modify your database, and
+# please use the migrations feature of Active Record to incrementally modify your database, and
 # then regenerate this schema definition.
 #
 # Note that this schema.rb definition is the authoritative source for your database schema. If you need
@@ -38,11 +38,11 @@ ActiveRecord::Schema.define(:version => 6) do
   end
 
   create_table "films", :force => true do |t|
-    t.integer  "festival_id",  :null => false
+    t.integer  "festival_id",  :limit => 11, :null => false
     t.string   "name"
     t.text     "description"
     t.string   "url_fragment"
-    t.integer  "duration"
+    t.integer  "duration",     :limit => 11
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "countries"
@@ -52,11 +52,11 @@ ActiveRecord::Schema.define(:version => 6) do
   end
 
   create_table "picks", :force => true do |t|
-    t.integer "user_id",      :null => false
-    t.integer "film_id",      :null => false
-    t.integer "festival_id",  :null => false
-    t.integer "screening_id"
-    t.integer "priority"
+    t.integer "user_id",      :limit => 11, :null => false
+    t.integer "film_id",      :limit => 11, :null => false
+    t.integer "festival_id",  :limit => 11, :null => false
+    t.integer "screening_id", :limit => 11
+    t.integer "priority",     :limit => 11
   end
 
   create_table "questions", :force => true do |t|
@@ -69,11 +69,11 @@ ActiveRecord::Schema.define(:version => 6) do
   end
 
   create_table "screenings", :force => true do |t|
-    t.integer  "festival_id", :null => false
-    t.integer  "film_id",     :null => false
-    t.integer  "venue_id",    :null => false
-    t.datetime "starts",      :null => false
-    t.datetime "ends",        :null => false
+    t.integer  "festival_id", :limit => 11, :null => false
+    t.integer  "film_id",     :limit => 11, :null => false
+    t.integer  "venue_id",    :limit => 11, :null => false
+    t.datetime "starts",                    :null => false
+    t.datetime "ends",                      :null => false
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -89,9 +89,9 @@ ActiveRecord::Schema.define(:version => 6) do
   add_index "sessions", ["updated_at"], :name => "index_sessions_on_updated_at"
 
   create_table "subscriptions", :force => true do |t|
-    t.integer "festival_id",                    :null => false
-    t.integer "user_id",                        :null => false
-    t.boolean "admin",       :default => false
+    t.integer "festival_id", :limit => 11,                    :null => false
+    t.integer "user_id",     :limit => 11,                    :null => false
+    t.boolean "admin",                     :default => false
   end
 
   create_table "users", :force => true do |t|
@@ -108,7 +108,7 @@ ActiveRecord::Schema.define(:version => 6) do
   end
 
   create_table "venues", :force => true do |t|
-    t.integer "festival_id", :null => false
+    t.integer "festival_id", :limit => 11, :null => false
     t.string  "name"
     t.string  "abbrev"
   end

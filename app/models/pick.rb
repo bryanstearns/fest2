@@ -9,6 +9,14 @@ class Pick < ActiveRecord::Base
   validates_presence_of :user_id
   validates_presence_of :festival_id
   # :screening_id can be nil until we or the user has picked one.
+  
+  named_scope :conflicting, lambda { |screening, user_id|
+    { :include => [:screening, :film], 
+      :conditions => [ "picks.user_id = :user_id and picks.festival_id = :festival_id and screenings.starts < :ends and screenings.ends > :starts",
+                       { :user_id => user_id, :festival_id => screening.festival_id,
+                         :starts => screening.starts, :ends => screening.ends }],
+    }
+  }
 
   def inspect
     "#<Pick id:#{id} festival:#{festival.nil? ? "nil" : festival.name[0...4]} film:#{film.nil? ? "nil" : film.name} priority:#{priority} screening:#{screening.nil? ? "nil" : screening.times}>"
