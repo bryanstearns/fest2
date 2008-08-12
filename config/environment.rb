@@ -3,12 +3,13 @@
 # Uncomment below to force Rails into production mode when
 # you don't control web/app server and can't set it the proper way
 # ENV['RAILS_ENV'] ||= 'production'
-require 'fileutils'
-path = FileUtils.pwd.split('/')
-if path[-3] == 'releases'
-  app_with_env = path[-4]
-  ENV['RAILS_ENV'] = app_with_env[app_with_env.rindex(".")+1 .. -1]
-end
+# BJS: I this this was needed with earlier Passenger...
+#require 'fileutils'
+#path = FileUtils.pwd.split('/')
+#if path[-3] == 'releases'
+  #app_with_env = path[-4]
+  #ENV['RAILS_ENV'] = app_with_env[app_with_env.rindex(".")+1 .. -1]
+#end
 
 # Specifies gem version of Rails to use when vendor/rails is not present
 RAILS_GEM_VERSION = '2.1.0' unless defined? RAILS_GEM_VERSION
