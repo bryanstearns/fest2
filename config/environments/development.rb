@@ -16,7 +16,7 @@ config.action_controller.perform_caching             = false
 # Enable serving of images, stylesheets, and javascripts from an asset server
 # config.action_controller.asset_host                  = "http://assets.example.com"
 # BJS: added, to make sure the tagging & translation is working
-config.action_controller.asset_host                  = "http://assets%d.dev.festivalfanatic.com:3000"
+# config.action_controller.asset_host                  = "http://assets%d.dev.festivalfanatic.com:3000"
 
 # Care if the mailer can't send?
 config.action_mailer.raise_delivery_errors = true
