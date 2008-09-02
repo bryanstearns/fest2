@@ -15,6 +15,12 @@ test:
   username: <%= project_name %>
   password: <%= project_name %>
   host: localhost
+benchmarking:
+  adapter: mysql
+  database: <%= database_name %>_development
+  username: <%= project_name %>
+  password: <%= project_name %>
+  host: localhost
 stage:
   adapter: mysql
   database: <%= project_name %>_stage
