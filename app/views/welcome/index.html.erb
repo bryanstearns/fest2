@@ -34,6 +34,8 @@
 </div>
 
 <% end %>
+
+<% cache @festivals_cache_key do %>
 <div class="festival_section">
   <% if @upcoming_festivals.empty? %>
   <p>More <%= _[:festivals] %> coming soon -- if you're interested in one in particular, tell us about it on the feedback page.</p>
@@ -51,8 +53,10 @@
   </ul>
   <% end %>
 </div>      
+<% end %>
 
-<% unless @announcements.empty? %>
+<% cache @announcements_cache_key do %>
+  <% unless @announcements.empty? %>
 <div class="news_section">
   <h3>News <%= link_to icon_tag("feed", :style=>"border: none"), formatted_announcements_url(:rss) %></h3>
   <ul class="announcements">
@@ -60,6 +64,7 @@
                :locals => { :announcement_limit => @announcement_limit } %>
   </ul>
 </div>
+  <% end %>
 <% end %>
 
 <div id="copyright">

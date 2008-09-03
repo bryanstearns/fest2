@@ -2,10 +2,16 @@ class WelcomeController < ApplicationController
   def index
     session[:return_to] = request.request_uri
     today = Date.today
-    @past_festivals, @upcoming_festivals = Festival.send(find_scope(false)).partition { |f| f.ends < today }
-    @announcement_limit = 2
-    @announcements = Announcement.send(_[:festivals]).find(:all, 
-      :limit => @announcement_limit + 1)
+    @festivals_cache_key = "/welcome/%{_[:festivals]}/%{today}"
+    unless read_fragment(@festivals_cache_key)
+      @past_festivals, @upcoming_festivals = Festival.send(find_scope(false)).partition { |f| f.ends < today }
+    end
+    @announcements_cache_key = "/welcome/announcements/%{today}"
+    unless read_fragment(@announcements_cache_key)
+      @announcement_limit = 2
+      @announcements = Announcement.send(_[:festivals]).find(:all, 
+        :limit => @announcement_limit + 1)
+    end
 
     @amazon_limit = 3
     if conference_mode
