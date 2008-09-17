@@ -2,7 +2,6 @@ class WelcomeController < ApplicationController
   def index
     session[:return_to] = request.request_uri
     today = Date.today
-    cache_prefix = "/welcome/%{_[:festivals]}/%{today}"
 
     @festivals_cache_key = cache_prefix
     unless read_fragment(@festivals_cache_key)
@@ -15,15 +14,26 @@ class WelcomeController < ApplicationController
       @announcements = Announcement.send(_[:festivals]).find(:all, 
         :limit => @announcement_limit + 1)
     end
+    
+    load_amazon_films(3)
+  end
 
-    @amazon_limit = 3
+  def dvds
+    load_amazon_films
+  end
+
+  protected
+
+  def cache_prefix
+    @@cache_prefix ||= "#{_[:festivals]}/welcome/#{Date.today}"
+  end
+
+  def load_amazon_films(limit=nil)
+    @amazon_limit = limit
     @amazon_cache_key = cache_prefix + "/amazon"
     unless read_fragment(@amazon_cache_key)
       @amazon_films = conference_mode ? [] : Film.on_amazon
     end
   end
   
-  def dvds
-    @amazon_films = Film.on_amazon(:all, :order => :name)
-  end
 end

@@ -11,6 +11,11 @@
   <% end %>
 <% end %>
 
-<ul class="dvds">
-<%= render :partial => "films/amazon", :collection => @amazon_films %>
-</ul>
+<% amazon_choices = render_random_subset_with_caching(@controller, 
+                      @amazon_films, nil, "films/amazon", 
+                      @amazon_cache_key) %>
+<% unless amazon_choices.empty? %>
+  <ul class="dvds">
+  <%= amazon_choices.join("\n") %>
+  </ul>
+<% end %>

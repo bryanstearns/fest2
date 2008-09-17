@@ -1,7 +1,7 @@
 module RandomSubsetHelper
   def random_subset(collection, count)
     size = collection.size
-    return collection if count >= size
+    return collection if count == nil or count >= size
     cut = rand(size)
     if cut <= (size - count)
       collection[cut..(cut+count-1)]
@@ -10,7 +10,8 @@ module RandomSubsetHelper
     end
   end
 
-  def render_random_subset_with_caching(controller, collection, count, partial, cache_key)
+  def render_random_subset_with_caching(controller, collection, count, 
+                                        partial, cache_key)
     # See if we have the rendered set cached
     result = controller.read_fragment cache_key
     unless result
