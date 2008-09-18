@@ -65,7 +65,7 @@ to reset all your selected screenings and start over<% if RAILS_ENV == "developm
 <% end %>
 </div>
 
-<% async_grid_fill = true %>
+<% async_grid_fill = false %>
 <div id="days" class="days">
   <% if async_grid_fill  %>
     <%= image_tag "busy.gif" %> Loading... this takes a second or two...
