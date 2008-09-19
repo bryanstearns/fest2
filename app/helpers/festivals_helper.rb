@@ -3,14 +3,13 @@ require 'ruby-debug'
 module FestivalsHelper
   class ViewingInfo
     # Info about one viewing cell - not just the screening, but
-    # also this user's ranking of the film and layout information.
-    attr_reader :screening, :film, :pick, :space_before, :height, 
+    # also layout information.
+    attr_reader :screening, :film, :space_before, :height, 
                 :other_screenings, :screening_index, :screening_count
     
-    def initialize(screening, pick, space_before, height)
+    def initialize(screening, space_before, height)
       @screening = screening
       @film = @screening.film
-      @pick = pick
       @space_before = space_before.to_i
       @height = height.to_i
       film_screenings = @film.screenings.sort_by(&:starts)
@@ -20,21 +19,23 @@ module FestivalsHelper
     end
     
     def pick_state
-      return "unranked" if pick.nil?
-      return "scheduled" if pick.screening_id == @screening.id
-      return "otherscheduled" if pick.screening_id
-      return "unranked" if pick.priority.nil?
-      return "unscheduled" if pick.priority > 0
       return "unranked"
+      #return "unranked" if pick.nil?
+      #return "scheduled" if pick.screening_id == @screening.id
+      #return "otherscheduled" if pick.screening_id
+      #return "unranked" if pick.priority.nil?
+      #return "unscheduled" if pick.priority > 0
+      #return "unranked"
     end
     
     def tooltip
-      return "You haven't prioritized this film." if pick.nil?
-      return "You're scheduled to see this screening." if pick.screening_id == @screening.id
-      return "You're seeing this on #{pick.screening.date_and_times}." if pick.screening_id
-      return "You haven't prioritized this film." if pick.priority.nil?
-      return "You prioritized this, but no screening is selected." if pick.priority > 0
-      return "You gave this the lowest priority."
+      return "Bogus Tooltip"
+      #return "You haven't prioritized this film." if pick.nil?
+      #return "You're scheduled to see this screening." if pick.screening_id == @screening.id
+      #return "You're seeing this on #{pick.screening.date_and_times}." if pick.screening_id
+      #return "You haven't prioritized this film." if pick.priority.nil?
+      #return "You prioritized this, but no screening is selected." if pick.priority > 0
+      #return "You gave this the lowest priority."
     end
     
     def ordinalize
@@ -44,7 +45,7 @@ module FestivalsHelper
     end
     
     def priority
-      (pick.priority || 0) rescue 0
+      0 # (pick.priority || 0) rescue 0
     end
   end
   
@@ -56,19 +57,17 @@ module FestivalsHelper
                 :venues, :venue_viewings, :venue_width
     attr_accessor :page_break_before
     
-    def self.collect(festival, picks, conference_mode)
+    def self.collect(festival, conference_mode)
       # Collect & return info about each day's screenings      
-      pick_map = picks.index_by() { |p| p.film_id }
       screenings_by_date = festival.screenings.group_by { |s| s.starts.date }
       screenings_by_date.map do |date, screenings| 
-        DayInfo.new(date, screenings, pick_map, conference_mode)
+        DayInfo.new(date, screenings, conference_mode)
       end
     end
     
-    def initialize(date, screenings, pick_map, conference_mode)
+    def initialize(date, screenings, conference_mode)
       @date = date
       @screenings = screenings.sort_by(&:starts)
-      @pick_map = pick_map
 
       # Figure out the start and end times for the day
       @starts = @screenings.min {|s1, s2| s1.starts <=> s2.starts }.starts.roundDown
@@ -97,7 +96,7 @@ module FestivalsHelper
         space_before = time_before * minute_height
         time_during = s.duration.to_minutes
         height = (time_during * minute_height) - padding_height
-        @venue_viewings[venue_key] << ViewingInfo.new(s, @pick_map[s.film_id], space_before, height)
+        @venue_viewings[venue_key] << ViewingInfo.new(s, space_before, height)
         next_time[venue_key] = start_minutes + time_during
       end
       
@@ -113,10 +112,10 @@ module FestivalsHelper
     end
   end
   
-  def days(festival, picks, conference_mode)
+  def days(festival, conference_mode)
     # Collect & return info about each day's screenings
     today = Date.today
-    days = DayInfo.collect(festival, picks, conference_mode).sort_by { |d| d.date + (d.date < today ? 60.days : 0) }
+    days = DayInfo.collect(festival, conference_mode).sort_by { |d| d.date + (d.date < today ? 60.days : 0) }
     
     # Insert page breaks
     time_on_page = 0

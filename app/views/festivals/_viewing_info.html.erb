@@ -1,7 +1,6 @@
 <%# One viewing on the schedule grid, from /festivals/_day -%>
 <div id="screening-<%= viewing_info.screening.id %>"
-     class="screening <%= viewing_info.pick_state %>"
-     <%= "title=\"#{viewing_info.tooltip}\"" unless conference_mode %>
+     class="screening"
      style="height: <%= viewing_info.height %>px; margin-top: <%= viewing_info.space_before %>px">
   <% unless conference_mode %>
     <%= content_tag(:a, image_tag("fam3silk/dvd.png", :class => "flag dvd", :alt => "DVD", 

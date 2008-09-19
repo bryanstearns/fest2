@@ -6,6 +6,8 @@
 <% content_for :additional_stylesheets do %>
   <%= stylesheet_link_tag 'daygrid', :media => 'screen, print' %>
 <% end %>
+
+<% cache @cache_key do %>
 <div class="instructions">
 <% if logged_in? %>
 
@@ -65,14 +67,11 @@ to reset all your selected screenings and start over<% if RAILS_ENV == "developm
 <% end %>
 </div>
 
-<% async_grid_fill = false %>
 <div id="days" class="days">
-  <% if async_grid_fill  %>
-    <%= image_tag "busy.gif" %> Loading... this takes a second or two...
-  <% else %>
-    <%= render :partial => "day", :collection => days(@festival, @picks, conference_mode) %>
-  <% end %>
+  <%= render :partial => "day", 
+             :collection => days(@festival, conference_mode) %>
 </div>
+<% end # caching -%>
 
 <% content_for("page_scripts") do %>
 function screening_clicked(e) {
@@ -90,12 +89,15 @@ function observe_screening_clicks() {
 }
 
 Event.observe(window, "load", function() {
-  <% if async_grid_fill %>
-  // Fill the grids when the page loads
-  <%= remote_function(:url => poly_update_days_festival_url(@festival), :method => :get) %>
-  <% elsif logged_in? -%>
+  <% if logged_in? -%>
   // Set up for clicks on the screenings
   observe_screening_clicks();
   <% end -%>
 });  
+
+jQuery(function() {
+  // Apply classes for this user's picks
+  <%= @screening_javascript %>
+});
 <% end -%>
+

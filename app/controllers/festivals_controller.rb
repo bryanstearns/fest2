@@ -20,7 +20,8 @@ class FestivalsController < ApplicationController
   def show
     @festival = Festival.find_by_slug(params[:id])
     check_festival_access
-    @picks = []
+    @cache_key = "#{_[:festivals]}/show/#{params[:id]}/#{@festival.updated_at.to_i}/#{logged_in?.inspect}"
+    @screening_javascript = screening_settings_to_js
     
     respond_to do |format|
       format.html # show.html.erb
@@ -39,12 +40,14 @@ class FestivalsController < ApplicationController
   
   # POST /festivals/1/pick_screening
   def pick_screening
-    if logged_in?
-      screening = Screening.find(params[:screening_id])
-      state = (params[:state] || "picked").to_sym
-      screening.set_state(current_user, state)
+    render :update do |page|
+      if logged_in?
+        screening = Screening.find(params[:screening_id])
+        state = (params[:state] || "picked").to_sym
+        changed = screening.set_state(current_user, state)
+        page << update_changed_screenings(changed)
+      end
     end
-    render_days
   end
   
   # POST /festivals/1/schedule
@@ -71,7 +74,7 @@ class FestivalsController < ApplicationController
   
   # GET /festivals/1/update_days
   def update_days
-    render_days
+    # render_days
   end
 
   # POST /festivals/1/reset_rankings
@@ -85,7 +88,7 @@ class FestivalsController < ApplicationController
   def reset_screenings
     @festival = Festival.find_by_slug(params[:id])
     @festival.reset_screenings(current_user) if logged_in?
-    render_days
+    # render_days
   end
     
   # GET /festivals/new
@@ -153,6 +156,36 @@ class FestivalsController < ApplicationController
   end
 
 private
+  def screening_settings_to_js(screenings=nil)
+    screenings ||= @festival.screenings
+    screening_by_screening_id = screenings.index_by(&:id)
+    picks = Pick.find_all_by_user_id_and_festival_id(current_user, @festival)
+    pick_by_screening_id = picks.index_by(&:screening_id)
+    updated_screening_states = screening_by_screening_id.keys.group_by do |screening_id|
+      s = screening_by_screening_id[screening_id]
+      p = pick_by_screening_id[screening_id]
+      if p.nil?
+        ["unranked", "You haven't prioritized this film."]
+      elsif p.screening_id == screening_id
+        ["scheduled", "You're scheduled to see this screening."]
+      elsif p.screening_id
+        ["otherscheduled", "You're seeing this on #{screening_by_screening_id[p.screening_id].date_and_times}."]
+      elsif p.priority.nil?
+        ["unranked", "You haven't prioritized this film."]
+      elsif p.priority > 0
+        ["unscheduled", "You prioritized this, but no screening is selected."]
+      else
+        ["unranked", "You gave this the lowest priority."]
+      end
+    end
+    
+    # Make the javascript
+    updated_screening_states.map do |state_and_tip, screening_ids|
+      state, tooltip = state_and_tip
+      %Q[jQuery("#{screening_ids.map {|id| "#screening-" + id.to_s}.join(",")}").attr("class", "screening #{state}").attr("title", "#{tooltip}");]
+    end.join("\n")
+  end
+
   def render_days
     # "Get me all the screenings in the festival; for each screening, get its 
     # film and venue too." -- whew!
