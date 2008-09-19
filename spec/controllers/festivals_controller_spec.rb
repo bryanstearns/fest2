@@ -6,7 +6,9 @@ describe FestivalsController do
   def make_festival
     venues = []
     @festival = mock_model(Festival, :venues => venues, :public => true,
-                           :is_conference => false, :updated_at => Time.zone.now - 1.day)
+                           :is_conference => false, 
+                           :screenings => [],
+                           :updated_at => Time.zone.now - 1.day)
     @festival.stub!(:to_ical).and_return("ICAL")
     @festival.stub!(:to_xml).and_return("XML")
     @festivals = [@festival]
