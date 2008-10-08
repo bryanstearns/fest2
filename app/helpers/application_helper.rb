@@ -1,5 +1,15 @@
 # Methods added to this helper will be available to all templates in the application.
 module ApplicationHelper
+  def revision_info
+    begin
+      revision_path = Rails.root + "/REVISION"
+      mod_date = File.mtime(revision_path)
+      revision = File.read(revision_path)
+      "#{revision[0...8]} #{mod_date.strftime("%H:%M %a, %b %d %Y").gsub(" 0"," ")}"
+    rescue
+      "(no revision file)"
+    end
+  end
 end
 
 class Time
