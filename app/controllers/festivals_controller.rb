@@ -40,15 +40,16 @@ class FestivalsController < ApplicationController
   
   # POST /festivals/1/pick_screening
   def pick_screening
-    render :update do |page|
-      if logged_in?
-        @festival = Festival.find_by_slug(params[:id])
-        screening = Screening.find(params[:screening_id])
-        state = (params[:state] || "picked").to_sym
-        changed = screening.set_state(current_user, state)
-        page << screening_settings_to_js(changed)
-      end
+    if logged_in?
+      @festival = Festival.find_by_slug(params[:id])
+      screening = Screening.find(params[:screening_id])
+      state = (params[:state] || "picked").to_sym
+      changed = screening.set_state(current_user, state)
+      js = screening_settings_to_js(changed)
+    else
+      js = ""
     end
+    render :update do |page| page << js end
   end
   
   # POST /festivals/1/schedule
