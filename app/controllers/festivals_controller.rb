@@ -42,10 +42,11 @@ class FestivalsController < ApplicationController
   def pick_screening
     render :update do |page|
       if logged_in?
+        @festival = Festival.find_by_slug(params[:id])
         screening = Screening.find(params[:screening_id])
         state = (params[:state] || "picked").to_sym
         changed = screening.set_state(current_user, state)
-        page << update_changed_screenings(changed)
+        page << screening_settings_to_js(changed)
       end
     end
   end
