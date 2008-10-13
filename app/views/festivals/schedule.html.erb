@@ -9,5 +9,5 @@
 <%# A dummy form, which we submit as soon as the page loads %>
 <% form_tag poly_schedule_continue_festival_url(@festival), :id => "schedule_continue_form" do end %>
 <% content_for("page_scripts") do %>
-Event.observe(window, "load", function() { $('schedule_continue_form').submit(); });  
+  jQuery(function() { jQuery('#schedule_continue_form').submit(); });
 <% end -%>

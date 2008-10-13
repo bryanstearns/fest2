@@ -17,6 +17,7 @@
   <%= stylesheet_link_tag 'print', :media => 'print' %>
   <script type="text/javascript">
     jQuery.noConflict();
+    var AUTH_TOKEN = <%= form_authenticity_token.inspect if protect_against_forgery? %>;
     <%= @content_for_page_scripts %>
     <%= @content_for_more_page_scripts %>
   </script>

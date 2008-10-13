@@ -74,30 +74,20 @@ to reset all your selected screenings and start over<% if RAILS_ENV == "developm
 <% end # caching -%>
 
 <% content_for("page_scripts") do %>
-function screening_clicked(e) {
-  var args = $H({ 'screening_id': this.id.split('-')[1],
-               'state': this.hasClassName("scheduled") ? "unpicked" : "picked" }).toQueryString();
-  <%= remote_function(:url => pick_screening_festival_path(@festival),
-                      :with => 'args') %>
-}
-
-function observe_screening_clicks() {
-  // Register for clicks on all our screenings
-  $$(".screening").each(function(scr) {
-    Event.observe(scr, 'click', screening_clicked.bindAsEventListener(scr));
-  });
-}
-
-Event.observe(window, "load", function() {
-  <% if logged_in? -%>
-  // Set up for clicks on the screenings
-  observe_screening_clicks();
-  <% end -%>
-});  
-
 jQuery(function() {
-  // Apply classes for this user's picks
+  // Apply picks for this user
   <%= @screening_javascript %>
+
+  <% if logged_in? -%>
+  // Register for clicks on all our screenings
+  jQuery(".screening").click(function(e) {
+    jQuery.post('<%= pick_screening_festival_path(@festival) %>',
+                { 'screening_id': this.id.split('-')[1],
+                  'state': this.hasClassName('scheduled')
+                           ? 'unpicked' : 'picked' },
+                function (script) { eval(script); })
+  });
+  <% end -%>
 });
 <% end -%>
 
