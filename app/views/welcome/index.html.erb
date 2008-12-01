@@ -48,7 +48,7 @@
   <% end %>
 
   <% unless @past_festivals.empty? %>
-  <h3>Past <%= @past_festivals.size == 1 ? "festival" : "festivals" %>:</h3>
+  <h3>Past <%= @past_festivals.size == 1 ? _[:festival] : _[:festivals] %>:</h3>
   <ul id="pastfestivals">
   <%= render :partial => 'festival', :collection => @past_festivals.sort_by {|f| f.starts }.reverse %>
   </ul>
