@@ -37,6 +37,7 @@ module ConferenceVsFestival
 
   def conference_versus_festival
     @conference_mode = ((request.env["HTTP_X_FORWARDED_HOST"] || request.env["SERVER_NAME"] || "dev.festivalfanatic.com").include?("conference"))
+    Rails.logger.info("CvF: #{request.env["HTTP_X_FORWARDED_HOST"].inspect} || #{request.env["SERVER_NAME"].inspect} || 'dev.festivalfanatic.com' --> #{@conference_mode}")
     @_ = @conference_mode ? $conference_strings : $festival_strings
   end
   
