@@ -25,7 +25,7 @@ class WelcomeController < ApplicationController
   protected
 
   def cache_prefix
-    @@cache_prefix ||= "#{_[:festivals]}/welcome/#{Date.today}"
+    "#{_[:festivals]}/welcome/#{Date.today}"
   end
 
   def load_amazon_films(limit=nil)
