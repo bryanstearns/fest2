@@ -4,10 +4,10 @@ class Festival < ActiveRecord::Base
   include Icalendar
   include ActionController::UrlWriter
 
-  has_many :films
-  has_many :venues
-  has_many :screenings
-  has_many :picks
+  has_many :films, :dependent => :destroy
+  has_many :venues, :dependent => :destroy
+  has_many :screenings # destroyed with film
+  has_many :picks # destroyed with film
   has_many :subscriptions, :dependent => :destroy
   has_many :users, :through => :subscriptions
   

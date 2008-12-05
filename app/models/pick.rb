@@ -19,7 +19,10 @@ class Pick < ActiveRecord::Base
   }
 
   def inspect
-    "#<Pick id:#{id} festival:#{festival.nil? ? "nil" : festival.name[0...4]} film:#{film.nil? ? "nil" : film.name} priority:#{priority} screening:#{screening.nil? ? "nil" : screening.times}>"
+    festival_name = festival.slug rescue "nil"
+    film_name = film.name rescue "nil"
+    screening_times = screening.times rescue "nil"
+    "#<Pick id:#{id} festival:#{festival_name} film:#{film_name} priority:#{priority} screening:#{screening_times}>"
   end
 
 #  def conflicts

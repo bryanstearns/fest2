@@ -24,7 +24,10 @@ class Screening < ActiveRecord::Base
   end
 
   def inspect
-    "#<Screening id: #{id}, festival: #{festival_id.nil? ? "nil" : festival.name}, film: #{film_id.nil? ? "nil" : film.name}, times: #{starts.to_date} #{times}, venue: #{venue.name}>"
+    festival_name = festival.slug rescue "nil"
+    film_name = film.name rescue "nil"
+    venue_name = venue.name rescue "nil"
+    "#<Screening id: #{id}, festival: #{festival_name}, film: #{film_name}, times: #{starts.to_date} #{times}, venue: #{venue_name}>"
   end
   
   def times
