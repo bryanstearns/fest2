@@ -16,5 +16,6 @@ namespace :db do
       puts "Cloning structure to test"
       Rake::Task['db:test:clone'].invoke
     end
+    Rake::Task['db:check'].invoke
   end
 end
