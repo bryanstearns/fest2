@@ -73,6 +73,19 @@ class ApplicationController < ActionController::Base
                                rescue false))))
   end
 
+  # Give access to some view helpers from within controllers;
+  # use like: view_helper.pluralize(count, "thing")
+  # http://snippets.dzone.com/posts/show/1799
+  def view_helper
+    ViewHelper.instance
+  end
+  class ViewHelper
+    include Singleton
+    include ActionView::Helpers::TextHelper
+    include ActionView::Helpers::TagHelper
+    include ActionView::Helpers::AssetTagHelper
+  end
+
   def find_scope(unlimited_if_admin=true)
     if (unlimited_if_admin and (current_user.admin rescue false))
       :unlimited

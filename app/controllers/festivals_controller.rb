@@ -163,6 +163,9 @@ private
     screening_by_screening_id = screenings.index_by(&:id)
     picks = Pick.find_all_by_user_id_and_festival_id(current_user, @festival)
     pick_by_screening_id = picks.index_by(&:screening_id)
+
+    # Make the javascript to update the states and tooltips, and to insert
+    # the priority symbols
     updated_screening_states = screening_by_screening_id.keys.group_by do |screening_id|
       s = screening_by_screening_id[screening_id]
       p = pick_by_screening_id[screening_id]
@@ -180,12 +183,23 @@ private
         ["unranked", "You gave this the lowest priority."]
       end
     end
-    
-    # Make the javascript
-    updated_screening_states.map do |state_and_tip, screening_ids|
+    js = updated_screening_states.map do |state_and_tip, screening_ids|
       state, tooltip = state_and_tip
       %Q[jQuery("#{screening_ids.map {|id| "#screening-" + id.to_s}.join(",")}").attr("class", "screening #{state}").attr("title", "#{tooltip}");]
     end.join("\n")
+
+    unless conference_mode
+      screening_ids_by_priority = screening_by_screening_id.keys.group_by do |screening_id|
+        p = pick_by_screening_id[screening_id]
+        (p and p.priority) || 0
+      end
+      js += screening_ids_by_priority.map do |priority, screening_ids|
+        priority_image_tag = view_helper.image_tag "priority/p#{priority}.png", 
+          :height => 10, :width => 46
+        %Q[jQuery("#{screening_ids.map {|id| "#screening-" + id.to_s}.join(",")}").find('.priority').html(', #{priority_image_tag}');]
+      end.join("\n")
+    end
+    js
   end
 
   def render_days

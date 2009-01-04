@@ -18,35 +18,11 @@ module FestivalsHelper
       @other_screenings = film_screenings.delete(screening)
     end
     
-    def pick_state
-      return "unranked"
-      #return "unranked" if pick.nil?
-      #return "scheduled" if pick.screening_id == @screening.id
-      #return "otherscheduled" if pick.screening_id
-      #return "unranked" if pick.priority.nil?
-      #return "unscheduled" if pick.priority > 0
-      #return "unranked"
-    end
-    
-    def tooltip
-      return "Bogus Tooltip"
-      #return "You haven't prioritized this film." if pick.nil?
-      #return "You're scheduled to see this screening." if pick.screening_id == @screening.id
-      #return "You're seeing this on #{pick.screening.date_and_times}." if pick.screening_id
-      #return "You haven't prioritized this film." if pick.priority.nil?
-      #return "You prioritized this, but no screening is selected." if pick.priority > 0
-      #return "You gave this the lowest priority."
-    end
-    
     def ordinalize
       return "once" if screening_count == 1
       position = (screening_index == screening_count) ? "last" : screening_index.ordinalize
       return "#{position} of #{screening_count}"
-    end
-    
-    def priority
-      0 # (pick.priority || 0) rescue 0
-    end
+    end    
   end
   
   class DayInfo
