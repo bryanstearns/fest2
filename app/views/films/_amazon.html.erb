@@ -10,7 +10,9 @@
         url = amazon[:url] # go direct
       end
       content = ""
-      content += image_tag(amazon[:image], :height => amazon[:height], :width => amazon[:width]) + "<br/>" if amazon[:image]
+      content += image_tag(amazon[:image], :height => amazon[:height], 
+        :width => amazon[:width], :title => h(amazon[:title]), :alt =>" ") + "<br/>" \
+        if amazon[:image]
       content += amazon[:title]
     %>
     <%= link_to content, url, :target => "_blank" %>
