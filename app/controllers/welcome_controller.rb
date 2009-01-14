@@ -5,7 +5,7 @@ class WelcomeController < ApplicationController
 
     @festivals_cache_key = cache_prefix
     unless read_fragment(@festivals_cache_key)
-      @past_festivals, @upcoming_festivals = Festival.send(find_scope(false)).partition { |f| f.ends < today }
+      @festivals = Festival.send(find_scope(false))
     end
 
     @announcement_limit = 2

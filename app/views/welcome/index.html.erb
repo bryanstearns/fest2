@@ -38,19 +38,39 @@
 
 <% cache @festivals_cache_key do %>
 <div class="festival_section">
-  <% if @upcoming_festivals.empty? %>
+  <% group = Hash.new { |h,k| h[k] = [] } 
+     today = Date.today
+     @festivals.each do |f|
+       if not f.scheduled
+         k = :future
+       elsif f.ends < today
+         k = :past
+       else
+         k = :current
+       end
+       group[k] << f
+     end
+     if group[:current].empty? and group[:future].empty? %>
   <p>More <%= _[:festivals] %> coming soon -- if you're interested in one in particular, tell us about it on the feedback page.</p>
   <% else %>
+    <% unless group[:current].empty? %>
   <h3>Click an upcoming <%= _[:festival] %>:</h3>
   <ul id="upcomingfestivals">
-  <%= render :partial => 'festival', :collection => @upcoming_festivals.sort_by {|f| f.starts } %>
+  <%= render :partial => 'festival', :collection => group[:current].sort_by {|f| f.starts } %>
+  </ul>
+    <% end %>
+    <% unless group[:future].empty? %>
+  <h3><%= _[:Festivals] %> we're working on &mdash; check back soon:</h3>
+  <ul id="futurefestivals">
+  <%= render :partial => 'festival', :collection => group[:future].sort_by {|f| f.starts } %>
   </ul>
   <% end %>
+  <% end %>
 
-  <% unless @past_festivals.empty? %>
-  <h3>Past <%= @past_festivals.size == 1 ? _[:festival] : _[:festivals] %>:</h3>
+  <% unless group[:past].empty? %>
+  <h3>Past <%= group[:past].size == 1 ? _[:festival] : _[:festivals] %>:</h3>
   <ul id="pastfestivals">
-  <%= render :partial => 'festival', :collection => @past_festivals.sort_by {|f| f.starts }.reverse %>
+  <%= render :partial => 'festival', :collection => group[:past].sort_by {|f| f.starts }.reverse %>
   </ul>
   <% end %>
 </div>      
@@ -69,5 +89,5 @@
 <% end %>
 
 <div id="copyright">
-  Copyright &copy; 2007-2008 The Thomas Eliot Company; all rights reserved.
+  Copyright &copy; 2007-2009 The Thomas Eliot Company; all rights reserved.
 </div>
