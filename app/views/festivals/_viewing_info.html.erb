@@ -9,5 +9,6 @@
     <%= flag_icon_tag viewing_info.film.countries, :class => "flag" %>
   <% end %>
   <span class="name"><%= viewing_info.film.name %></span>
-  <div class="screeningtime"><span>(<%= viewing_info.screening.times %><% unless conference_mode %>,</span> <span><%= viewing_info.ordinalize %><% end %><span class="priority"></span>)</span></div>
+  
+  <div class="screeningtime"><span><%= "press: " if viewing_info.screening.vip %><%= viewing_info.screening.times %><% unless conference_mode %>,</span> <span><%= viewing_info.ordinalize %><% end %><span class="priority"></span></span></div>
 </div>

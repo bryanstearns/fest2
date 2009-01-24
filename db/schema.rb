@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 6) do
+ActiveRecord::Schema.define(:version => 20090124170228) do
 
   create_table "announcements", :force => true do |t|
     t.string   "subject",                           :null => false
@@ -69,13 +69,14 @@ ActiveRecord::Schema.define(:version => 6) do
   end
 
   create_table "screenings", :force => true do |t|
-    t.integer  "festival_id", :limit => 11, :null => false
-    t.integer  "film_id",     :limit => 11, :null => false
-    t.integer  "venue_id",    :limit => 11, :null => false
-    t.datetime "starts",                    :null => false
-    t.datetime "ends",                      :null => false
+    t.integer  "festival_id", :limit => 11,                    :null => false
+    t.integer  "film_id",     :limit => 11,                    :null => false
+    t.integer  "venue_id",    :limit => 11,                    :null => false
+    t.datetime "starts",                                       :null => false
+    t.datetime "ends",                                         :null => false
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.boolean  "vip",                       :default => false
   end
 
   create_table "sessions", :force => true do |t|

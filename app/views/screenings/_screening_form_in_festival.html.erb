@@ -8,6 +8,7 @@
   	  <th rowspan="2"><%= screening.new_record? ? "New" : "Edit" %> Screening:</th>
   		<th>Starts</th>
   		<th>Venue</th>
+  		<th>Press?</th>
   	</tr>
 		<tr>
 		  <td>
@@ -20,6 +21,7 @@
       </td>
 		  <td><%= select 'screening', 'venue_id', 
               festival.venues.collect {|v| [v.name, v.id]} %></td>
+		  <td><%= f.check_box :vip %></td>
 			<td>
 				<%= submit_to_remote "save", "Save",
             :url => screening.new_record? ? poly_film_screenings_url(film) : poly_film_screening_url(film, screening) %>

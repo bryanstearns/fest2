@@ -3,6 +3,7 @@
   <% content_tag_for :tr, screening do %>
     <td><%= screening.date_and_times %></td>
     <td><%= h screening.venue.name %></td>
+    <td><%= screening.vip ? "yes" : "no"  %></td>
 		<td>
 				<%= link_to_remote "Edit",
 	          :url => poly_edit_film_screening_url(film, screening),
