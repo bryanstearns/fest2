@@ -15,7 +15,7 @@
 <% if @festivals.empty? %>
 <p>(No films with pending or current Amazon ads. Click the Lookup button to search Amazon for products.)</p>
 <% else %>
-  <% @festivals.each_pair do |festival, films| %>
+  <% @festivals.each do |festival, films| %>
   <h3><%= festival.name %></h3>
   <table class="amazon_table">
     <tr>
