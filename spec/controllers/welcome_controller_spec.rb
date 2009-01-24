@@ -20,7 +20,6 @@ context WelcomeController do
   it "should include the right festivals" do
     do_get
     # festivals(:secret) isn't public.
-    assigns[:upcoming_festivals].should == [festivals(:interyear)]
-    assigns[:past_festivals].to_set.should == [festivals(:intermonth), festivals(:intramonth)].to_set
+    assigns[:festivals].to_set.should == [festivals(:intermonth), festivals(:intramonth), festivals(:interyear)].to_set
   end
 end
