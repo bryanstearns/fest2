@@ -157,25 +157,27 @@ private
     screenings ||= @festival.screenings
     screening_by_screening_id = screenings.index_by(&:id)
     picks = Pick.find_all_by_user_id_and_festival_id(current_user, @festival)
-    pick_by_screening_id = picks.index_by(&:screening_id)
+    pick_by_film_id = picks.index_by(&:film_id)
 
     # Make the javascript to update the states and tooltips, and to insert
     # the priority symbols
     updated_screening_states = screening_by_screening_id.keys.group_by do |screening_id|
       s = screening_by_screening_id[screening_id]
-      p = pick_by_screening_id[screening_id]
-      if p.nil?
-        ["unranked", "You haven't prioritized this film."]
-      elsif p.screening_id == screening_id
-        ["scheduled", "You're scheduled to see this screening."]
-      elsif p.screening_id
-        ["otherscheduled", "You're seeing this on #{screening_by_screening_id[p.screening_id].date_and_times}."]
-      elsif p.priority.nil?
-        ["unranked", "You haven't prioritized this film."]
-      elsif p.priority > 0
-        ["unscheduled", "You prioritized this, but no screening is selected."]
+      p = pick_by_film_id[s.film_id]
+      if p
+        if p.screening_id == screening_id
+          ["scheduled", "You're scheduled to see this screening."]
+        elsif p.screening_id
+          ["otherscheduled", "You're seeing this on #{screening_by_screening_id[p.screening_id].date_and_times}."]
+        elsif p.priority.nil?
+          ["unranked", "You haven't prioritized this film."]
+        elsif p.priority > 0
+          ["unscheduled", "You prioritized this, but no screening is selected."]
+        else
+          ["lowprio", "You gave this the lowest priority."]
+        end
       else
-        ["unranked", "You gave this the lowest priority."]
+        ["unranked", "You haven't prioritized this film."]
       end
     end
     js = updated_screening_states.map do |state_and_tip, screening_ids|
@@ -184,14 +186,17 @@ private
     end.join("\n")
 
     unless conference_mode
-      screening_ids_by_priority = screening_by_screening_id.keys.group_by do |screening_id|
-        p = pick_by_screening_id[screening_id]
-        (p and p.priority) || 0
+      screenings_by_priority = screenings.group_by do |s|
+        p = pick_by_film_id[s.film_id]
+        (p and p.priority)
       end
-      js += screening_ids_by_priority.map do |priority, screening_ids|
-        priority_image_tag = view_helper.image_tag "priority/p#{priority}.png", 
-          :height => 10, :width => 46
-        %Q[jQuery("#{screening_ids.map {|id| "#screening-" + id.to_s}.join(",")}").find('.priority').html('#{priority_image_tag}');]
+      js += screenings_by_priority.map do |priority, screenings|
+        unless priority.nil?
+          priority_image_tag = view_helper.image_tag \
+            "priority/p#{priority}.png",
+            :height => 10, :width => 46
+          %Q[jQuery("#{screenings.map {|s| "#screening-" + s.id.to_s}.join(",")}").find('.priority').html('#{priority_image_tag}');]
+        end
       end.join("\n")
     end
     js

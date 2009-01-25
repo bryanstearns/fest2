@@ -3,8 +3,17 @@
 <% content_for :header do %>
   <%= render :partial => "festivals/header", :locals => { :festival => @festival, :hide_tabs => false } %>
 <% end %>
-
 <% if logged_in? %>
+  <% content_for "page_scripts" do %>
+  // Register for clicks on the film choices
+  jQuery(function() {
+    jQuery("form.priority input").change(function(e) {
+      jQuery(this.form).ajaxSubmit({dataType: 'script'});
+      return false;
+    });
+  });
+  <% end %>
+
 <p>Here are all the films in the festival. You can indicate your preference for seeing each film by clicking one of the
 little circles next to each film: the rightmost means "<%= ranking_hints[4] %>," 
 and the leftmost means "<%= ranking_hints[0] %>."</p>
@@ -36,38 +45,3 @@ your preferred films as possible.)</p>
 <% end -%>
 <%= render :partial => "film", :collection => @films.sort_by(&:sort_name), :locals => { :picks => @picks } %>
 </table>
-
-<script>
-
-//var Priority=Class.create();
-//Priority.prototype={
-//  initialize: function(level) {
-//    this.level = level;
-//    // this.images = priorityImages;
-//  }
-//};
-
-function toggle_all_screenings() {
-  $$('.screenings label').each(function(label) {
-    label.nextSibling.show();
-  });
-}
-
-addLoadEvent(function() {
-	$$('.screenings label').each(function(label) {
-		label.onclick = function() { 
-			Effect.toggle(label.nextSibling, 'appear', {duration:0.3}); 
-		}
-	});
-  
-//  $$('.priority').each(function(priority) {
-//    priority.title = "hi";
-//    priority.onmouseover =  {
-//      // Start tracking mouse movement  
-//    }
-//    priority.onmouseleave = function() {
-//      // Stop tracking mouse movement
-//    }
-//  });
-});
-</script>
