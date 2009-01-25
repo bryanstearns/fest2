@@ -191,7 +191,7 @@ private
       js += screening_ids_by_priority.map do |priority, screening_ids|
         priority_image_tag = view_helper.image_tag "priority/p#{priority}.png", 
           :height => 10, :width => 46
-        %Q[jQuery("#{screening_ids.map {|id| "#screening-" + id.to_s}.join(",")}").find('.priority').html(', #{priority_image_tag}');]
+        %Q[jQuery("#{screening_ids.map {|id| "#screening-" + id.to_s}.join(",")}").find('.priority').html('#{priority_image_tag}');]
       end.join("\n")
     end
     js
