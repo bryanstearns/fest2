@@ -90,7 +90,7 @@ class FestivalsController < ApplicationController
   def reset_screenings
     @festival = Festival.find_by_slug(params[:id])
     @festival.reset_screenings(current_user) if logged_in?
-    # render_days
+    redirect_to poly_festival_url(@festival)
   end
     
   # GET /festivals/new
