@@ -13,6 +13,6 @@ context "A Restriction" do
   it "should convert itself to YAML" do
     t = DateTime.new(2001, 1, 1, 12, 0)
     Restriction.new(t, t + 10.minutes).to_yaml.should == \
-      "--- !ruby/object:Restriction \nends: 2001-01-01T12:10:00+00:00\nstarts: 2001-01-01T12:00:00+00:00\n" 
+      "--- !ruby/object:Restriction \nends: 2001-01-01T12:10:00+00:00\nstarts: 2001-01-01T12:00:00+00:00\n"
   end
 end

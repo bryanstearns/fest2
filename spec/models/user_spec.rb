@@ -103,7 +103,7 @@ describe User do
   end
 
   it "handles time restrictions" do
-    assert users(:quentin).can_see?(screenings(:early_two)) 
+    assert users(:quentin).can_see?(screenings(:early_two))
     assert !users(:quentin).can_see?(screenings(:early_one)) # restricted time
   end
 

@@ -4,8 +4,8 @@ no_early_one:
   festival: intramonth
   vip: false
   restrictions: <%= [ 
-    Restriction.new(DateTime.new(1997, 5, 1, 9, 00), 
-                    DateTime.new(1997, 5, 1, 10, 0)) 
+    Restriction.new(DateTime.new(1997, 5, 1, 9, 00),
+                    DateTime.new(1997, 5, 1, 10, 0))
   ].to_yaml.inspect %>
 
 is_vip:
