@@ -7,7 +7,6 @@ ActionController::Routing::Routes.draw do |map|
       :pick_screening => :post, 
       :reset_rankings => :post,
       :reset_screenings => :post, 
-      :update_days => :get,
       :schedule => :post,
       :schedule_continue => :post,
     } do |festival|

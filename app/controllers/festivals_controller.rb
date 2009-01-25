@@ -1,7 +1,7 @@
 class FestivalsController < ApplicationController
   before_filter :require_admin_subscription, :except => \
     [:index, :show, :pick_screening, :schedule, :schedule_continue,
-     :reset_rankings, :reset_screenings, :update_days]
+     :reset_rankings, :reset_screenings]
   
   # GET /festivals
   # GET /festivals.xml
@@ -74,11 +74,6 @@ class FestivalsController < ApplicationController
     redirect_to poly_festival_url(params[:id])
   end
   
-  # GET /festivals/1/update_days
-  def update_days
-    # render_days
-  end
-
   # POST /festivals/1/reset_rankings
   def reset_rankings
     @festival = Festival.find_by_slug(params[:id])
@@ -200,16 +195,5 @@ private
       end.join("\n")
     end
     js
-  end
-
-  def render_days
-    # "Get me all the screenings in the festival; for each screening, get its 
-    # film and venue too." -- whew!
-    @festival = Festival.find_by_slug(params[:id], :include => { :screenings => [:venue, { :film => :screenings }] })
-    
-    # "If a user is logged in, give me all of this users' picks for this festival"
-    @picks = logged_in? ? Pick.find_all_by_user_id_and_festival_id(current_user.id, @festival.id) : []
-    
-    render :action => "update_days"    
   end
 end
