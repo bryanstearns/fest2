@@ -12,6 +12,7 @@ ActionController::Routing::Routes.draw do |map|
     } do |festival|
       festival.resources filmz, :controller => 'films'
       festival.resources :venues
+      festival.resource :settings, :controller => 'subscriptions'
     end
     map.resources filmz, :controller => 'films', :collection => {
       :amazon => :get,

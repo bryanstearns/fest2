@@ -5,6 +5,8 @@ require File.expand_path(File.dirname(__FILE__) + "/../config/environment")
 require 'spec'
 require 'spec/rails'
 
+include AuthenticatedTestHelper
+
 # Allow us to specify the request extension (and therefore, mime type), eg:
 #   get :index, :extension => :js
 # Modified from http://www.nnovation.ca/2006/12/17/rspec-rails12-and-testing-return-types
