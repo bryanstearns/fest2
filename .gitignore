@@ -5,6 +5,7 @@ doc/app
 doc/plugins
 log/*.log
 public/stylesheets/*.css
+tmp/*
 tmp/**/*
 tmp/profile-flat.txt
 tmp/profile-graph.html
