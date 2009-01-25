@@ -20,7 +20,7 @@ class FestivalsController < ApplicationController
   def show
     @festival = Festival.find_by_slug(params[:id])
     check_festival_access
-    @cache_key = "#{_[:festivals]}/show/#{params[:id]}/#{@festival.updated_at.to_i}/#{logged_in?.inspect}"
+    @cache_key = make_cache_key
     @screening_javascript = screening_settings_to_js
     
     respond_to do |format|
@@ -200,5 +200,14 @@ private
       end.join("\n")
     end
     js
+  end
+
+  def make_cache_key
+    key = "#{_[:festivals]}/show/#{params[:id]}/#{@festival.updated_at.to_i}"
+    if logged_in?
+      subscription = current_user.subscription_for(@festival)
+      key += (subscription and subscription.vip) ? "/vip" : "/non-vip"
+    end
+    key
   end
 end

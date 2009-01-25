@@ -5,7 +5,7 @@ require File.dirname(__FILE__) + '/../spec_helper'
 include AuthenticatedTestHelper
 
 describe User do
-  fixtures :users
+  fixtures :users, :festivals, :screenings, :subscriptions
 
   describe 'being created' do
     before do
@@ -100,6 +100,16 @@ describe User do
     users(:quentin).remember_token.should_not be_nil
     users(:quentin).remember_token_expires_at.should_not be_nil
     users(:quentin).remember_token_expires_at.between?(before, after).should be_true
+  end
+
+  it "handles time restrictions" do
+    assert users(:quentin).can_see?(screenings(:early_two)) 
+    assert !users(:quentin).can_see?(screenings(:early_one)) # restricted time
+  end
+
+  it "handles VIP restrictions" do
+    assert users(:aaron).can_see?(screenings(:late_one)) # VIP
+    assert !users(:quentin).can_see?(screenings(:late_one)) # not VIP
   end
 
 protected

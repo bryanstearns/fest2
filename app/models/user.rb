@@ -71,6 +71,16 @@ class User < ActiveRecord::Base
     @activated
   end
 
+  def subscription_for(festival_id)
+    festival_id = festival_id.id unless festival_id.is_a? Integer
+    subscriptions.find_by_festival_id(festival_id)
+  end
+
+  def can_see?(screening)
+    subscription = subscription_for(screening.festival_id)
+    return subscription.nil? || subscription.can_see?(screening)
+  end
+
   protected
     # before filter 
     def encrypt_password

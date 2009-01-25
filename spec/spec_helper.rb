@@ -109,10 +109,14 @@ end
 module AdminUserSpecHelper  
   def admin_user(id="1")
     @user = mock_model(User, :id => id, :admin => true)
+    @user.stub!(:subscription_for).and_return(nil)
+    @user
   end
 
   def ordinary_user(id="2")
     @user = mock_model(User, :id => id, :admin => false)
+    @user.stub!(:subscription_for).and_return(nil)
+    @user
   end
 
   def login_as(user)
