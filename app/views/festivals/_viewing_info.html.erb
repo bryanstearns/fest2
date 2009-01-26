@@ -11,7 +11,7 @@
   <span class="name"><%= viewing_info.film.name %></span>
   
   <div class="screeningtime">
-    <span><%= viewing_info.screening.times %><% unless conference_mode %>,</span> <span><%= viewing_info.ordinalize %><%= " (press)" if viewing_info.screening.vip %><% end %></span>
+    <span><%= viewing_info.screening.times %><% unless conference_mode %>,</span> <span><%= viewing_info.ordinalize %><%= " (press)" if viewing_info.screening.press %><% end %></span>
   </div>
   <div class="priority"></div>
 </div>

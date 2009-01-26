@@ -16,17 +16,17 @@ describe "/films/index.html.erb" do
                  :starts => now - 3.hours, 
                  :ends => now - 2.hours,
                  :date_and_times => "past",
-                 :vip => false),
+                 :press => false),
       mock_model(Screening, :venue => venue,
                  :starts => now + 1.hour, 
                  :ends => now + 2.hours,
                  :date_and_times => "future",
-                 :vip => false),
+                 :press => false),
       mock_model(Screening, :venue => venue,
                  :starts => now - 1.hour, 
                  :ends => now + 10.minutes,
                  :date_and_times => "current",
-                 :vip => false),
+                 :press => false),
     ]
     
     films = [

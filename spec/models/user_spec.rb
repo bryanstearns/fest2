@@ -122,9 +122,9 @@ describe User do
     assert !users(:quentin).can_see?(screenings(:early_one)) # restricted time
   end
 
-  it "handles VIP restrictions" do
-    assert users(:aaron).can_see?(screenings(:late_one)) # VIP
-    assert !users(:quentin).can_see?(screenings(:late_one)) # not VIP
+  it "handles press-screening restrictions" do
+    assert users(:aaron).can_see?(screenings(:late_one)) # press
+    assert !users(:quentin).can_see?(screenings(:late_one)) # not press
   end
 
 protected

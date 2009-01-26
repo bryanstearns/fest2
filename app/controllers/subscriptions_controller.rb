@@ -26,7 +26,7 @@ class SubscriptionsController < ApplicationController
 
 protected
   def load_festival
-    @festival = Festival.find_by_slug(params[_[:festival_id]])
+    @festival = Festival.find_by_slug(params[_[:festival_id]], :include => :screenings)
     check_festival_access
   end
 end

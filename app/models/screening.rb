@@ -27,7 +27,7 @@ class Screening < ActiveRecord::Base
     festival_name = festival.slug rescue "nil"
     film_name = film.name rescue "nil"
     venue_name = venue.name rescue "nil"
-    "#<Screening id: #{id}, festival: #{festival_name}, film: #{film_name}, times: #{starts.to_date} #{times}, venue: #{venue_name}>"
+    "#<Screening id: #{id}, festival: #{festival_name}, film: #{film_name}, times: #{starts.to_date} #{times}, venue: #{venue_name}, press: #{press.inspect}>"
   end
   
   def times

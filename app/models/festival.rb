@@ -93,4 +93,8 @@ class Festival < ActiveRecord::Base
       end
     end
   end
+
+  def has_press_screenings?
+    screenings.any?(&:press)
+  end
 end

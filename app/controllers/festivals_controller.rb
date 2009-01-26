@@ -206,7 +206,7 @@ private
     key = "#{_[:festivals]}/show/#{params[:id]}/#{@festival.updated_at.to_i}"
     if logged_in?
       subscription = current_user.subscription_for(@festival)
-      key += (subscription and subscription.vip) ? "/vip" : "/non-vip"
+      key += (subscription and subscription.show_press) ? "/press" : "/nopress"
     end
     key
   end

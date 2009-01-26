@@ -46,7 +46,7 @@ late_one:
   starts: 1997-05-01 21:15
   ends: 1997-05-01 23:15
   venue: primero
-  vip: true
+  press: true
 late_two:
   film: two_moon
   festival: intramonth
