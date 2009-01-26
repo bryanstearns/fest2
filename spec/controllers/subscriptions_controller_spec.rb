@@ -10,11 +10,8 @@ describe SubscriptionsController do
 
   describe "in general," do
     before { make_festival }    
-    %w(create new edit show update destroy).each do |action|
-      it "should require login for #{action}" do
-        require_login action, :festival_id => "1"
-      end
-    end
+    require_login("edit") { get :edit, :festival_id => "1", :controller => "subscriptions"}
+    require_login("update") { put :update, :festival_id => "1", :controller => "subscriptions"}
   end
 
 =begin

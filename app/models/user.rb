@@ -71,9 +71,11 @@ class User < ActiveRecord::Base
     @activated
   end
 
-  def subscription_for(festival_id)
+  def subscription_for(festival_id, options={})
     festival_id = festival_id.id unless festival_id.is_a? Integer
-    subscriptions.find_by_festival_id(festival_id)
+    subscription = options[:create] \
+      ? subscriptions.find_or_create_by_festival_id(festival_id) \
+      : subscriptions.find_by_festival_id(festival_id) \
   end
 
   def can_see?(screening)

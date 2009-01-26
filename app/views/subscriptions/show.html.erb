@@ -1,3 +1,18 @@
+<%# User settings for a festival -%>
+<% content_for :title do %>Settings for <%= @festival.name %><% end %>
+<% content_for :header do %>
+  <% round_corners :context => self, :width => "100%" do |rc| %>
+    Your settings for <%= h(@festival.name) %>
+  <% end %>
+<% end %>
 
-<%= link_to 'Edit', edit_subscription_path(@subscription) %> |
-<%= link_to 'Back', subscriptions_path %>
+<p><i>Settings coming soon...</i> | <%= link_to "Back", poly_festival_path(@festival) %></p>
+
+<%= error_messages_for :subscription %>
+<% form_for @subscription, :url => poly_festival_settings_path(@festival) do |f| %>
+  <%= f.error_messages %>
+
+  <p>
+    <%# f.submit "Update" %>
+  </p>
+<% end %>

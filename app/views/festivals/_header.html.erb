@@ -7,8 +7,10 @@
     </div>
     <%
     rc.tabs do
-      rc.tab "Schedule", poly_festival_path(@festival)
-      rc.tab "Films", poly_festival_films_path(@festival)
+      rc.tab("Schedule", poly_festival_path(@festival))
+      rc.tab("Films", poly_festival_films_path(@festival))
+      rc.tab("Settings", festival_settings_path(@festival)) \
+        if logged_in? and not conference_mode
       #rc.tab "Buddies"
     end unless hide_tabs
     %>

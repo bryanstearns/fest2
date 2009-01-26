@@ -98,6 +98,25 @@ describe User do
     users(:quentin).remember_token_expires_at.between?(before, after).should be_true
   end
 
+  it "returns nil when subscription doesn't exist" do
+    assert Subscription.find_by_user_id_and_festival_id(
+      users(:quentin).id, festivals(:intermonth)).nil?
+    assert users(:quentin).subscription_for(festivals(:intermonth)).nil?
+  end
+
+  it "can create a subscription when subscription doesn't exist" do
+    assert Subscription.find_by_user_id_and_festival_id(
+      users(:quentin).id, festivals(:interyear)).nil?
+    assert users(:quentin).subscription_for(festivals(:interyear), 
+                                            :create => true)
+  end
+
+  it "finds existing subscription" do
+    assert Subscription.find_by_user_id_and_festival_id(
+      users(:quentin).id, festivals(:intramonth))
+    assert users(:quentin).subscription_for(festivals(:intramonth))
+  end
+
   it "handles time restrictions" do
     assert users(:quentin).can_see?(screenings(:early_two))
     assert !users(:quentin).can_see?(screenings(:early_one)) # restricted time
