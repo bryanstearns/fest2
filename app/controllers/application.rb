@@ -31,6 +31,9 @@ class ApplicationController < ActionController::Base
   # What mode are we in?
   include ConferenceVsFestival
   
+  # Make sure we flush CachedModel's cache
+  after_filter { CachedModel.cache_reset }
+
   # Do authentication stuff
   include AuthenticatedSystem
   before_filter :conference_versus_festival,

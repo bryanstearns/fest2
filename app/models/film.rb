@@ -1,4 +1,4 @@
-class Film < ActiveRecord::Base
+class Film < CachedModel
   belongs_to :festival
 
   has_many :screenings, :dependent => :destroy

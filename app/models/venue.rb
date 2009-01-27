@@ -1,4 +1,4 @@
-class Venue < ActiveRecord::Base
+class Venue < CachedModel
   belongs_to :festival
   has_many :screenings
   validates_presence_of :name, :abbrev, :festival

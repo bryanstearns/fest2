@@ -1,6 +1,6 @@
 require 'ruby-debug'
 
-class Screening < ActiveRecord::Base
+class Screening < CachedModel
   belongs_to :film
   belongs_to :festival
   belongs_to :venue

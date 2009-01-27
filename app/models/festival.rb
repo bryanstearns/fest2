@@ -1,6 +1,6 @@
 require 'icalendar'
 
-class Festival < ActiveRecord::Base
+class Festival < CachedModel
   include Icalendar
   include ActionController::UrlWriter
 
