@@ -4,21 +4,22 @@ describe SubscriptionsController do
   include AdminUserSpecHelper
   
   def make_festival
-    @festival = mock_model(Festival, :public => true, :to_param => "1", :is_conference => false, :id => 1)
+    @festival = mock_model(Festival, :public => true, :to_param => "slug", :is_conference => false, :id => 1)
     Festival.stub!(:find_by_slug).and_return(@festival)
   end
 
   describe "in general," do
     before { make_festival }    
-    require_login("edit") { get :edit, :festival_id => "1", :controller => "subscriptions"}
-    require_login("update") { put :update, :festival_id => "1", :controller => "subscriptions"}
+    require_login("edit") { get :edit, :festival_id => "slug", :controller => "subscriptions"}
+    require_login("update") { put :update, :festival_id => "slug", :controller => "subscriptions"}
   end
 
-=begin
   describe "when logged in," do
     def make_subscription
-      @subscription = mock_subscription(Subscription,
-        :user_id => ordinary_user.id, :festival_id => @festival.id)
+      @subscription = mock(Subscription, :user_id => ordinary_user.id, 
+        :festival_id => @festival.id)
+      controller.current_user.stub!(:subscription_for)\
+        .with(@festival, :create => true).and_return(@subscription)
     end
     
     before(:each) do
@@ -28,9 +29,8 @@ describe SubscriptionsController do
     end
 
     describe "handling GET /festivals/1/settings" do
-
       def do_get
-        get :show, :festival_id => 1
+        get :show, :festival_id => "slug" 
       end
 
       it "should be successful" do
@@ -42,132 +42,63 @@ describe SubscriptionsController do
         do_get
         response.should render_template('show')
       end
-  
+
       it "should find the subscription requested" do
-        current_user.should_receive(:subscription_for).with(1).and_return(@subscription)
+        controller.current_user.should_receive(:subscription_for)\
+          .with(@festival, :create => true).and_return(@subscription)
         do_get
-      end
-  
-      it "should assign the found film for the view" do
-        do_get
-        assigns[:subscription].should equal(@subscription)
-      end
-    end
-
-    describe "handling GET /festivals/1/settings.xml" do
-      before(:each) do
-        @subscription.stub!(:to_xml).and_return("XML")
-      end
-  
-      def do_get
-        @request.env["HTTP_ACCEPT"] = "application/xml"
-        get :show, :festival_id => "1"
       end
 
-      it "should be successful" do
+      it "should assign the found subscription for the view" do
         do_get
-        response.should be_success
-      end
-  
-      it "should find the subscription requested" do
-        current_user.should_receive(:subscription_for).with(1).and_return(@subscription)
-        do_get
-      end
-  
-      it "should render the found film as xml" do
-        @subscription.should_receive(:to_xml).and_return("XML")
-        do_get
-        response.body.should == "XML"
-      end
-    end
-
-    describe "handling GET /festivals/1/settings/edit" do
-
-      before(:each) do
-        login_as admin_user
-        make_festival_and_film
-      end
-    
-      def do_get
-        get :edit, :festival_id => "1", :id => "1"
-      end
-
-      it "should be successful" do
-        do_get
-        response.should be_success
-      end
-    
-      it "should render edit template" do
-        do_get
-        response.should render_template('edit')
-      end
-    
-      it "should find the film requested" do
-        @films.should_receive(:find).and_return(@film)
-        do_get
-      end
-    
-      it "should assign the found Film for the view" do
-        do_get
-        assigns[:film].should equal(@film)
+        assigns[:subscription].should == @subscription
       end
     end
 
     describe "handling PUT /festivals/1/films/1" do
-
       before(:each) do
-        login_as admin_user
-        make_festival_and_film
         @film.stub!(:update_attributes).and_return(true)
       end
     
-      it "should fail if ordinary html requested" do
-        lambda {put :update, :id => "1", :festival_id => 1}.should raise_error(NonAjaxEditsNotSupported)
-      end
+      describe "with successful update" do
+        def do_put
+          @subscription.should_receive(:update_attributes).and_return(true)
+          put :update, :id => "1", :festival_id => "slug"
+        end
+  
+        it "should find the subscription requested" do
+          controller.current_user.should_receive(:subscription_for)\
+            .with(@festival, :create => true).and_return(@subscription)
+          do_put
+        end
 
-#    describe "with successful update" do
-#
-#      def do_put
-#        @film.should_receive(:update_attributes).and_return(true)
-#        put :update, :id => "1", :festival_id => "1"
-#      end
-#
-#      it "should find the film requested" do
-#        @films.should_receive(:find).with("1").and_return(@film)
-#        do_put
-#      end
-#
-#      it "should update the found film" do
-#        do_put
-#        assigns(:film).should equal(@film)
-#      end
-#
-#      it "should assign the found film for the view" do
-#        do_put
-#        assigns(:film).should equal(@film)
-#      end
-#
-#      it "should redirect to the film" do
-#        do_put
-#        response.should redirect_to(festival_film_url("1", "1"))
-#      end
-#
-#    end
-#    
-#    describe "with failed update" do
-#
-#      def do_put
-#        @film.should_receive(:update_attributes).and_return(false)
-#        put :update, :id => "1"
-#      end
-#
-#      it "should re-render 'edit'" do
-#        do_put
-#        response.should render_template('edit')
-#      end
-#
-#    end
+        it "should update the found subscription" do
+          do_put
+          assigns(:subscription).should equal(@subscription)
+        end
+
+        it "should assign the found film for the view" do
+          do_put
+          assigns(:subscription).should equal(@subscription)
+        end
+
+        it "should redirect to the festival" do
+          do_put
+          response.should redirect_to(festival_url("slug"))
+        end
+      end
+    
+      describe "with failed update" do
+        def do_put
+          @subscription.should_receive(:update_attributes).and_return(false)
+          put :update, :id => "1", :festival_id => "slug"
+        end
+
+        it "should re-render 'show'" do
+          do_put
+          response.should render_template('show')
+        end
+      end
     end
   end
-=end
 end
