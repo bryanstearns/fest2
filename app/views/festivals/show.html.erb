@@ -31,7 +31,7 @@ to reset all your selected sessions and start over.</li>
 When you select a screening, conflicting screenings and other screenings of that film will be unselected
 for you.</p>
 
-<p>While manually selecting each screening works fine, we can do better: if you switch to the Films 
+<p>Manually selecting each screening works fine, but we can do better: if you switch to the Films 
 tab above, you can set your personal priority for seeing each film. Once you've done that, we'll try 
 to automatically select screenings of your higher-priority films.</p>
 
@@ -69,7 +69,7 @@ to reset all your selected screenings and start over<% if RAILS_ENV == "developm
 
 <div id="days" class="days">
   <%= render :partial => "day", 
-             :collection => days(@festival, conference_mode) %>
+             :collection => days(@festival, conference_mode, @show_press) %>
 </div>
 <% end # caching -%>
 

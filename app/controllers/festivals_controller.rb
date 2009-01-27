@@ -21,6 +21,8 @@ class FestivalsController < ApplicationController
     @festival = Festival.find_by_slug(params[:id])
     check_festival_access
     @cache_key = make_cache_key
+    @show_press = logged_in? && \
+      (current_user.subscription_for(@festival).show_press rescue false)
     @screening_javascript = screening_settings_to_js
     
     respond_to do |format|
@@ -63,7 +65,7 @@ class FestivalsController < ApplicationController
   def schedule_continue
     if logged_in?
       @festival = Festival.find_by_slug(params[:id])
-      sched = AutoScheduler.new(current_user.id, @festival.id)
+      sched = AutoScheduler.new(current_user, @festival.id)
       begin
         scheduled_count = sched.go
         flash[:notice] = "#{scheduled_count} of your films #{scheduled_count == 1 ? "was" : "were"} scheduled for you."
@@ -204,10 +206,9 @@ private
 
   def make_cache_key
     key = "#{_[:festivals]}/show/#{params[:id]}/#{@festival.updated_at.to_i}"
-    if logged_in?
-      subscription = current_user.subscription_for(@festival)
-      key += (subscription and subscription.show_press) ? "/press" : "/nopress"
-    end
+    key += ((current_user.subscription_for(@festival).show_press rescue false) \
+      ? "/press" : "/nopress") \
+      if logged_in?
     key
   end
 end

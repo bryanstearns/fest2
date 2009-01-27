@@ -19,6 +19,8 @@ class Screening < ActiveRecord::Base
     end
   end
   
+  named_scope :with_press, lambda {|on| on ? {} : { :conditions => ['press = ?', false] } }
+
   def duration
     ends - starts
   end

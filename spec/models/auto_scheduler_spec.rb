@@ -4,7 +4,9 @@ context "Auto_scheduling setup" do
   
   fixtures :festivals, :picks, :screenings, :users
   before do
-    @sched = AutoScheduler.new(users(:quentin).id, festivals(:intramonth).id)
+    quentin = users(:quentin)
+    quentin.stub!(:can_see?).and_return(true)
+    @sched = AutoScheduler.new(quentin, festivals(:intramonth).id)
     #pp @sched.all_screenings
     #pp @sched.all_picks
   end

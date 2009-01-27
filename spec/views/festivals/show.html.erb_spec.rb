@@ -3,7 +3,7 @@ require File.dirname(__FILE__) + '/../../spec_helper'
 describe "/festivals/show.html.erb" do
   include FestivalsHelper
   include ConferenceVsFestivalHelper
-  
+
   before do
     force_festival_mode
     @festival = mock_model(Festival)
@@ -13,7 +13,9 @@ describe "/festivals/show.html.erb" do
     @festival.stub!(:starts).and_return(Date.today)
     @festival.stub!(:ends).and_return(Date.today)
     @festival.stub!(:films).and_return([])
-    @festival.stub!(:screenings).and_return([])
+    screenings = []
+    screenings.stub!(:with_press).and_return([])
+    @festival.stub!(:screenings).and_return(screenings)
     
     assigns[:festival] = @festival
     

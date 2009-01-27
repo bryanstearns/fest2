@@ -7,12 +7,13 @@ module FestivalsHelper
     attr_reader :screening, :film, :space_before, :height, 
                 :other_screenings, :screening_index, :screening_count
     
-    def initialize(screening, space_before, height)
+    def initialize(screening, space_before, height, show_press)
       @screening = screening
       @film = @screening.film
       @space_before = space_before.to_i
       @height = height.to_i
-      film_screenings = @film.screenings.sort_by(&:starts)
+      film_screenings = @film.screenings.with_press(show_press)\
+        .sort_by(&:starts)
       @screening_index = film_screenings.index(screening) + 1
       @screening_count = film_screenings.size
       @other_screenings = film_screenings.delete(screening)
@@ -33,15 +34,16 @@ module FestivalsHelper
                 :venues, :venue_viewings, :venue_width
     attr_accessor :page_break_before
     
-    def self.collect(festival, conference_mode)
+    def self.collect(festival, conference_mode, show_press)
       # Collect & return info about each day's screenings      
-      screenings_by_date = festival.screenings.group_by { |s| s.starts.date }
+      screenings = festival.screenings.with_press(show_press)
+      screenings_by_date = screenings.group_by { |s| s.starts.date }
       screenings_by_date.map do |date, screenings| 
-        DayInfo.new(date, screenings, conference_mode)
+        DayInfo.new(date, screenings, conference_mode, show_press)
       end
     end
     
-    def initialize(date, screenings, conference_mode)
+    def initialize(date, screenings, conference_mode, show_press)
       @date = date
       @screenings = screenings.sort_by(&:starts)
 
@@ -72,7 +74,7 @@ module FestivalsHelper
         space_before = time_before * minute_height
         time_during = s.duration.to_minutes
         height = (time_during * minute_height) - padding_height
-        @venue_viewings[venue_key] << ViewingInfo.new(s, space_before, height)
+        @venue_viewings[venue_key] << ViewingInfo.new(s, space_before, height, show_press)
         next_time[venue_key] = start_minutes + time_during
       end
       
@@ -88,10 +90,12 @@ module FestivalsHelper
     end
   end
   
-  def days(festival, conference_mode)
+  def days(festival, conference_mode, show_press)
     # Collect & return info about each day's screenings
     today = Date.today
-    days = DayInfo.collect(festival, conference_mode).sort_by { |d| d.date + (d.date < today ? 60.days : 0) }
+    days = DayInfo.collect(festival, conference_mode, show_press).sort_by do |d|
+      d.date + (d.date < today ? 60.days : 0)
+    end
     
     # Insert page breaks
     time_on_page = 0

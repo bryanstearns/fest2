@@ -2,7 +2,7 @@
 no_early_one:
   user: quentin
   festival: intramonth
-  press: false
+  show_press: false
   restrictions: <%= [ 
     Restriction.new(DateTime.new(1997, 5, 1, 9, 00),
                     DateTime.new(1997, 5, 1, 10, 0))
@@ -11,4 +11,4 @@ no_early_one:
 is_press:
   user: aaron
   festival: intramonth
-  press: true
+  show_press: true

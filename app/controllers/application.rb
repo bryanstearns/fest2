@@ -69,7 +69,7 @@ class ApplicationController < ActionController::Base
       unless @festival and (@festival.is_conference == conference_mode) \
         and (@festival.public or \
              (logged_in? and (current_user.admin or \
-                              (current_user.subscriptions.find_by_festival_id(@festival.id).admin \
+                              (current_user.subscription_for(@festival).admin \
                                rescue false))))
   end
 

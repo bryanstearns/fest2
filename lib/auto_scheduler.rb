@@ -32,14 +32,15 @@ class AutoScheduler
     end
   end
     
-  def initialize(user_id, festival_id)
+  def initialize(user, festival_id)
     # Pretend it's before the sample festival
     @now = Time.now # - (Time.now.year - 1996).years
 
     # Load this user's unscheduled-but-prioritized picks; also load each film, and 
-    # all future screenings of that film.
-    @all_screenings = Screening.find_all_by_festival_id(festival_id)
-    @all_picks = Pick.find_all_by_festival_id_and_user_id(festival_id, user_id, :include => :film)
+    # all future screenings of that film that the user can see.
+    @all_screenings = Screening.find_all_by_festival_id(festival_id)\
+      .select {|s| user.can_see?(s) }
+    @all_picks = Pick.find_all_by_festival_id_and_user_id(festival_id, user.id, :include => :film)
     #@all_films = @all_screenings.map(&:film).to_set.to_a
     
     # Build indexes:
