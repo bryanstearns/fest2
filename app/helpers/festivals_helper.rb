@@ -54,7 +54,7 @@ module FestivalsHelper
       @minutes_long = (@ends - @starts).to_minutes
 
       # Figure out grid geometry
-      @hour_height = conference_mode ? 70.0 : 50.0 # Height of one hour in the grid, in pixels
+      @hour_height = conference_mode ? 70.0 : 40.0 # Height of one hour in the grid, in pixels
       @padding_height = 9.0 # Padding we add around the screening
       @minute_height = hour_height / 60.0
       @grid_height = @minutes_long * minute_height
@@ -98,12 +98,13 @@ module FestivalsHelper
     end
     
     # Insert page breaks
-    time_on_page = 0
+    page_height = 0
     days.each do |day|
-      time_on_page += day.minutes_long
-      if time_on_page > (12 * 60)
-        time_on_page = day.minutes_long
+      day_height = day.grid_height + 100
+      page_height += day_height
+      if page_height > 1000
         day.page_break_before = true
+        page_height = day_height
       end
     end
     
