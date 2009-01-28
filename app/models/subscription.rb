@@ -1,3 +1,5 @@
+require 'restriction' # required due to http://rails.lighthouseapp.com/projects/8994/tickets/647-serialize-d-array-not-unserializing-properly
+
 class Subscription < ActiveRecord::Base
   belongs_to :festival
   belongs_to :user
