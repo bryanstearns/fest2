@@ -71,6 +71,7 @@ to reset all your selected screenings and start over<% if RAILS_ENV == "developm
   <%= render :partial => "day", 
              :collection => days(@festival, conference_mode, @show_press) %>
 </div>
+<%= content_tag(:span, "Revised at #{@festival.revised_at.strftime("%H:%M %a, %b %d")}", :class => "revised") if @festival.revised_at %>
 <% end # caching -%>
 
 <% content_for("page_scripts") do %>

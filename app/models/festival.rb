@@ -51,7 +51,7 @@ class Festival < CachedModel
   end
 
   def to_xml_with_options(options={})
-    options[:only] ||= [:name, :location, :starts, :ends]
+    options[:only] ||= [:name, :location, :starts, :ends, :revised_at]
     options[:include] ||= [:films]
     to_xml_without_options(options)
   end
