@@ -86,6 +86,13 @@ class Screening < CachedModel
     changed_screenings
   end
   
+  def to_xml_with_options(options={})
+    options[:only] ||= [:starts, :ends]
+    options[:include] ||= [:venue]
+    to_xml_without_options(options)
+  end
+  alias_method_chain :to_xml, :options
+
 protected
   def check_foreign_keys
     self.festival_id = film.festival_id if festival_id.nil? and not film.nil?

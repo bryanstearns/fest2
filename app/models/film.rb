@@ -16,7 +16,11 @@ class Film < CachedModel
   def minutes=(m)
     self[:duration] = m.to_i * 60
   end
-  
+
+  def url
+    festival.external_film_url(self)
+  end
+
   def country_names(joinee=", ")
     return "" if self[:countries].nil?
     names = []
@@ -41,4 +45,13 @@ class Film < CachedModel
     # articles, partly because of making mistakes on eg "Les Paul")
     name.sub(/(The|A|An)\s/, '')
   end
+
+  def to_xml_with_options(options={})
+    options[:only] ||= [:name]
+    options[:methods] ||= [:url, :country_names]
+    options[:include] ||= [:screenings]
+    to_xml_without_options(options)
+  end
+  alias_method_chain :to_xml, :options
+
 end

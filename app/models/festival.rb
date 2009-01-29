@@ -49,7 +49,14 @@ class Festival < CachedModel
   def to_param
     slug
   end
-  
+
+  def to_xml_with_options(options={})
+    options[:only] ||= [:name, :location, :starts, :ends]
+    options[:include] ||= [:films]
+    to_xml_without_options(options)
+  end
+  alias_method_chain :to_xml, :options
+
   def to_ical(user_id)
     cal = Calendar.new
     screenings = picks.find_all_by_user_id(user_id).map(&:screening).compact.sort_by(&:starts)

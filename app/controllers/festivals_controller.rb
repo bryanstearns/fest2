@@ -10,7 +10,7 @@ class FestivalsController < ApplicationController
 
     respond_to do |format|
       format.html # index.html.erb
-      format.xml  { render :xml => @festivals }
+      format.xml  { render :xml => @festivals.to_xml }
     end
   end
 
@@ -23,10 +23,12 @@ class FestivalsController < ApplicationController
     @cache_key = make_cache_key
     @show_press = logged_in? && \
       (current_user.subscription_for(@festival).show_press rescue false)
-    @screening_javascript = screening_settings_to_js
     
     respond_to do |format|
-      format.html # show.html.erb
+      format.html do
+        @screening_javascript = screening_settings_to_js
+        # show.html.erb
+      end
       format.xml  { render :xml => @festival }
       format.ical do
         redirect_to login_url and return unless logged_in?
