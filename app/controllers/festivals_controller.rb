@@ -69,8 +69,8 @@ class FestivalsController < ApplicationController
       @festival = Festival.find_by_slug(params[:id])
       sched = AutoScheduler.new(current_user, @festival.id)
       begin
-        scheduled_count = sched.go
-        flash[:notice] = "#{scheduled_count} of your films #{scheduled_count == 1 ? "was" : "were"} scheduled for you."
+        scheduled_count, prioritized_count = sched.go
+        flash[:notice] = "#{scheduled_count} of the #{view_helper.pluralize(prioritized_count, "film")} you've prioritized #{scheduled_count == 1 ? "was" : "were"} scheduled for you."
       rescue AutoSchedulingError => e
         flash[:warning] = e.message
       end
