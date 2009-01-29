@@ -12,6 +12,7 @@ describe "/festivals/show.html.erb" do
     @festival.stub!(:slug).and_return("MyString")
     @festival.stub!(:starts).and_return(Date.today)
     @festival.stub!(:ends).and_return(Date.today)
+    @festival.stub!(:revised_at).and_return(DateTime.now)
     @festival.stub!(:films).and_return([])
     screenings = []
     screenings.stub!(:with_press).and_return([])
