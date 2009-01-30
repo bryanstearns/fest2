@@ -26,17 +26,18 @@ class ApplicationController < ActionController::Base
   # See ActionController::Base for details 
   # Uncomment this to filter the contents of submitted sensitive data parameters
   # from your application log (in this case, all fields with names like "password"). 
-  # filter_parameter_logging :password
+  filter_parameter_logging :password
 
   # What mode are we in?
   include ConferenceVsFestival
-  
+
   # Make sure we flush CachedModel's cache
   after_filter { CachedModel.cache_reset }
 
   # Do authentication stuff
   include AuthenticatedSystem
   before_filter :conference_versus_festival,
+                :set_mobile_format,
                 :login_from_cookie,
                 :admin_check
   
@@ -74,6 +75,14 @@ class ApplicationController < ActionController::Base
              (logged_in? and (current_user.admin or \
                               (current_user.subscription_for(@festival).admin \
                                rescue false))))
+  end
+
+  # I can haz iPhone or Android?
+  def is_mobile_request?
+    false # for now; was: request.user_agent =~ /(Mobile.+Safari)/
+  end
+  def set_mobile_format
+    request.format = :mobile if is_mobile_request?
   end
 
   # Give access to some view helpers from within controllers;

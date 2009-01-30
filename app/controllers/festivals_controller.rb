@@ -30,6 +30,7 @@ class FestivalsController < ApplicationController
         # show.html.erb
       end
       format.xml  { render :xml => @festival }
+      # format.mobile # show.mobile.erb
       format.ical do
         redirect_to login_url and return unless logged_in?
         ical_schedule = @festival.to_ical(current_user.id) do |screening|
