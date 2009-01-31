@@ -21,6 +21,15 @@ when you're done.</p>
   </p>
 
   <p>
+  If there are times you can't attend this festival, enter them here
+  and Automatic Scheduling won't include them (you'll still see them
+  on your schedule, and can pick them manually). Your setting should 
+  look something like <i>2/5, 2/6 -10am, 2/8 11:30am-2pm & 8-10pm</i></p>
+  <p>
+    <%= f.text_field :restriction_text, :size => 80 %>
+  </p>
+
+  <p>
     <%= f.submit "Update" %> | <%= link_to "Cancel", poly_festival_path(@festival) %>
   </p>
 <% end %>

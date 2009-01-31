@@ -12,4 +12,15 @@ class Subscription < ActiveRecord::Base
     return false if screening.press and not show_press
     restrictions.nil? || !restrictions.any? { |r| r.overlaps? screening }
   end
+
+  def restriction_text
+    return "" unless restrictions
+    @restriction_text ||= restrictions.map(&:to_s).join(", ")
+    @restriction_text
+  end
+
+  def restriction_text=(s)
+    @restriction_text = s
+    new_restrictions = Restriction.parse(s, festival.starts)
+  end
 end
