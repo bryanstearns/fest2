@@ -7,7 +7,6 @@
   <%= stylesheet_link_tag 'daygrid', :media => 'screen, print' %>
 <% end %>
 
-<% cache @cache_key do %>
 <div class="instructions">
 <% if logged_in? %>
 
@@ -67,6 +66,7 @@ to reset all your selected screenings and start over<% if RAILS_ENV == "developm
 <% end %>
 </div>
 
+<% cache @cache_key do %>
 <div id="days" class="days">
   <%= render :partial => "day", 
              :collection => days(@festival, conference_mode, @show_press) %>
