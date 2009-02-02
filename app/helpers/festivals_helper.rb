@@ -94,7 +94,7 @@ module FestivalsHelper
     # Collect & return info about each day's screenings
     today = Date.today
     days = DayInfo.collect(festival, conference_mode, show_press).sort_by do |d|
-      d.date + (d.date < today ? 60.days : 0)
+      d.date # don't sort past days to end; was: d.date + (d.date < today ? 60.days : 0)
     end
     
     # Insert page breaks
