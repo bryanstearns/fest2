@@ -1,18 +1,22 @@
 <% content_for :header do %>
   <% round_corners :width => "100%" do |rc| %>
+    <table><tr><td width="100%">
     <% if conference_mode %>
       <h2>Get more out of your conference experience</h2>
       <ul style="margin: 0px; padding-bottom: 10px;">
         <li>Keep track of the sessions you really want to attend</li>
       </ul>
     <% else %>
-      <h2>Get more out of your film festival experience</h2>
-      <ul style="margin: 0px; padding-bottom: 10px;">
-        <li>Prioritize and schedule more films</li>
-        <li>Discuss the films you've seen</li>
-        <li>Get the buzz on this year's don't-miss movies</li>
-      </ul>
+      <h2>Get more out of your film festival experience!</h2>
+      <ol style="margin: 0px; padding-bottom: 10px;">
+        <li>Prioritize the films</li>
+        <li>Automatically find screenings to fit your availability</li>
+        <li>Pick &amp; choose screenings yourself</li>
+      </ol>
     <% end %>
+    </td><td width="20%">
+    <%= button_to("Sign up", signup_path, :class => "signup") unless logged_in? %>
+    </td></tr></table>
   <% end %>
 <% end %>
 
