@@ -18,7 +18,7 @@ class Restriction
     "<Restriction #{starts}-#{ends}>"
   end
 
-  def to_s
+  def to_text
     result = "#{starts.month}/#{starts.day}"
     return result if (starts.seconds_since_midnight == 0 and \
                       ends.seconds_since_midnight == 86399.0)
@@ -84,5 +84,10 @@ class Restriction
     raise(ArgumentError, "Invalid time: '#{time_text}'") \
       unless parsed
     parsed
+  end
+
+  def self.to_text(restrictions)
+    return "" unless restrictions
+    restrictions.map(&:to_text).join(", ")
   end
 end

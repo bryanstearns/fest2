@@ -40,7 +40,7 @@ context "A Restriction specification" do
 
   it "should format itself as a string" do
     GOOD_CASES.each do |result, starts, ends|
-      Restriction.new(starts, ends).to_s.should == result
+      Restriction.new(starts, ends).to_text.should == result
     end
   end
 

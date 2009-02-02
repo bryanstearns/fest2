@@ -5,13 +5,13 @@
 <% end %>
 
 <h3>Your settings for <%= h(@festival.name) %></h3>
-<p>These settings affect which screenings you see, and which ones 
-"Schedule Automatically" will pick for you. Be sure to click "Update"
-when you're done.</p>
 
-<%= error_messages_for :subscription %>
 <% form_for @subscription, :url => poly_festival_settings_path(@festival) do |f| %>
-  <%= f.error_messages %>
+  <%= f.error_messages :header_message => "These settings couldn't be saved" %>
+
+  <p>These settings affect which screenings you see, and which ones 
+  "Schedule Automatically" will pick for you. Be sure to click "Update"
+  when you're done.</p>
 
   <p>
     <%= f.check_box :show_press %> Include press screenings.
