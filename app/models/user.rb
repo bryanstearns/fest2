@@ -1,6 +1,6 @@
 require 'digest/sha1'
 class User < ActiveRecord::Base
-  has_many :picks
+  has_many :picks, :dependent => :destroy
   has_many :subscriptions, :dependent => :destroy
   has_many :festivals, :through => :subscriptions
   

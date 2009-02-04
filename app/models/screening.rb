@@ -5,7 +5,7 @@ class Screening < CachedModel
   belongs_to :festival
   belongs_to :venue
   
-  has_many :picks
+  has_many :picks, :dependent => :nullify
 
   before_validation :check_foreign_keys, :check_duration
   validates_presence_of :festival_id

@@ -31,6 +31,15 @@
             end %>
 			</td>
 		</tr>
+    <% picks = screening.picks
+       if picks.count > 0 %>
+    <tr>
+      <th>Users:</th>
+      <td colspan="4">
+        <%= h(picks.map {|p| p.user.email}.join(', ')) %>
+      </td>
+    </tr>
+    <% end %>
   </table>
 <% end %>
 </div>
