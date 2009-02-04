@@ -32,16 +32,27 @@ class AutoScheduler
     end
   end
     
-  def initialize(user, festival_id)
+  def initialize(user, festival, unselect)
     # Pretend it's before the sample festival
     @now = Time.now # - (Time.now.year - 1996).years
 
+    # Unselect any screenings that need unselecting
+    festival.reset_screenings(user, unselect == "future") \
+      unless unselect == "none"
+
     # Load this user's unscheduled-but-prioritized picks; also load each film, and 
     # all future screenings of that film that the user can see.
-    @all_screenings = Screening.find_all_by_festival_id(festival_id)\
+    @all_screenings = Screening.find_all_by_festival_id(festival.id)\
       .select {|s| user.can_see?(s) }
-    @all_picks = Pick.find_all_by_festival_id_and_user_id(festival_id, user.id, :include => :film)
-    #@all_films = @all_screenings.map(&:film).to_set.to_a
+    @all_picks = Pick.find_all_by_festival_id_and_user_id(festival.id, user.id, :include => :film)
+    @old_picked_screening_count = 0
+    @prioritized_count = 0
+    @all_picks.each do |p|
+      if p.priority and p.priority > 0
+        @prioritized_count += 1
+        @old_picked_screening_count += 1 if p.screening_id
+      end
+    end
     
     # Build more indexes:
     # - All screenings, by id
@@ -157,7 +168,6 @@ class AutoScheduler
   end
 
   def go
-    prioritized_count = @prioritized_unselected_picks.map(&:film_id).uniq.size
     scheduled_count = 0
     while true do
       resort
@@ -195,6 +205,6 @@ class AutoScheduler
         if future_picked_screening_count == 0
       raise(AutoSchedulingError, "No prioritized unscheduled films have upcoming screenings")
     end
-    return scheduled_count, prioritized_count
+    return (scheduled_count + @old_picked_screening_count), @prioritized_count
   end
 end

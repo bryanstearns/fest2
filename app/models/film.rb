@@ -2,6 +2,8 @@ class Film < CachedModel
   belongs_to :festival
 
   has_many :screenings, :dependent => :destroy
+  has_many :public_screenings, :class_name => 'Screening',
+           :conditions => ['press = ?', false]
   has_many :picks, :dependent => :destroy
   
   validates_presence_of :name

@@ -7,7 +7,9 @@
 <p><%= image_tag "busy.gif" %>This can take a little while... we'll switch you back to the festival schedule when the scheduling process finishes.</p>
 
 <%# A dummy form, which we submit as soon as the page loads %>
-<% form_tag poly_schedule_continue_festival_url(@festival, :unselect => params[:unselect]), :id => "schedule_continue_form" do end %>
+<% form_tag poly_schedule_continue_festival_url(@festival, 
+              :unselect => @subscription.unselect), 
+     :id => "schedule_continue_form" do end %>
 <% content_for("page_scripts") do %>
   jQuery(function() { jQuery('#schedule_continue_form').submit(); });
 <% end -%>

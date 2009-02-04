@@ -12,13 +12,20 @@ class FilmsController < ApplicationController
   def index
     festival_id = params[_[:festival_id]]
     raise(ActiveRecord::RecordNotFound) unless festival_id
-    @festival = Festival.find_by_slug(festival_id, :include => { :films => :screenings })
+    @festival = Festival.find_by_slug(festival_id, :include => :films)
     raise(ActiveRecord::RecordNotFound) unless @festival.is_conference == conference_mode
     @films = @festival.films
-    @picks = Hash.new {|h, film_id| h[film_id] = current_user.picks.new(:film_id => film_id) }
+    user_id = logged_in? ? current_user.id : 0
+    @picks = Hash.new {|h, film_id| h[film_id] = Pick.new(:user_id => user_id,
+                                                          :film_id => film_id) }
     Pick.find_all_by_festival_id_and_user_id(@festival.id, current_user.id)\
-        .inject(@picks) {|h, p| h[p.film_id] = p; h} if logged_in?
-    
+        .inject(@picks) {|h, p| h[p.film_id] = p; h} \
+        if logged_in? 
+    @show_press = if logged_in?
+      sub = current_user.subscription_for(@festival)
+      sub && sub.show_press
+    end
+
     respond_to do |format|
       format.html # index.html.erb
       format.xml  { render :xml => @films }

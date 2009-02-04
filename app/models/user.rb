@@ -83,6 +83,14 @@ class User < ActiveRecord::Base
     return subscription.nil? || subscription.can_see?(screening)
   end
 
+  def has_screenings_for(festival)
+    (picks.count(:conditions => ["festival_id = ? and screening_id is not null", festival.id]) > 0)
+  end
+
+  def has_rankings_for(festival)
+    (picks.count(:conditions => ["festival_id = ? and priority is not null", festival.id]) > 0)
+  end
+
   protected
     # before filter 
     def encrypt_password

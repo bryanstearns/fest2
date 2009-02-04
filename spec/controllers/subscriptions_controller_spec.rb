@@ -4,7 +4,8 @@ describe SubscriptionsController do
   include AdminUserSpecHelper
   
   def make_festival
-    @festival = mock_model(Festival, :public => true, :to_param => "slug", :is_conference => false, :id => 1)
+    @festival = mock_model(Festival, :public => true, :scheduled => true,
+      :to_param => "slug", :is_conference => false, :id => 1)
     Festival.stub!(:find_by_slug).and_return(@festival)
   end
 
@@ -82,9 +83,9 @@ describe SubscriptionsController do
           assigns(:subscription).should equal(@subscription)
         end
 
-        it "should redirect to the festival" do
+        it "should render the 'schedule' template" do
           do_put
-          response.should redirect_to(festival_url("slug"))
+          response.should render_template('schedule')
         end
       end
     

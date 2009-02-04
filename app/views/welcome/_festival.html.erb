@@ -1,5 +1,0 @@
-<li>
-  <%= link_to_if festival.scheduled, h(festival.name), 
-      poly_festival_path(festival) %>
-  <span>(<%= h("#{festival.location}, ") unless festival.location.blank? %><%= festival.dates %>)</span>
-</li>

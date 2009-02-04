@@ -20,6 +20,16 @@ class FestivalsController < ApplicationController
   def show
     @festival = Festival.find_by_slug(params[:id])
     check_festival_access
+    if params.delete(:landing)
+      if logged_in?
+        redirect_to poly_festival_url(@festival) and return \
+          if current_user.has_screenings_for(@festival)
+        redirect_to poly_festival_settings_url(@festival) and return \
+          if current_user.has_rankings_for(@festival)
+      end
+      redirect_to poly_festival_films_url(@festival) and return
+    end
+      
     @cache_key = make_cache_key
     @show_press = logged_in? && \
       (current_user.subscription_for(@festival).show_press rescue false)
@@ -68,10 +78,10 @@ class FestivalsController < ApplicationController
   def schedule_continue
     if logged_in?
       @festival = Festival.find_by_slug(params[:id])
-      sched = AutoScheduler.new(current_user, @festival.id)
+      sched = AutoScheduler.new(current_user, @festival, params[:unselect])
       begin
         scheduled_count, prioritized_count = sched.go
-        flash[:notice] = "#{scheduled_count} of the #{view_helper.pluralize(prioritized_count, "film")} you've prioritized #{scheduled_count == 1 ? "was" : "were"} scheduled for you."
+        flash[:notice] = "#{scheduled_count} of the #{view_helper.pluralize(prioritized_count, "film")} you've prioritized #{scheduled_count == 1 ? "is" : "are"} scheduled for you."
       rescue AutoSchedulingError => e
         flash[:warning] = e.message
       end

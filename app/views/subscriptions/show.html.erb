@@ -4,32 +4,41 @@
   <%= render :partial => "festivals/header", :locals => { :festival => @festival, :hide_tabs => conference_mode } %>
 <% end %>
 
-<h3>Your settings for <%= h(@festival.name) %></h3>
+<p>We'll try to build you a schedule that includes as many of your higher-priority screenings as possible. Before we do, we need to know about your availability:</p>
 
 <% form_for @subscription, :url => poly_festival_settings_path(@festival) do |f| %>
-  <%= f.error_messages :header_message => "These settings couldn't be saved" %>
+  <%= f.error_messages :header_message => "Oops, something went wrong..." %>
 
-  <p>These settings affect which screenings you see, and which ones 
-  "Schedule Automatically" will pick for you. Be sure to click "Update"
-  when you're done.</p>
-
+  <% if @festival.has_press_screenings? %>
   <p>
-    <%= f.check_box :show_press %> Include press screenings.
-    <% unless @festival.has_press_screenings? %>
-      (So far, this festival has no press screenings on our schedule.)
-    <% end %>
+    <%= f.check_box :show_press %> Should we include the press screenings? (If this box isn't checked, we won't show them on your schedule.)
   </p>
+  <% end %>
 
   <p>
-  If there are times you can't attend this festival, enter them here
-  and Automatic Scheduling won't include them (you'll still see them
-  on your schedule, and can pick them manually). Your setting should
-  look something like <i>2/5, 2/6 -10am, 2/8 11:30am-2pm & 8-10pm</i></p>
+  Are there are times you can't attend this festival? Enter them here
+  and we won't schedule any screenings for these times (though we'll still
+  show them on the schedule, and you can still pick them manually).
+  </p>
+  <p>
+  This feature is brand new and kind of finicky: you should enter things like
+  <i>2/5, 2/6 -10am, 2/8 11:30am-2pm & 8pm-10pm</i>
+  </p>
   <p>
     <%= f.text_field :restriction_text, :size => 80 %>
   </p>
 
+  <% if @ask_about_unselection %>
   <p>
-    <%= f.submit "Update" %> | <%= link_to "Cancel", poly_festival_path(@festival) %>
+  You've got existing screenings selected... what should we do about them?
+  <%= select("subscription", "unselect", [
+    ["Unselect all the future ones", "future"], 
+    ["Unselect all of them", "all"],
+    ["Leave them selected; just fill in around them", "none"]]) %>
+  </p>
+  <% end %>
+
+  <p>
+    <%= f.submit "Schedule Films" %>
   </p>
 <% end %>

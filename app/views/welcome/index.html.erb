@@ -1,6 +1,5 @@
 <% content_for :header do %>
   <% round_corners :width => "100%" do |rc| %>
-    <table><tr><td width="100%">
     <% if conference_mode %>
       <h2>Get more out of your conference experience</h2>
       <ul style="margin: 0px; padding-bottom: 10px;">
@@ -8,15 +7,16 @@
       </ul>
     <% else %>
       <h2>Get more out of your film festival experience!</h2>
+      It's as easy as 1 - 2 - 3:
       <ol style="margin: 0px; padding-bottom: 10px;">
-        <li>Prioritize the films</li>
-        <li>Automatically find screenings to fit your availability</li>
-        <li>Pick &amp; choose screenings yourself</li>
+        <li>Prioritize films</li>
+        <li>Tell us when you're available, and we'll find screenings for you automatically</li>
+        <li>Browse your schedule (soon: on your smartphone, too)</li>
       </ol>
+      <% unless logged_in? %>
+      <%= link_to "Sign up", signup_url %> or <%= link_to "Log in", login_url %> to get started!
+      <% end %>
     <% end %>
-    </td><td width="20%">
-    <%= button_to("Sign up", signup_path, :class => "signup") unless logged_in? %>
-    </td></tr></table>
   <% end %>
 <% end %>
 
@@ -42,39 +42,29 @@
 
 <% cache @festivals_cache_key do %>
 <div class="festival_section">
-  <% group = Hash.new { |h,k| h[k] = [] } 
-     today = Date.today
-     @festivals.each do |f|
-       if not f.scheduled
-         k = :future
-       elsif f.ends < today
-         k = :past
-       else
-         k = :current
-       end
-       group[k] << f
-     end
-     if group[:current].empty? and group[:future].empty? %>
+  <% 
+  today = Date.today
+  have_old = false
+  show_festivals = []
+  @festivals.each do |f|
+    if f.ends < today
+      have_old = true
+    else
+      show_festivals << f
+    end
+  end
+  if show_festivals.empty? %>
   <p>More <%= _[:festivals] %> coming soon -- if you're interested in one in particular, tell us about it on the feedback page.</p>
+    <% if have_old %>
+    <ul><li><%= link_to "Click here", festivals_url %> to see past <%= _[:festivals] %></li></ul>
+    <% end %>
   <% else %>
-    <% unless group[:current].empty? %>
   <h3>Click an upcoming <%= _[:festival] %>:</h3>
   <ul id="upcomingfestivals">
-  <%= render :partial => 'festival', :collection => group[:current].sort_by {|f| f.starts } %>
-  </ul>
+  <%= render :partial => 'festivals/festival', :collection => show_festivals.sort_by {|f| f.starts } %>
+    <% if have_old %>
+  <li><%= link_to "Click here", festivals_url %> to see past <%= _[:festivals] %></li>
     <% end %>
-    <% unless group[:future].empty? %>
-  <h3><%= _[:Festivals] %> we're working on &mdash; check back soon:</h3>
-  <ul id="futurefestivals">
-  <%= render :partial => 'festival', :collection => group[:future].sort_by {|f| f.starts } %>
-  </ul>
-  <% end %>
-  <% end %>
-
-  <% unless group[:past].empty? %>
-  <h3>Past <%= group[:past].size == 1 ? _[:festival] : _[:festivals] %>:</h3>
-  <ul id="pastfestivals">
-  <%= render :partial => 'festival', :collection => group[:past].sort_by {|f| f.starts }.reverse %>
   </ul>
   <% end %>
 </div>      

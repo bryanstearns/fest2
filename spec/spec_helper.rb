@@ -112,12 +112,16 @@ module AdminUserSpecHelper
   def admin_user(id="1")
     @user = mock_model(User, :id => id, :admin => true)
     @user.stub!(:subscription_for).and_return(nil)
+    @user.stub!(:has_screenings_for).and_return(false)
+    @user.stub!(:has_picks_for).and_return(false)
     @user
   end
 
   def ordinary_user(id="2")
     @user = mock_model(User, :id => id, :admin => false)
     @user.stub!(:subscription_for).and_return(nil)
+    @user.stub!(:has_screenings_for).and_return(false)
+    @user.stub!(:has_picks_for).and_return(false)
     @user
   end
 

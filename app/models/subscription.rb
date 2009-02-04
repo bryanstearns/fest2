@@ -34,4 +34,14 @@ class Subscription < ActiveRecord::Base
       @restrictions_error = nil
     end
   end
+
+  # A virtual attribute, set by the subscription-editing form
+  def unselect
+    @unselect || "future"
+  end
+
+  def unselect=(s)
+    @unselect = s
+  end
+
 end

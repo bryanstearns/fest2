@@ -19,7 +19,10 @@ describe FilmsController do
 
   describe "handling GET /festivals/1/films" do
     
-    before(:each) { make_festival_and_film }
+    before(:each) do
+      login_as ordinary_user
+      make_festival_and_film
+    end
   
     def do_get
       get :index, :festival_id => 1

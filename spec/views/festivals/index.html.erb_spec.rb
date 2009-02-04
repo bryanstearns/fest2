@@ -6,24 +6,19 @@ describe "/festivals/index.html.erb" do
   
   before do
     force_festival_mode    
-    festival_98 = mock_model(Festival)
-    festival_98.should_receive(:name).and_return("MyString")
-    festival_98.should_receive(:slug).and_return("MyString")
-    festival_98.should_receive(:location).and_return("MyString")
-    festival_98.should_receive(:dates).and_return("MyString")
-    festival_99 = mock_model(Festival)
-    festival_99.should_receive(:name).and_return("MyString")
-    festival_99.should_receive(:slug).and_return("MyString")
-    festival_99.should_receive(:location).and_return("MyString")
-    festival_99.should_receive(:dates).and_return("MyString")
-
+    festival_98 = mock_model(Festival, :scheduled => true,
+      :public => true, :name => "Festival98", :slug => "MyString",
+      :location => "San Jose", :dates => "dates")
+    festival_99 = mock_model(Festival, :scheduled => true,
+      :public => true, :name => "Festival99", :slug => "MyString",
+      :location => "San Jose", :dates => "dates")
     assigns[:festivals] = [festival_98, festival_99]
   end
 
   it "should render list of festivals" do
     render "/festivals/index.html.erb"
-    response.should have_tag("tr>td", "MyString", 2)
-    response.should have_tag("tr>td", "MyString", 2)
+    response.should have_tag("li>a", "Festival98", 2)
+    response.should have_tag("li>a", "Festival99", 2)
   end
 end
 

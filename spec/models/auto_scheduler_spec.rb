@@ -6,7 +6,7 @@ context "Auto_scheduling setup" do
   before do
     quentin = users(:quentin)
     quentin.stub!(:can_see?).and_return(true)
-    @sched = AutoScheduler.new(quentin, festivals(:intramonth).id)
+    @sched = AutoScheduler.new(quentin, festivals(:intramonth), "none")
     #pp @sched.all_screenings
     #pp @sched.all_picks
   end
@@ -43,7 +43,7 @@ end
 #context "first pass" do
 #  fixtures :festivals, :picks, :screenings, :users
 #  before do
-#    @sched = AutoScheduler.new(users(:quentin).id, festivals(:intramonth).id)
+#    @sched = AutoScheduler.new(users(:quentin), festivals(:intramonth))
 #  end
 #  
 #  it "should auto-schedule picked screenings without conflicts" do
@@ -56,7 +56,7 @@ end
 #context "second pass" do
 #  fixtures :festivals, :picks, :screenings, :users
 #  before do
-#    @sched = AutoScheduler.new(users(:quentin).id, festivals(:intramonth).id)
+#    @sched = AutoScheduler.new(users(:quentin), festivals(:intramonth))
 #  end
 #
 #  it "should do something" do
