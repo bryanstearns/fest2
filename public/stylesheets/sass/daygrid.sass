@@ -23,31 +23,35 @@
     font-weight: bold
     white-space: nowrap
   
-  .screening
+.screening
+  border: 1px solid black
+  padding: 4px
+  overflow: hidden
+  cursor: pointer
+
+  .name
+    font-weight: bold
+
+  .tip
+    display: none
     border: 1px solid black
-    padding: 4px
-    overflow: hidden
-    cursor: pointer
-
-    .name
-      font-weight: bold
-
-    .tip
-      display: none
-      border: 1px solid black
-      background-color: LightSkyBlue
+    background-color: LightSkyBlue
+  
+  .flag
+    float: right
+    margin-left: 4px
     
-    .flag
-      float: right
-      margin-left: 4px
-      
-  .screeningtime
-    font-size: 85%
-    span
-      white-space: nowrap
+.screeningtime
+  font-size: 85%
+  span
+    white-space: nowrap
 
 .legend li
-  margin-bottom: 3px
+  padding: 3px
+
+.example
+  border: 1px solid black
+  padding: 0px
 
 .lowprio
   background: #ddd
@@ -57,10 +61,15 @@
   background: #fff396
 .scheduled
   background: #bb9966
-  border: 3px solid black !important
-  padding: 2px !important
+  border: 3px solid black
+  padding: 2px
 .otherscheduled
   background: #ddccaa
+
+.scheduled.example
+  padding: 0px
+
 .revised
   font-size: 85%
   float: right
+

@@ -15,7 +15,7 @@
 When you select a session, conflicting sessions will be unselected for you.</p>
 
 <p>Also:</p>
-<ul class="legend">
+<ul>
 <li>You can click <%= link_to "here", 
    reset_screenings_festival_url(@festival),
    :method => :post,
@@ -29,16 +29,16 @@ to reset all your selected sessions and start over.</li>
 When you select a screening, conflicting screenings and other screenings of that film will be unselected
 for you. Here's what the colors mean:</p>
 <ul class="legend">
-<li><span class="scheduled">a screening you've selected;</span> you're going to this screening.</li>
-<li><span class="otherscheduled">a screening of a film you've selected to see at another time;</span> you're going to a different screening of this film.</li>
-<li><span class="unscheduled">a screening of a film you've prioritized, but haven't scheduled;</span> you want to see this film, but haven't picked a screening yet.</li>
-<li><span class="unranked">a screening of a film you've prioritized at the lowest setting, or haven't prioritized;</span> you're not planning on seeing this film.</li>
+<li><span class="scheduled example">a screening you've selected;</span> you're going to this screening.</li>
+<li><span class="otherscheduled example">a screening of a film you've selected to see at another time;</span> you're going to a different screening of this film.</li>
+<li><span class="unscheduled example">a screening of a film you've prioritized, but haven't scheduled;</span> you want to see this film, but haven't picked a screening yet.</li>
+<li><span class="unranked example">a screening of a film you've prioritized at the lowest setting, or haven't prioritized;</span> you're not planning on seeing this film.</li>
 <li>The priority you gave each film (on the Films page) is shown with little circles: 
       <%= image_tag "priority/p3.png", :height => 10, :width => 46 %></li>
 </ul>
 
 <p>Also:</p>
-<ul class="legend">
+<ul>
 <li>You can always go back to the "Your Film Priorities" tab and to adjust your priorities, then use the "Schedule Assistant" to re-schedule the rest of the festival for you.</li>
 <li>You can click <%= link_to "here", 
    reset_screenings_festival_url(@festival),
