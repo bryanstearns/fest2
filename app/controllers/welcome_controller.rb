@@ -25,7 +25,10 @@ class WelcomeController < ApplicationController
   protected
 
   def cache_prefix
-    "#{_[:festivals]}/welcome/#{Date.today}"
+    role = logged_in? \
+      ? (current_user.admin ? "admin" : "user") \
+      : "guest"
+    "#{_[:festivals]}/welcome/#{Date.today}/#{role}"
   end
 
   def load_amazon_films(limit=nil)

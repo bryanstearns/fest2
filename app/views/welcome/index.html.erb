@@ -54,9 +54,9 @@
     end
   end
   if show_festivals.empty? %>
-  <p>More <%= _[:festivals] %> coming soon -- if you're interested in one in particular, tell us about it on the feedback page.</p>
+  <p>More <%= _[:festivals] %> coming soon; if you're interested in one in particular, tell us about it on the feedback page.</p>
     <% if have_old %>
-    <ul><li><%= link_to "Click here", festivals_url %> to see past <%= _[:festivals] %></li></ul>
+    <p><%= link_to "Click here", festivals_url %> to see past <%= _[:festivals] %>.</p>
     <% end %>
   <% else %>
   <h3>Click an upcoming <%= _[:festival] %>:</h3>
