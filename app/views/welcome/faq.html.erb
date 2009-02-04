@@ -14,16 +14,12 @@
   
 <li>
   <h4>What's this all about?</h4>
-  <p><%= link_to "Festival Fanatic", "http://festivalfanatic.com" %> and 
-  <%= link_to "Conference Fanatic", "http://conferencefanatic.com" %> 
-  (we're two sides of the same coin) seek
-  to improve the experience of attending these events.</p>
+  <p><%= link_to "Festival Fanatic", "http://festivalfanatic.com" %> 
+  seeks to improve the film festival experience for serious film fans.</p>
   
   <p>Film festival attendees usually have just a few screening opportunities
-  to see each film, so our automatic scheduling mechanism can help you see 
-  more of the films you really want to see. Conference attendees don't have
-  this problem, but it's still handy to have a tool to help you plan your
-  sessions.</p>
+  to see each film, so our Scheduling Assistant can help you see 
+  more of the films you really want to see.</p>
   
   <p>As time goes on, we'll add features for
   coordinating your schedule with your friends', and for discussing
@@ -34,22 +30,21 @@
 
 <% unless conference_mode %>
 <li>
-  <h4>How do I use automatic scheduling?</h4>
-  <p>Click on a festival in the list on the home page; this will take you
-  to the list of films for that festival.</p>
+  <h4>How do I use this thing?</h4>
+  <p>First, sign up, so we'll know who you are when you come back to the site.</p>
+  <p>Then, click on a festival in the list on the home page; this will take you
+  to the "Your Film Priorities" page for that festival.</p>
   <p>(This next part is easier if you've got the paper schedule for 
   the festival; alternatively, you can open the festival's own 
   site in another browser window.) For each of the films in the festival,
-  decide how interested you are in seeing that film. Enter your choice by
-  clicking on the Films page.</p>
-  <p>When you're done prioritizing the films, click the "Schedule 
-  Automatically" button. Your priorities will be used to select screenings of
-  as many of the films you picked as possible.</p>
-  <p>Switch to the Schedule page for the festival: you'll see the 
-  schedule arranged on grids, one per day, with the selected screenings
-  color-coded.</p>
+  decide how interested you are in seeing that film: you've got five choices, from "I don't want to see this" to "I *really* want to see this". Enter each choice on that Film Priorities page.</p>
+  <p>When you're done prioritizing the films, click the "Scheduling 
+  Assistant" tab; if there are times where you can't attend the festival, enter them. Then, click "Schedule Films" - your priorities will be used to select screenings of as many of the films you prioritized as possible.</p>
+  <p>After your schedule's been generated (it takes a moment), you'll see "Your Festival Schedule": your schedule for each day, with the selected screenings
+  color-coded.
   <p>You can make manual changes to the screening selections by clicking
-  on the grid.</p>
+  on the grid. If you click on a screening for a film you're scheduled to see at some other time, the other screening will be unselected for you (because why see it twice?); likewise, if you're scheduled for any screenings at the same time as the one you clicked on, they'll be unselected too (because you can't be in two places at once).</p>
+  <p>As the festival proceeds, as you hear good or bad things from your friends,you can revise your priorities, then ask the Scheduling Assistant to rebuild the rest of your schedule.</p>
 </li>
 
 <li>
@@ -82,13 +77,11 @@
   <h4>What other features are you working on?</h4>
   <p>The short list includes (in no particular order) <% unless conference_mode %>letting you sort 
   the films in different ways on the films page (by how you've ranked them, for instance), <% end %>
-  better printed formatting, <% unless conference_mode %>letting you say what days or times you can 
-  attend a festival (to restrict the automatic screening process),<% end %> and formatting a tiny 
-  schedule page for your iPhone or Treo. Again, if you can think of something to add to the list, 
+  better printed formatting, and formatting a tiny schedule page for your smartphone. Again, if you can think of something to add to the list, 
   <%= link_to "we'd love to hear about it", feedback_url %>.
   </p>
-  <p>Down the line, we want to make good on the promises in the banner on the front page, adding 
-  discussions<%= ", ratings for films," unless conference_mode %> and other community features. 
+  <p>Down the line, we want to do more to build community around festivals, 
+  adding discussions<%= ", ratings for films," unless conference_mode %> and other social features. 
   We'd also like to work more directly with <%= _[:festival] %> organizers, too, helping
   to improve the social experience around <%= _[:festivals] %> (so if you're running a 
   <%= _[:festival] %>, <%= link_to "please contact us!", feedback_url %>).</p>
