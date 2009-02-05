@@ -39,9 +39,6 @@ ActionController::Routing::Routes.draw do |map|
   map.resources :questions
   map.feedback '/feedback', :controller => 'questions', :action => 'new'
 
-  # Admin
-  map.admin 'admin', :controller => 'admin/admin'
-
   # Restful_Authentication
   map.resources :users
   map.resource :session, :controller => 'session'
