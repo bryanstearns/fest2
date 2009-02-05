@@ -1,5 +1,0 @@
-<html>
-  <body>
-    <p>New user <b><%=h @user.login %></b> / <%= mail_to @user.email %> signed up!</p>
-  </body>
-</html>

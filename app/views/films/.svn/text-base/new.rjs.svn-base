@@ -1,4 +1,0 @@
-page.replace_html 'festival_film_form', :partial => "films/film_form_in_festival",
-                  :locals => { :film => @film, :festival => @festival }
-page['new_festival_film'].hide
-page['film_name'].activate

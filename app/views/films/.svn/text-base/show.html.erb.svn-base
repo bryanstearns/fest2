@@ -1,3 +1,0 @@
-
-<%# link_to 'Edit', poly_edit_festival_film_path(@festival, @film) %> |
-<%= link_to 'Back', poly_festival_films_path(@festival) %>
