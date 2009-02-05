@@ -39,11 +39,11 @@ ActiveRecord::Schema.define(:version => 20090129015741) do
   end
 
   create_table "films", :force => true do |t|
-    t.integer  "festival_id",  :limit => 11, :null => false
+    t.integer  "festival_id",  :null => false
     t.string   "name"
     t.text     "description"
     t.string   "url_fragment"
-    t.integer  "duration",     :limit => 11
+    t.integer  "duration"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "countries"
@@ -53,11 +53,11 @@ ActiveRecord::Schema.define(:version => 20090129015741) do
   end
 
   create_table "picks", :force => true do |t|
-    t.integer "user_id",      :limit => 11, :null => false
-    t.integer "film_id",      :limit => 11, :null => false
-    t.integer "festival_id",  :limit => 11, :null => false
-    t.integer "screening_id", :limit => 11
-    t.integer "priority",     :limit => 11
+    t.integer "user_id",      :null => false
+    t.integer "film_id",      :null => false
+    t.integer "festival_id",  :null => false
+    t.integer "screening_id"
+    t.integer "priority"
   end
 
   create_table "questions", :force => true do |t|
@@ -70,11 +70,11 @@ ActiveRecord::Schema.define(:version => 20090129015741) do
   end
 
   create_table "screenings", :force => true do |t|
-    t.integer  "festival_id", :limit => 11, :null => false
-    t.integer  "film_id",     :limit => 11, :null => false
-    t.integer  "venue_id",    :limit => 11, :null => false
-    t.datetime "starts",                    :null => false
-    t.datetime "ends",                      :null => false
+    t.integer  "festival_id", :null => false
+    t.integer  "film_id",     :null => false
+    t.integer  "venue_id",    :null => false
+    t.datetime "starts",      :null => false
+    t.datetime "ends",        :null => false
     t.datetime "created_at"
     t.datetime "updated_at"
     t.boolean  "press"
@@ -91,9 +91,9 @@ ActiveRecord::Schema.define(:version => 20090129015741) do
   add_index "sessions", ["updated_at"], :name => "index_sessions_on_updated_at"
 
   create_table "subscriptions", :force => true do |t|
-    t.integer "festival_id",  :limit => 11,                    :null => false
-    t.integer "user_id",      :limit => 11,                    :null => false
-    t.boolean "admin",                      :default => false
+    t.integer "festival_id",                     :null => false
+    t.integer "user_id",                         :null => false
+    t.boolean "admin",        :default => false
     t.boolean "show_press"
     t.text    "restrictions"
   end
@@ -112,7 +112,7 @@ ActiveRecord::Schema.define(:version => 20090129015741) do
   end
 
   create_table "venues", :force => true do |t|
-    t.integer "festival_id", :limit => 11, :null => false
+    t.integer "festival_id", :null => false
     t.string  "name"
     t.string  "abbrev"
   end
