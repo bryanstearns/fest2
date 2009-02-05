@@ -113,8 +113,8 @@ end
 module RoundCornersHelper
   def round_corners(options={}, &block)
     options.symbolize_keys!
-    concat("<!-- round_corners start -->", block.binding)
-    RoundCornerContext.new(options, lambda { |msg| concat(msg, block.binding) }, &block)
-    concat("<!-- round_corners end -->\n\n\n", block.binding)
+    concat("<!-- round_corners start -->")
+    RoundCornerContext.new(options, lambda { |msg| concat(msg) }, &block)
+    concat("<!-- round_corners end -->\n\n\n")
   end
 end

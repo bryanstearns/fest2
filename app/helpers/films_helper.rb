@@ -3,9 +3,9 @@ module FilmsHelper
     # Emit this label, and whatever content is produced by the block 
     # given, such that clicking on the label will toggle visibility 
     # of the content.
-    concat "<label>#{label}</label><#{tag.to_s} style=\"display: none;\">", block.binding
+    concat "<label>#{label}</label><#{tag.to_s} style=\"display: none;\">"
     yield
-    concat "</#{tag.to_s}>", block.binding
+    concat "</#{tag.to_s}>"
   end
   
   def link_to_film(film, options={})
