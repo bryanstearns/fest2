@@ -7,8 +7,6 @@ ActionController::Routing::Routes.draw do |map|
       :pick_screening => :post, 
       :reset_rankings => :post,
       :reset_screenings => :post, 
-      :schedule => :post,
-      :schedule_continue => :post,
     } do |festival|
       festival.resources filmz, :controller => 'films'
       festival.resources :venues

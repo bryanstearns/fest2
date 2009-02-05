@@ -4,9 +4,9 @@
   <%= render :partial => "festivals/header", :locals => { :festival => @festival, :hide_tabs => conference_mode } %>
 <% end %>
 
-<p>We'll try to build you a schedule that includes as many of your higher-priority screenings as possible. Before we do, we need to know about your availability:</p>
-
 <% form_for @subscription, :url => poly_festival_settings_path(@festival) do |f| %>
+  <p>We'll try to build you a schedule that includes as many of your higher-priority screenings as possible. Before we do, we need to know about your availability:</p>
+
   <%= f.error_messages :header_message => "Oops, something went wrong..." %>
 
   <% if @festival.has_press_screenings? %>
@@ -39,6 +39,24 @@
   <% end %>
 
   <p>
-    <%= f.submit "Schedule Films" %>
+    <button id="schedule_button" type="button">Schedule Films</button>
   </p>
 <% end %>
+
+<%# We hide the form and show this on submit %>
+<div id="progress" style="display: none">
+  <h3>The Schedule Assistant is working on your schedule; please hang on for a moment.</h3>
+  <p><%= image_tag "busy.gif" %> This can take a few seconds... we'll switch you back to the festival schedule when the scheduling process finishes.</p>
+</div>
+<% content_for("page_scripts") do %>
+jQuery(function() {
+  jQuery("#subscription_restriction_text").keypress(function(e) {
+    return (e.which != 13); // prevent enter from submitting
+  });
+  jQuery("#schedule_button").click(function() { 
+    jQuery("a").click(function() { return false; });
+    jQuery("#progress").show();
+    jQuery(".edit_subscription").hide().submit();
+  });
+});
+<% end -%>

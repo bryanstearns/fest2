@@ -19,18 +19,31 @@ class SubscriptionsController < ApplicationController
     @subscription = current_user.subscription_for(@festival, :create => true)
 
     respond_to do |format|
-      if @subscription.update_attributes(params[:subscription])
+      good = @subscription.update_attributes(params[:subscription])
+      if good
         # flash[:notice] = 'Settings successfully saved.'
-        format.html do
-          render :action => "schedule"
+        sched = AutoScheduler.new(current_user, @festival, 
+                                  @subscription.unselect)
+        begin
+          scheduled_count, prioritized_count = sched.go
+          flash[:notice] = "#{scheduled_count} of the #{view_helper.pluralize(prioritized_count, "film")} you've prioritized #{scheduled_count == 1 ? "is" : "are"} scheduled for you."
+        rescue AutoSchedulingError => e
+          good = false
+          flash[:warning] = e.message
         end
-        # format.xml  { head :ok }
+      end
+        
+      if good
+        format.html do
+          redirect_to poly_festival_url(@festival)
+        end
+        format.xml  { head :ok }
       else
         format.html do 
           @ask_about_unselection = current_user.has_screenings_for(@festival)
           render :action => "show"
         end
-        # format.xml  { render :xml => @subscription.errors, :status => :unprocessable_entity }
+        format.xml  { render :xml => @subscription.errors, :status => :unprocessable_entity }
       end
     end
   end

@@ -6,6 +6,7 @@ describe SubscriptionsController do
   def make_festival
     @festival = mock_model(Festival, :public => true, :scheduled => true,
       :to_param => "slug", :is_conference => false, :id => 1)
+    @festival.stub!(:reset_screenings)
     Festival.stub!(:find_by_slug).and_return(@festival)
   end
 
@@ -18,15 +19,22 @@ describe SubscriptionsController do
   describe "when logged in," do
     def make_subscription
       @subscription = mock(Subscription, :user_id => ordinary_user.id, 
-        :festival_id => @festival.id)
+        :festival_id => @festival.id, :unselect => "future")
       controller.current_user.stub!(:subscription_for)\
         .with(@festival, :create => true).and_return(@subscription)
     end
-    
+
+    def make_auto_scheduler
+      @scheduler = mock(AutoScheduler)
+      @scheduler.stub!(:go).and_return([1,1])
+      AutoScheduler.stub!(:new).and_return(@scheduler)
+    end
+
     before(:each) do
       make_festival
       login_as ordinary_user
       make_subscription
+      make_auto_scheduler
     end
 
     describe "handling GET /festivals/1/settings" do
@@ -83,9 +91,9 @@ describe SubscriptionsController do
           assigns(:subscription).should equal(@subscription)
         end
 
-        it "should render the 'schedule' template" do
+        it "should redirect to the festival when done" do
           do_put
-          response.should render_template('schedule')
+          response.should redirect_to(festival_url(@festival))
         end
       end
     

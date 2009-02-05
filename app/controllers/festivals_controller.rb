@@ -1,7 +1,6 @@
 class FestivalsController < ApplicationController
   before_filter :require_admin_subscription, :except => \
-    [:index, :show, :pick_screening, :schedule, :schedule_continue,
-     :reset_rankings, :reset_screenings]
+    [:index, :show, :pick_screening, :reset_rankings, :reset_screenings]
   
   # GET /festivals
   # GET /festivals.xml
@@ -65,28 +64,6 @@ class FestivalsController < ApplicationController
       js = ""
     end
     render :update do |page| page << js end
-  end
-  
-  # POST /festivals/1/schedule
-  def schedule
-    # renders automatically, which does a client-side redirect to schedule_continue
-    # as a progress indication.
-    @festival = Festival.find_by_slug(params[:id])
-  end
-  
-  # POST /festivals/1/schedule_continue
-  def schedule_continue
-    if logged_in?
-      @festival = Festival.find_by_slug(params[:id])
-      sched = AutoScheduler.new(current_user, @festival, params[:unselect])
-      begin
-        scheduled_count, prioritized_count = sched.go
-        flash[:notice] = "#{scheduled_count} of the #{view_helper.pluralize(prioritized_count, "film")} you've prioritized #{scheduled_count == 1 ? "is" : "are"} scheduled for you."
-      rescue AutoSchedulingError => e
-        flash[:warning] = e.message
-      end
-    end
-    redirect_to poly_festival_url(params[:id])
   end
   
   # POST /festivals/1/reset_rankings

@@ -95,6 +95,7 @@ class Festival < CachedModel
     now = Time.now
     picks.find_all_by_user_id(user.id, :conditions => "screening_id is not null").each do |p|
       if (not future_only) or p.screening.starts > now
+        Rails.logger.info "Resetting: #{p.screening.inspect}"
         p.screening = nil
         p.save!
       end
