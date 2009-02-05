@@ -12,7 +12,6 @@ describe SubscriptionsController do
 
   describe "in general," do
     before { make_festival }    
-    require_login("edit") { get :edit, :festival_id => "slug", :controller => "subscriptions"}
     require_login("update") { put :update, :festival_id => "slug", :controller => "subscriptions"}
   end
 

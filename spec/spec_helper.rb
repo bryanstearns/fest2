@@ -81,7 +81,7 @@ module RoutesHelper
       describe "route generation" do
         routes.each do |options, method, path|
           it "should map #{options.inspect} to #{path}" do
-            route_for(options).should == path
+            route_for(options).should == {:path => path, :method => method}
           end
         end
       end

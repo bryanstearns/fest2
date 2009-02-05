@@ -11,20 +11,20 @@ describe AnnouncementsController do
       route_for(:controller => "announcements", :action => "new").should == "/announcements/new"
     end
   
-    it "should map { :controller => 'announcements', :action => 'show', :id => 1 } to /announcements/1" do
-      route_for(:controller => "announcements", :action => "show", :id => 1).should == "/announcements/1"
+    it "should map { :controller => 'announcements', :action => 'show', :id => '1' } to /announcements/1" do
+      route_for(:controller => "announcements", :action => "show", :id => '1').should == "/announcements/1"
     end
   
-    it "should map { :controller => 'announcements', :action => 'edit', :id => 1 } to /announcements/1/edit" do
-      route_for(:controller => "announcements", :action => "edit", :id => 1).should == "/announcements/1/edit"
+    it "should map { :controller => 'announcements', :action => 'edit', :id => '1' } to /announcements/1/edit" do
+      route_for(:controller => "announcements", :action => "edit", :id => '1').should == "/announcements/1/edit"
     end
   
-    it "should map { :controller => 'announcements', :action => 'update', :id => 1} to /announcements/1" do
-      route_for(:controller => "announcements", :action => "update", :id => 1).should == "/announcements/1"
+    it "should map { :controller => 'announcements', :action => 'update', :id => '1'} to /announcements/1" do
+      route_for(:controller => "announcements", :action => "update", :id => '1').should == {:path => "/announcements/1", :method => :put}
     end
   
-    it "should map { :controller => 'announcements', :action => 'destroy', :id => 1} to /announcements/1" do
-      route_for(:controller => "announcements", :action => "destroy", :id => 1).should == "/announcements/1"
+    it "should map { :controller => 'announcements', :action => 'destroy', :id => '1'} to /announcements/1" do
+      route_for(:controller => "announcements", :action => "destroy", :id => '1').should == {:path => "/announcements/1", :method => :delete}
     end
   end
 
