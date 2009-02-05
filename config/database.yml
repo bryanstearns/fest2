@@ -8,7 +8,7 @@ development:
   database: <%= database_name %>_development
   username: <%= project_name %>
   password: <%= project_name %>
-  encoding: utf8
+  #encoding: utf8
   pool: 5
   socket: /var/run/mysqld/mysqld.sock
 
@@ -17,7 +17,7 @@ test:
   database: <%= database_name %>_test
   username: <%= project_name %>
   password: <%= project_name %>
-  encoding: utf8
+  #encoding: utf8
   database: fest_test
   pool: 5
   socket: /var/run/mysqld/mysqld.sock
@@ -27,7 +27,7 @@ benchmarking:
   database: <%= database_name %>_development
   username: <%= project_name %>
   password: <%= project_name %>
-  encoding: utf8
+  #encoding: utf8
   database: fest_development
   pool: 5
   socket: /var/run/mysqld/mysqld.sock
@@ -37,7 +37,7 @@ production:
   database: <%= project_name %>_production
   username: <%= project_name %>
   password: <%= project_name %>
-  encoding: utf8
+  #encoding: utf8
   database: fest_production
   pool: 5
   socket: /var/run/mysqld/mysqld.sock
