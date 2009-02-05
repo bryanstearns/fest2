@@ -8,28 +8,36 @@ development:
   database: <%= database_name %>_development
   username: <%= project_name %>
   password: <%= project_name %>
-  host: localhost
+  encoding: utf8
+  pool: 5
+  socket: /var/run/mysqld/mysqld.sock
+
 test:
   adapter: mysql
   database: <%= database_name %>_test
   username: <%= project_name %>
   password: <%= project_name %>
-  host: localhost
+  encoding: utf8
+  database: fest_test
+  pool: 5
+  socket: /var/run/mysqld/mysqld.sock
+
 benchmarking:
   adapter: mysql
   database: <%= database_name %>_development
   username: <%= project_name %>
   password: <%= project_name %>
-  host: localhost
-stage:
-  adapter: mysql
-  database: <%= project_name %>_stage
-  username: <%= project_name %>
-  password: <%= project_name %>
-  host: localhost
+  encoding: utf8
+  database: fest_development
+  pool: 5
+  socket: /var/run/mysqld/mysqld.sock
+
 production:
   adapter: mysql
   database: <%= project_name %>_production
   username: <%= project_name %>
   password: <%= project_name %>
-  host: localhost
+  encoding: utf8
+  database: fest_production
+  pool: 5
+  socket: /var/run/mysqld/mysqld.sock
