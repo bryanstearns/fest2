@@ -1,6 +1,8 @@
 class FestivalsController < ApplicationController
   before_filter :require_admin_subscription, :except => \
     [:index, :show, :pick_screening, :reset_rankings, :reset_screenings]
+
+  prawnto :prawn => { :page_layout => :landscape }
   
   # GET /festivals
   # GET /festivals.xml
