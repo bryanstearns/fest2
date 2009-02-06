@@ -1,4 +1,5 @@
-ph = PrawnHelper.new(pdf, :debug => true)
+
+ph = PrawnHelper::Layout.new(pdf, :debug => true)
 
 pdf.header pdf.margin_box.top_left do
   ph.font(:h1) { ph.text @festival.name, :align => :center }
