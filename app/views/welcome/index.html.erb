@@ -20,13 +20,6 @@
   <% end %>
 <% end %>
 
-<noscript>
-  <blockquote style="border: 1px solid red; padding: 4px">
-  <h3>Uh-oh: Your browser doesn't like us!</h3>    
-  <p>Your browser doesn't support Javascript (or you've turned it off), and most of this site won't work right without it. <%= link_to "Send us feedback", feedback_path %> - this will influence us to implement the Javascript-free support sooner.</p>
-  </blockquote>
-</noscript>
-
 <% amazon_choices = render_random_subset_with_caching(@controller, 
                       @amazon_films, @amazon_limit, "films/amazon", 
                       @amazon_cache_key) %>
