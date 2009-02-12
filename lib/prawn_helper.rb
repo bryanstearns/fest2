@@ -2,13 +2,14 @@ module PrawnHelper
   class Layout
     ANDROID_FONT_DIR = "/usr/share/fonts/android"
 
-    delegate :text, :to => :pdf
-
     attr_reader :pdf, :styles
+
+    @@heights = {}
+
     def initialize(pdf, options={})
-      @runs = []
-      @font_size = 11
+      @font_size = 8 
       @pdf = pdf
+
       options.each {|k,v| instance_variable_set("@#{k}".to_sym, v)}
 
       pdf.font_families.update(
@@ -16,61 +17,59 @@ module PrawnHelper
                     :bold => "#{ANDROID_FONT_DIR}/DroidSans-Bold.ttf"})
       @styles = {
         :plain => ["Droid", {:style => :normal, :size => @font_size}],
+        :bold => ["Droid", {:style => :bold, :size => @font_size}],
+        :gray => ["Droid", {:style => :normal, :size => @font_size}],
         :small => ["Droid", {:style => :normal, :size => @font_size * 0.85}],
         :h1 => ["Droid", {:style => :bold, :size => @font_size * 1.3}],
         :h2 => ["Droid", {:style => :bold, :size => @font_size * 1.1}],
       }
-      @heights = {}
-
-      pdf.stroke_bounds if @debug
-    end
-
-    def <<(run_params)
-      @runs << Run.new(self, *run_params)
-    end
-
-    def measure(pairs)
-      widths = []
-      heights = []
-      chunks = pairs.map do |style, text|
-        f = pdf.font(*styles[style])
-        widths << width = f.width(text)
-        heights << height = (@heights[style] ||= f.height)
-        [style, text, width]
-      end
-      return widths.sum, heights.max, chunks
-    end
-
-    def draw(pairs)
-      pairs.each do |style, text, width|
-        pdf.font(*styles[style])
-        pdf.text(text)
+      if @debug
+        pdf.stroke_color= "00ffff"
+        pdf.stroke_bounds
+        pdf.stroke_color= "000000"
       end
     end
 
-    def font(style)
-      f = pdf.font(*styles[style])
+    def with_color(color)
+      old_fill_color = pdf.fill_color
+      old_stroke_color = pdf.stroke_color
+      if color
+        pdf.fill_color = pdf.stroke_color = color
+      end
+      yield if block_given?
+      pdf.stroke_color = old_stroke_color
+      pdf.fill_color = old_fill_color
+    end
+
+    def font(style, color=nil)
+      f = pdf.font(*styles[style]) if style
       if block_given?
-        yield
+        with_color(color) do
+          yield
+        end
       else
         f
       end
     end
 
-  end
-
-  class Run
-    def initialize(layout, style, text)
-      @layout = layout
-      @style = style
-      @text = text
-      measure
+    def font_height(style)
+      @@heights[style] ||= font(style).height
     end
 
-    def measure
-      f = @layout.font(style)
-      @width = f.width(text)
-      @height = (@@heights[style] ||= f.height)
-        [style, text, width]
+    def hr(color)
+      with_color(color) { pdf.stroke_horizontal_rule }
+    end
+
+    def text(msg, options={})
+      font(options[:style]) do
+        x = options.delete(:x) || 0
+        y = options.delete(:y) || pdf.y
+        width = options.delete(:width) || (pdf.bounds.right - x)
+        height = options.delete(:height) || pdf.font.height
+        pdf.text_box msg, options.merge(:overflow => :ellipses,
+          :at => [x, y + pdf.font.ascender], 
+          :width => width, :height => height)
+      end
+    end
   end
 end
