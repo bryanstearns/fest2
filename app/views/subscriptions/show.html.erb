@@ -54,9 +54,13 @@ jQuery(function() {
     return (e.which != 13); // prevent enter from submitting
   });
   jQuery("#schedule_button").click(function() { 
+    <% if logged_in? %>
     jQuery("a").click(function() { return false; });
     jQuery("#progress").show();
     jQuery(".edit_subscription").hide().submit();
+    <% else %>
+    alert("You'll need to log in to try this out (or get started with the \"Sign up\" link in top right corner)");
+    <% end %>
   });
 });
 <% end -%>

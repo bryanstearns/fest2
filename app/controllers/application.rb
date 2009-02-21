@@ -18,7 +18,9 @@ class ApplicationController < ActionController::Base
   protect_from_forgery # :secret => '628adf0a9fb7cd0ff7dabfe3c991d940'
   
   # Use our standard layout for all non-AJAX/non-RSS-feed requests
-  layout proc {|c| (c.request.xhr? || c.request.format.to_s.include?("xml")) ? false : "standard-layout" }
+  layout proc {|c| (c.request.xhr? || \
+    %w[xml pdf].any? {|fmt| c.request.format.to_s.include?(fmt) } \
+    ) ? false : "standard-layout" }
   
   # Tell me when I'm hosed
   include ExceptionNotifiable
@@ -31,6 +33,9 @@ class ApplicationController < ActionController::Base
   # What mode are we in?
   include ConferenceVsFestival
 
+  # We'll do our own page creation, thanks
+  prawnto :prawn => { :skip_page_creation => true }
+  
   # Make sure we flush CachedModel's cache
   after_filter { CachedModel.cache_reset }
 

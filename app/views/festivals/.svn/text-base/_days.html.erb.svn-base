@@ -1,3 +1,0 @@
-<%# Render each day on the schedule page, from update_days -%>
-<%= render :partial => "day", :collection => days(@festival, @picks, conference_mode),
-           :locals => { :width => width } -%>

@@ -1,7 +1,7 @@
 class FestivalsController < ApplicationController
   before_filter :require_admin_subscription, :except => \
     [:index, :show, :pick_screening, :reset_rankings, :reset_screenings]
-  
+
   # GET /festivals
   # GET /festivals.xml
   def index
@@ -40,6 +40,10 @@ class FestivalsController < ApplicationController
       end
       format.xml  { render :xml => @festival }
       # format.mobile # show.mobile.erb
+      format.pdf do
+        @picks = logged_in? ? current_user.picks.find_all_by_festival_id(@festival.id) : []
+        # show.pdf.prawn
+      end
       format.ical do
         redirect_to login_url and return unless logged_in?
         ical_schedule = @festival.to_ical(current_user.id) do |screening|

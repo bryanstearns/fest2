@@ -1,9 +1,0 @@
-<%# The publicly-visible list of announcements -%>
-<% content_for :header do %><%= render :partial => "header" %><% end %>
-
-<ul>
-<%= render :partial => 'announcement', :collection => @announcements,
-    :locals => { :announcement_limit => nil } %>
-</ul>
-
-<%= link_to 'New announcement', new_announcement_path if (current_user.admin rescue false) %>

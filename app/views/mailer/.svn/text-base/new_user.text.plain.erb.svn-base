@@ -1,1 +1,0 @@
-New user <%=h @user.login %> (<%=h @user.email %>) signed up!
