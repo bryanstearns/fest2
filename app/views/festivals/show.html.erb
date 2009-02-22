@@ -22,7 +22,7 @@ When you select a session, conflicting sessions will be unselected for you.</p>
    :confirm => "Are you sure you want to unschedule all your sessions?" %>
 to reset all your selected sessions and start over.</li>
 <li>You can also <%= link_to 'download your schedule in iCalendar format', poly_formatted_festival_path(@festival, 'ical') %>.</li>
-<li>If you print this page in your browser, we'll leave off these instructions and just show the schedule.</li>
+<li>You can <%= link_to "download a printable PDF of your schedule", poly_formatted_festival_path(@festival, 'pdf') %>, which you can print with <a href="http://get.adobe.com/reader/" target="_blank">Adobe Reader</a>. (This is a list format; other formats coming soon).</li>
 </ul>
 <% else %>
 <p>The festival schedule is below; you can click individual screenings to select or unselect them.
@@ -45,7 +45,7 @@ for you. Here's what the colors mean:</p>
    :method => :post,
    :confirm => "Are you sure you want to unschedule all your screenings?" %> 
 to un-select all your selected screenings and start over.</li>
-<li>You can use your browser's Print command to print this page; we'll leave off these instructions and just show your schedule.</li>
+<li>You can <%= link_to "download a printable PDF of your schedule", poly_formatted_festival_path(@festival, 'pdf') %>, which you can print with <a href="http://get.adobe.com/reader/" target="_blank">Adobe Reader</a>. (This is a list format; other formats coming soon).</li>
 <li>You can <%= link_to 'download your scheduled films in iCalendar format', poly_formatted_festival_path(@festival, 'ical') %> (if you don't know what this means, ignore it!).</li>
 </ul>
 <% end %><%# festival mode %>
