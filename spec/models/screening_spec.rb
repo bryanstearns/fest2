@@ -42,12 +42,13 @@ context "Screening with fixtures loaded" do
     # unselect both.
     picks(:quentin_one).screening.should == screenings(:early_one)
     screenings(:early_two).set_state(users(:quentin), :picked).should \
-      == [screenings(:early_two), screenings(:early_one), screenings(:late_two)]
+      == [screenings(:late_two), screenings(:early_two), screenings(:late_one),
+          screenings(:early_one)]
   end
 
   it "should unselect non-conflicting screenings" do
     picks(:quentin_one).screening.should == screenings(:early_one)
     screenings(:early_one).set_state(users(:quentin), :unpicked).should \
-      == [screenings(:early_one)]
+      == [screenings(:late_one), screenings(:early_one)]
   end
 end

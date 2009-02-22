@@ -63,12 +63,13 @@ class Screening < CachedModel
     current_state = id == pick.screening_id ? :picked : :unpicked
     return [] if current_state == state # no screenings changed
 
-    changed_screenings = [ self ]
+    changed_screenings = [ ]
+    film.screenings.each { |s| changed_screenings << s }
 
     if state == :picked # we're picking
       # Unpick conflicting screenings
       conflicting_picks(user).reject {|p| p.id == pick.id }.each do |p|
-        changed_screenings << p.screening
+        p.film.screenings.each { |s| changed_screenings << s }
         p.screening = nil
         p.save!
       end
@@ -83,7 +84,7 @@ class Screening < CachedModel
       pick.screening = nil
     end
     pick.save!
-    changed_screenings
+    changed_screenings.uniq
   end
   
   def to_xml_with_options(options={})
