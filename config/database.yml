@@ -32,6 +32,16 @@ benchmarking:
   pool: 5
   socket: /var/run/mysqld/mysqld.sock
 
+stage:
+  adapter: mysql
+  database: <%= project_name %>_stage
+  username: <%= project_name %>
+  password: <%= project_name %>
+  #encoding: utf8
+  database: fest_stage
+  pool: 5
+  socket: /var/run/mysqld/mysqld.sock
+
 production:
   adapter: mysql
   database: <%= project_name %>_production
