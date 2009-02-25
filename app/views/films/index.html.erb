@@ -5,8 +5,11 @@
 <% end -%>
 
 <% content_for "page_scripts" do %>
-// Register for clicks on the film choices
 jQuery(function() {
+  <%# Autosubmit the sort form %>
+  jQuery("#order").change(function(e) { jQuery("#sortform").submit(); });
+
+  <%# Register for clicks on the film choices %>
   jQuery("form.priority input").change(function(e) {
     <% if logged_in? -%>
     jQuery(this.form).ajaxSubmit({dataType: 'script'});
@@ -32,8 +35,31 @@ by clicking <%= link_to "here",
                       :confirm => "Are you sure you want to throw away all your priority settings?" %>.
 <% end %>
 </p>
-
+<% 
+sort_order = params[:order]
+sorted_films = case sort_order
+when "Country"
+  @films.sort_by {|f| [f.country_names, f.sort_name] }
+when "Priority"
+  @films.sort_by {|f| [@picks[f.id].priority, f.sort_name] }
+else
+  sort_order = "Name"
+  @films.sort_by {|f| f.sort_name }
+end
+sort_options = %w[Name Country Priority].map do |p| 
+  selected = " selected='selected'" if p == sort_order
+  "<option#{selected}>#{p}</option>"
+end.join("")
+-%>
 <table class="filmlist">
-  <tr><td id="guide">Choose priority:<br/>(lower ... higher)</td><td>&nbsp;</td></tr>
-<%= render :partial => "film", :collection => @films.sort_by(&:sort_name), :locals => { :picks => @picks, :show_press => @show_press } %>
+  <tr>
+    <td class="priorityguide">Choose priority:<br/>(lower ... higher)</td>
+    <td class="sortguide">
+      Sort by: <% form_tag festival_films_path(@festival), :method => :get, :id => "sortform" do %>
+        <%= select_tag "order", sort_options %>
+      <% end %>
+    </td>
+  </tr>
+<%= render :partial => "film", :collection => sorted_films, 
+           :locals => { :picks => @picks, :show_press => @show_press } %>
 </table>

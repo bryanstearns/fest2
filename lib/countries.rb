@@ -8,6 +8,7 @@ module Countries
     Countries::NAME_TO_CODE.fetch(name, "")
   end
 
+  # Names can't have commas in them
   CODE_TO_NAME = {
     "af" => "Afghanistan", 
     "ax" => "Aland Islands", # "�land Islands", 
@@ -173,7 +174,7 @@ module Countries
     "om" => "Oman", 
     "pk" => "Pakistan", 
     "pw" => "Palau", 
-    "ps" => "Palestinian Territory, Occupied", 
+    "ps" => "Palestinian Territory", # Palestinian Territory, Occupied
     "pa" => "Panama", 
     "pg" => "Papua New Guinea", 
     "py" => "Paraguay", 
