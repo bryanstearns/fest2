@@ -66,15 +66,15 @@ to un-select all your selected screenings and start over.</li>
 
 <% content_for("page_scripts") do %>
 jQuery(function() {
-  // Apply picks for this user
+  <%# Apply picks for this user -%>
   <%= @screening_javascript %>
 
   <% if logged_in? -%>
-  // Register for clicks on all our screenings
+  <%# Register for clicks on all our screenings -%>
   jQuery(".screening").click(function(e) {
     jQuery.post('<%= pick_screening_festival_path(@festival) %>',
                 { 'screening_id': this.id.split('-')[1],
-                  'state': this.hasClassName('scheduled')
+                  'state': jQuery(this).is('.scheduled') 
                            ? 'unpicked' : 'picked' },
                 function (script) { eval(script); })
   });
