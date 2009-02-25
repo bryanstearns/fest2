@@ -27,14 +27,19 @@ class UsersController < ApplicationController
   end
 
   def send_password_reset
-    user = User.find_by_login(params[:login])
-    Mailer.deliver_reset_password(user, _) if user
-    flash[:notice] = "We've sent a password-reset link to your registered email address."
+    if params[:login].blank?
+      flash[:warning] = "Oops: Fill in your login name, <i>then</i> click the 'click here' link below."
+    else
+      user = User.find_by_login(params[:login])
+      Mailer.deliver_reset_password(user, _) if user
+      flash[:notice] = "We've sent a password-reset link to your registered email address."
+    end
     redirect_to login_path
   end
   
   def reset_password
-    @user = User.find(params[:id])
+    login = params[:id].gsub('_', ' ')
+    @user = User.find_by_login(login)
     redirect_to home_path unless params[:secret] == @user.crypted_password
   end
 
@@ -46,7 +51,8 @@ class UsersController < ApplicationController
     # request forgery protection.
     # uncomment at your own risk
     # reset_session
-    @user = User.find(params[:id])
+    login = params[:id].gsub('_', ' ')
+    @user = User.find_by_login(login)
     redirect_to(home_url) and return if @user.crypted_password != params[:secret]
 
     respond_to do |format|

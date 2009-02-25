@@ -34,7 +34,10 @@ class FestivalsController < ApplicationController
     end
 
     if params[:other_user_id]
-      @displaying_user = User.find_by_login(params[:other_user_id])
+      login = params[:other_user_id]
+      login = "Alejandro_Adams" if login =~ /^Alejandro.*Adams$/
+      login.gsub!('_', ' ')
+      @displaying_user = User.find_by_login(login)
       raise ActiveRecord::RecordNotFound unless @displaying_user
       @displaying_user_subscription = @displaying_user.subscription_for(@festival, :create => true)
       raise ActiveRecord::RecordNotFound unless @displaying_user_subscription \

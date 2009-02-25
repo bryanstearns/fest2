@@ -46,7 +46,7 @@ class User < ActiveRecord::Base
   end
 
   def to_param
-    login
+    login.gsub(' ', '_')
   end
 
   # These create and unset the fields required for remembering users between browser closes
