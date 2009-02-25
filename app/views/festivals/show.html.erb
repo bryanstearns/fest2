@@ -13,7 +13,7 @@
 schedule screenings.</p>
 <% else %>
 <% if @read_only %>
-<p>Here is <b><%=u @displaying_user.login %></b>'s current festival schedule. Here's what the colors mean:</p>
+<p>Here is <b><%=h @displaying_user.login %></b>'s current festival schedule. Here's what the colors mean:</p>
 <% else %>
 <p>Your festival schedule is below; you can click individual screenings to select or unselect them.
 When you select a screening, conflicting screenings and other screenings of that film will be unselected
@@ -38,7 +38,15 @@ for you. Here's what the colors mean:</p>
    :confirm => "Are you sure you want to unschedule all your screenings?" %> 
 to un-select all your selected screenings and start over.</li>
 <% end %>
-<li>You can <%= link_to "download a printable PDF of this schedule", poly_formatted_festival_path(@festival, 'pdf') %>, which you can print with <a href="http://get.adobe.com/reader/" target="_blank">Adobe Reader</a>. (This is a list format; other formats coming soon).</li>
+<% if logged_in? || @read_only %>
+<li>You can <%= link_to "download a printable PDF of this schedule", 
+                        festival_formatted_user_url(\
+                          :festival_id => @festival.to_param, 
+                          :other_user_id => @displaying_user.to_param,
+                          :key => @displaying_user_subscription.key,
+                          :format => "pdf") %>, 
+which you can print with <a href="http://get.adobe.com/reader/" target="_blank">Adobe Reader</a>. (This is a list format; other formats coming soon).</li>
+<% end %>
 <% if logged_in? && !@read_only %>
 <li>You can <%= link_to 'download this schedule in iCalendar format', poly_formatted_festival_path(@festival, 'ical') %> (if you don't know what this means, ignore it!).</li>
 <% readonly_url = festival_user_url(@festival.to_param, :other_user_id => @displaying_user.to_param,
