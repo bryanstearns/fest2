@@ -10,3 +10,9 @@ jQuery(document).ajaxSend(function(event, request, settings) {
   settings.data = settings.data || "";
   settings.data += (settings.data ? "&" : "") + "authenticity_token=" + encodeURIComponent(AUTH_TOKEN);
 });
+
+jQuery(function() {
+  if (jQuery.browser.msie && parseInt(jQuery.browser.version) < 7) {
+    jQuery(".badbrowser.ie6").show();
+  }
+});
