@@ -36,13 +36,13 @@ class FestivalsController < ApplicationController
     if params[:other_user_id]
       @displaying_user = User.find_by_login(params[:other_user_id])
       raise ActiveRecord::RecordNotFound unless @displaying_user
-      @displaying_user_subscription = @displaying_user.subscription_for(@festival)
+      @displaying_user_subscription = @displaying_user.subscription_for(@festival, :create => true)
       raise ActiveRecord::RecordNotFound unless @displaying_user_subscription \
         and @displaying_user_subscription.key == params[:key]
       @read_only = true
     else
       @read_only, @displaying_user, @displaying_user_subscription = \
-        [false, current_user, current_user.subscription_for(@festival)] \
+        [false, current_user, current_user.subscription_for(@festival, :create => true)] \
         if logged_in?
     end
       
