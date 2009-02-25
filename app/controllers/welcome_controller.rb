@@ -22,6 +22,9 @@ class WelcomeController < ApplicationController
     load_amazon_films
   end
 
+  def oops
+  end
+
   protected
 
   def cache_prefix

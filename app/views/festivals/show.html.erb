@@ -39,7 +39,7 @@ for you. Here's what the colors mean:</p>
 to un-select all your selected screenings and start over.</li>
 <% end %>
 <li>You can <%= link_to "download a printable PDF of this schedule", poly_formatted_festival_path(@festival, 'pdf') %>, which you can print with <a href="http://get.adobe.com/reader/" target="_blank">Adobe Reader</a>. (This is a list format; other formats coming soon).</li>
-<% unless @read_only %>
+<% if logged_in? && !@read_only %>
 <li>You can <%= link_to 'download this schedule in iCalendar format', poly_formatted_festival_path(@festival, 'ical') %> (if you don't know what this means, ignore it!).</li>
 <% readonly_url = festival_user_url(@festival.to_param, :other_user_id => @displaying_user.to_param,
                                     :key => @displaying_user_subscription.key) %>
