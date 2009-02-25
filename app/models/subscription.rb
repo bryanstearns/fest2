@@ -52,4 +52,7 @@ class Subscription < ActiveRecord::Base
       unless read_attribute(:key)
   end
 
+  def sharable_path
+    "/festivals/#{festival_id}/#{user.login}/#{key}"
+  end
 end

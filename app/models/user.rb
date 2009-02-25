@@ -45,6 +45,10 @@ class User < ActiveRecord::Base
     remember_token_expires_at && Time.now.utc < remember_token_expires_at 
   end
 
+  def to_param
+    login
+  end
+
   # These create and unset the fields required for remembering users between browser closes
   def remember_me
     remember_me_for 2.years # BJS: essentially indefinitely

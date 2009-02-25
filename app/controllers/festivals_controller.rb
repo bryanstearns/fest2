@@ -5,7 +5,7 @@ class FestivalsController < ApplicationController
   # GET /festivals
   # GET /festivals.xml
   def index
-    @festivals = Festival.send(find_scope) || raise(RecordNotFound)
+    @festivals = Festival.send(find_scope) || raise(ActiveRecord::RecordNotFound)
 
     respond_to do |format|
       format.html # index.html.erb
@@ -13,12 +13,16 @@ class FestivalsController < ApplicationController
     end
   end
 
-  # GET /festivals/1
-  # GET /festivals/1.xml
-  # GET /festivals/1.ical
+  # GET /festivals/x_2009
+  # GET /festivals/x_2009.xml
+  # GET /festivals/x_2009.ical
+  # GET /festivals/x_2009/stearns/sekrit
+  # GET /festivals/x_2009/stearns/sekrit.xml
+  # GET /festivals/x_2009/stearns/sekrit.rss
   def show
-    @festival = Festival.find_by_slug(params[:id])
+    @festival = Festival.find_by_slug(params[_[:festival_id]] || params[:id])
     check_festival_access
+
     if params.delete(:landing)
       if logged_in?
         redirect_to poly_festival_url(@festival) and return \
@@ -28,25 +32,37 @@ class FestivalsController < ApplicationController
       end
       redirect_to poly_festival_films_url(@festival) and return
     end
+
+    if params[:other_user_id]
+      @displaying_user = User.find_by_login(params[:other_user_id])
+      raise ActiveRecord::RecordNotFound unless @displaying_user
+      @displaying_user_subscription = @displaying_user.subscription_for(@festival)
+      raise ActiveRecord::RecordNotFound unless @displaying_user_subscription \
+        and @displaying_user_subscription.key == params[:key]
+      @read_only = true
+    else
+      @read_only, @displaying_user, @displaying_user_subscription = \
+        [false, current_user, current_user.subscription_for(@festival)] \
+        if logged_in?
+    end
       
-    @cache_key = make_cache_key
-    @show_press = logged_in? && \
-      (current_user.subscription_for(@festival).show_press rescue false)
+    @show_press = @displaying_user_subscription.show_press rescue false
+    @cache_key = make_cache_key(@show_press)
     
     respond_to do |format|
       format.html do
-        @screening_javascript = screening_settings_to_js
+        @screening_javascript = screening_settings_to_js(@displaying_user)
         # show.html.erb
       end
       format.xml  { render :xml => @festival }
       # format.mobile # show.mobile.erb
       format.pdf do
-        @picks = logged_in? ? current_user.picks.find_all_by_festival_id(@festival.id) : []
+        @picks = @displaying_user ? @displaying_user.picks.find_all_by_festival_id(@festival.id) : []
         # show.pdf.prawn
       end
       format.ical do
-        redirect_to login_url and return unless logged_in?
-        ical_schedule = @festival.to_ical(current_user.id) do |screening|
+        redirect_to login_url and return unless @displaying_user
+        ical_schedule = @festival.to_ical(@displaying_user.id) do |screening|
           @festival.external_film_url(screening.film) || poly_festival_url(@festival)
 #          poly_film_screening_url(screening.film, screening, 
 #                                  :host => request.host_with_port)  
@@ -63,7 +79,7 @@ class FestivalsController < ApplicationController
       screening = Screening.find(params[:screening_id])
       state = (params[:state] || "picked").to_sym
       changed = screening.set_state(current_user, state)
-      js = screening_settings_to_js(changed)
+      js = screening_settings_to_js(current_user, changed)
     else
       js = ""
     end
@@ -149,11 +165,15 @@ class FestivalsController < ApplicationController
   end
 
 private
-  def screening_settings_to_js(screenings=nil)
+  def screening_settings_to_js(for_user, screenings=nil)
+    return "" unless for_user
     screenings ||= @festival.screenings
     screening_by_screening_id = screenings.index_by(&:id)
-    picks = Pick.find_all_by_user_id_and_festival_id(current_user, @festival)
+    picks = Pick.find_all_by_user_id_and_festival_id(for_user, @festival)
     pick_by_film_id = picks.index_by(&:film_id)
+    you, youare, youhavenot = (for_user == current_user) \
+      ? ["You", "You're", "You haven't"] \
+      : [for_user.login, "#{for_user.login} is", "#{for_user.login} hasn't"]
 
     # Make the javascript to update the states and tooltips, and to insert
     # the priority symbols
@@ -162,23 +182,24 @@ private
       p = pick_by_film_id[s.film_id]
       if p
         if p.screening_id == screening_id
-          ["scheduled", "You're scheduled to see this screening."]
+          ["scheduled", "#{youare} scheduled to see this screening."]
         elsif p.screening_id
-          ["otherscheduled", "You're seeing this on #{screening_by_screening_id[p.screening_id].date_and_times}."]
+          ["otherscheduled", "#{youare} seeing this on #{screening_by_screening_id[p.screening_id].date_and_times}."]
         elsif p.priority.nil?
-          ["unranked", "You haven't prioritized this film."]
+          ["unranked", "#{youhavenot} prioritized this film."]
         elsif p.priority > 0
-          ["unscheduled", "You prioritized this, but no screening is selected."]
+          ["unscheduled", "#{you} prioritized this, but no screening is selected."]
         else
-          ["lowprio", "You gave this the lowest priority."]
+          ["lowprio", "#{you} gave this the lowest priority."]
         end
       else
-        ["unranked", "You haven't prioritized this film."]
+        ["unranked", "#{youhavenot} prioritized this film."]
       end
     end
+    clickable = @read_only ? "" : " clickable"
     js = updated_screening_states.map do |state_and_tip, screening_ids|
       state, tooltip = state_and_tip
-      %Q[jQuery("#{screening_ids.map {|id| "#screening-" + id.to_s}.join(",")}").attr("class", "screening #{state}").attr("title", "#{tooltip}");]
+      %Q[jQuery("#{screening_ids.map {|id| "#screening-" + id.to_s}.join(",")}").attr("class", "screening #{state}#{clickable}").attr("title", "#{tooltip}");]
     end.join("\n")
 
     unless conference_mode
@@ -198,11 +219,9 @@ private
     js
   end
 
-  def make_cache_key
+  def make_cache_key(show_press)
     key = "#{_[:festivals]}/show/#{params[:id]}/#{@festival.updated_at.to_i}"
-    key += ((current_user.subscription_for(@festival).show_press rescue false) \
-      ? "/press" : "/nopress") \
-      if logged_in?
+    key += show_press ? "/press" : "/nopress"
     key
   end
 end
