@@ -25,6 +25,24 @@ context "Basic Subscription" do
     ]
     @subscription.restriction_text.should == "1/3 10am-2pm, 1/5 6pm-"
   end
+
+  context "key handling" do
+    before(:each) do
+      @subscription = Subscription.new(:festival_id => 999, :user_id => 999)
+    end
+
+    it "should assign a key on save" do
+      @subscription.key.should be_nil
+      @subscription.save!
+      @subscription.key.should_not be_nil
+    end
+
+    it "should not replace an existing key" do
+      @subscription.key = "12345"
+      @subscription.save!
+      @subscription.key.should == "12345"
+    end
+  end
 end
 
 =begin

@@ -9,6 +9,8 @@ class Subscription < ActiveRecord::Base
   validates_presence_of :user_id
   validate :check_restrictions
 
+  before_save :make_sharable_key
+
   def can_see?(screening)
     return false if screening.press and not show_press
     restrictions.nil? || !restrictions.any? { |r| r.overlaps? screening }
@@ -36,12 +38,18 @@ class Subscription < ActiveRecord::Base
   end
 
   # A virtual attribute, set by the subscription-editing form
+  # for passing through to the autoscheduler
   def unselect
     @unselect || "future"
   end
 
   def unselect=(s)
     @unselect = s
+  end
+
+  def make_sharable_key
+    write_attribute(:key, Digest::SHA1.hexdigest("--#{Time.now.to_s}--#{user_id}--")[0..7]) \
+      unless read_attribute(:key)
   end
 
 end

@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20090129015741) do
+ActiveRecord::Schema.define(:version => 20090225020342) do
 
   create_table "announcements", :force => true do |t|
     t.string   "subject",                           :null => false
@@ -91,11 +91,12 @@ ActiveRecord::Schema.define(:version => 20090129015741) do
   add_index "sessions", ["updated_at"], :name => "index_sessions_on_updated_at"
 
   create_table "subscriptions", :force => true do |t|
-    t.integer "festival_id",                     :null => false
-    t.integer "user_id",                         :null => false
-    t.boolean "admin",        :default => false
+    t.integer "festival_id",                                   :null => false
+    t.integer "user_id",                                       :null => false
+    t.boolean "admin",                      :default => false
     t.boolean "show_press"
     t.text    "restrictions"
+    t.string  "key",          :limit => 10
   end
 
   create_table "users", :force => true do |t|
