@@ -61,6 +61,11 @@ class FestivalsController < ApplicationController
       # format.mobile # show.mobile.erb
       format.pdf do
         @picks = @displaying_user ? @displaying_user.picks.find_all_by_festival_id(@festival.id) : []
+        filename = [@festival.slug, 
+                    (@displaying_user.to_param rescue nil), 
+                    "pdf"].compact.join(".")
+        prawnto :prawn => { :skip_page_creation => true },
+                :filename => filename
         # show.pdf.prawn
       end
       format.ical do

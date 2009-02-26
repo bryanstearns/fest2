@@ -33,9 +33,6 @@ class ApplicationController < ActionController::Base
   # What mode are we in?
   include ConferenceVsFestival
 
-  # We'll do our own page creation, thanks
-  prawnto :prawn => { :skip_page_creation => true }
-  
   # Make sure we flush CachedModel's cache
   after_filter { CachedModel.cache_reset }
 

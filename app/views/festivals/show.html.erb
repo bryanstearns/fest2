@@ -39,12 +39,15 @@ for you. Here's what the colors mean:</p>
 to un-select all your selected screenings and start over.</li>
 <% end %>
 <% if logged_in? || @read_only %>
+<% pdf_url = @read_only \
+     ? festival_formatted_user_url(\
+         :festival_id => @festival.to_param, 
+         :other_user_id => @displaying_user.to_param,
+         :key => @displaying_user_subscription.key,
+         :format => "pdf") \
+     : formatted_festival_url(@festival, "pdf") -%>
 <li>You can <%= link_to "download a printable PDF of this schedule", 
-                        festival_formatted_user_url(\
-                          :festival_id => @festival.to_param, 
-                          :other_user_id => @displaying_user.to_param,
-                          :key => @displaying_user_subscription.key,
-                          :format => "pdf") %>, 
+                        pdf_url %>, 
 which you can print with <a href="http://get.adobe.com/reader/" target="_blank">Adobe Reader</a>. (This is a list format; other formats coming soon).</li>
 <% end %>
 <% if logged_in? && !@read_only %>
