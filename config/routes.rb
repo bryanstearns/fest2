@@ -10,7 +10,7 @@ ActionController::Routing::Routes.draw do |map|
     } do |festival|
       festival.resources filmz, :controller => 'films'
       festival.resources :venues
-      festival.resource :settings, :controller => 'subscriptions', 
+      festival.resource :assistant, :controller => 'subscriptions', 
         :only => [:show, :update]
       festival.user '/:other_user_id/:key', :controller => 'festivals', :action => 'show', :method => :get
       festival.formatted_user '/:other_user_id/:key.:format', :controller => 'festivals', :action => 'show', :method => :get

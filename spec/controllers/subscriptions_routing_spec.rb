@@ -6,9 +6,9 @@ describe SubscriptionsController do
   routes = [
     # params, method, route
     [ {:festival_id => "1", :controller => 'subscriptions', :action => 'show' },
-      :get, "/festivals/1/settings" ],
+      :get, "/festivals/1/assistant" ],
     [ {:festival_id => "1", :controller => 'subscriptions', :action => 'update' },
-      :put, "/festivals/1/settings" ],
+      :put, "/festivals/1/assistant" ],
   ]
   
   check_routes routes

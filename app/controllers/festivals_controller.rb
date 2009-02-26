@@ -27,7 +27,7 @@ class FestivalsController < ApplicationController
       if logged_in?
         redirect_to poly_festival_url(@festival) and return \
           if current_user.has_screenings_for(@festival)
-        redirect_to poly_festival_settings_url(@festival) and return \
+        redirect_to poly_festival_assistant_url(@festival) and return \
           if current_user.has_rankings_for(@festival)
       end
       redirect_to poly_festival_films_url(@festival) and return

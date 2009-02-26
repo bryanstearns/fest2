@@ -16,7 +16,7 @@ describe "/subscriptions/show.html.erb" do
   it "should render edit form" do
     render "/subscriptions/show.html.erb"
     
-    response.should have_tag("form[action=#{festival_settings_path(@festival)}][method=post]") do
+    response.should have_tag("form[action=#{festival_assistant_path(@festival)}][method=post]") do
     end
   end
 end

@@ -4,49 +4,44 @@
   <%= render :partial => "festivals/header", :locals => { :festival => @festival, :hide_tabs => conference_mode } %>
 <% end %>
 
-<% form_for @subscription, :url => poly_festival_settings_path(@festival) do |f| %>
-  <p>We'll try to build you a schedule that includes as many of your higher-priority screenings as possible. Before we do, we need to know about your availability:</p>
-
+<% form_for @subscription, :url => poly_festival_assistant_path(@festival) do |f| %>
+  <p>This is the good part: we'll try to build you a schedule that includes as many of your higher-priority films as possible; click the "Schedule Films!" button below to make this happen.</p>
+  
   <%= f.error_messages :header_message => "Oops, something went wrong..." %>
 
-  <% if @festival.has_press_screenings? %>
-  <p>
-    <%= f.check_box :show_press %> Should we include the press screenings? (If this box isn't checked, we won't show them on your schedule.)
-  </p>
-  <% end %>
+  <fieldset id="customizations">
+    <legend>Settings to guide the scheduling assistant</legend>
+    <ul>
+    <% if @festival.has_press_screenings? %>
 
-  <p>
-  Are there are times you can't attend this festival? Enter them here
-  and we won't schedule any screenings for these times (though we'll still
-  show them on the schedule, and you can still pick them manually).
-  </p>
-  <p>
-  This feature is brand new and kind of finicky: you should enter things like
-  <i>2/5, 2/6 -10am, 2/8 11:30am-2pm & 8pm-10pm</i>
-  </p>
-  <p>
-    <%= f.text_field :restriction_text, :size => 80 %>
-  </p>
+    <li><%= f.check_box :show_press %> Should we include the press screenings? (If this box isn't checked, we won't show them on your schedule.)</li>
+    <% end %>
 
-  <% if @ask_about_unselection %>
-  <p>
-  You've got existing screenings selected... what should we do about them?
-  <%= select("subscription", "unselect", [
-    ["Unselect all the future ones", "future"], 
-    ["Unselect all of them", "all"],
-    ["Leave them selected; just fill in around them", "none"]]) %>
-  </p>
-  <% end %>
+    <li>Are there are times you can't attend this festival? Enter them here
+    and we won't schedule any screenings for these times (though we'll still
+    show them on the schedule, and you can still pick them manually).
+    <p>This feature is brand new and kind of finicky: you should enter things 
+    like <i>2/5, 2/6 -10am, 2/8 11:30am-2pm & 8pm-10pm</i></p>
+    <p><%= f.text_field :restriction_text, :size => 80 %></p></li>
 
-  <p>
-    <button id="schedule_button" type="button">Schedule Films</button>
-  </p>
+    <% if @ask_about_unselection %>
+    <li>You've got existing screenings selected... what should we do about them?
+    <%= select("subscription", "unselect", [
+      ["Unselect all the future ones", "future"], 
+      ["Unselect all of them", "all"],
+      ["Leave them selected; just fill in around them", "none"]]) %></li>
+    <% end %>
+    </ul>
+  </fieldset>
+
+  <button id="schedule_button" type="button">Schedule Films!</button>
 <% end %>
 
 <%# We hide the form and show this on submit %>
 <div id="progress" style="display: none">
-  <h3>The Schedule Assistant is working on your schedule; please hang on for a moment.</h3>
-  <p><%= image_tag "busy.gif" %> This can take a few seconds... we'll switch you back to the festival schedule when the scheduling process finishes.</p>
+  <h3><%= image_tag "busy.gif" %> The Schedule Assistant is working on your schedule; please hang on for a moment.</h3>
+  <p>This can take a few seconds... we'll switch you back to the festival schedule when the scheduling process finishes.</p>
+  <p>Don't forget: you can always change your priorities later; the Schedule Assistant will be happy to rebuild the remainder of your schedule for you!</p>
 </div>
 <% content_for("page_scripts") do %>
 jQuery(function() {
