@@ -12,11 +12,6 @@
   <fieldset id="customizations">
     <legend>Settings to guide the scheduling assistant</legend>
     <ul>
-    <% if @festival.has_press_screenings? %>
-
-    <li><%= f.check_box :show_press %> Should we include the press screenings? (If this box isn't checked, we won't show them on your schedule.)</li>
-    <% end %>
-
     <li>Are there are times you can't attend this festival? Enter them here
     and we won't schedule any screenings for these times (though we'll still
     show them on the schedule, and you can still pick them manually).
@@ -24,10 +19,14 @@
     like <i>2/5, 2/6 -10am, 2/8 11:30am-2pm & 8pm-10pm</i></p>
     <p><%= f.text_field :restriction_text, :size => 80 %></p></li>
 
+    <% if @festival.has_press_screenings? %>
+    <li><p><%= f.check_box :show_press %>Include the press screenings? (If this box isn't checked, we won't show them on your schedule.)</p></li>
+    <% end %>
+
     <% if @ask_about_unselection %>
-    <li>You've got existing screenings selected... what should we do about them?
+    <li>You've got some screenings selected already; what should we do with them?
     <%= select("subscription", "unselect", [
-      ["Unselect all the future ones", "future"], 
+      ["Unselect just the future screenings", "future"], 
       ["Unselect all of them", "all"],
       ["Leave them selected; just fill in around them", "none"]]) %></li>
     <% end %>
