@@ -39,9 +39,9 @@ by clicking <%= link_to "here",
 sort_order = params[:order]
 sorted_films = case sort_order
 when "Country"
-  @films.sort_by {|f| [f.country_names, f.sort_name] }
+  @films.sort_by {|f| [f.country_names || '', f.sort_name] }
 when "Priority"
-  @films.sort_by {|f| [@picks[f.id].priority, f.sort_name] }
+  @films.sort_by {|f| [@picks[f.id].priority || -1, f.sort_name] }
 else
   sort_order = "Name"
   @films.sort_by {|f| f.sort_name }
