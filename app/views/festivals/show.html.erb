@@ -40,18 +40,18 @@ to un-select all your selected screenings and start over.</li>
 <% end %>
 <% if logged_in? || @read_only %>
 <% pdf_url = @read_only \
-     ? festival_formatted_user_url(\
+     ? festival_user_url(\
          :festival_id => @festival.to_param, 
          :other_user_id => @displaying_user.to_param,
          :key => @displaying_user_subscription.key,
-         :format => "pdf") \
-     : formatted_festival_url(@festival, "pdf") -%>
+         :format => :pdf) \
+     : festival_url(@festival, :format => :pdf) -%>
 <li>You can <%= link_to "download a printable PDF of this schedule", 
                         pdf_url %>, 
 which you can print with <a href="http://get.adobe.com/reader/" target="_blank">Adobe Reader</a>. (This is a list format; other formats coming soon).</li>
 <% end %>
 <% if logged_in? && !@read_only %>
-<li>You can <%= link_to 'download this schedule in iCalendar format', poly_formatted_festival_path(@festival, 'ical') %> (if you don't know what this means, ignore it!).</li>
+<li>You can <%= link_to 'download this schedule in iCalendar format', poly_festival_path(@festival, :format => :ical) %> (if you don't know what this means, ignore it!).</li>
 <% readonly_url = festival_user_url(@festival.to_param, :other_user_id => @displaying_user.to_param,
                                     :key => @displaying_user_subscription.key) %>
 <li>You can share your schedule with your friends by giving them this link:<br/><%= link_to h(readonly_url), readonly_url %></li>

@@ -1,7 +1,7 @@
       <% 
       form_id = "#{dom_id(film)}_pick"
       form_for [film, picks[film.id]],
-               :url => formatted_film_picks_path(film, :js),
+               :url => film_picks_path(film, :format => :js),
                :html => { :method => :post, :class => "priority",
                           :id => form_id } do |f| %>
         <% (0..4).each do |p| %>
