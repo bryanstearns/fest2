@@ -3,7 +3,7 @@ class Restriction
 
   def initialize(starts, ends=nil)
     @starts = starts
-    @ends = ends || starts.end_of_day
+    @ends = ends || rounded_end_of_day(starts)
   end
 
   def overlaps?(other)
@@ -21,7 +21,7 @@ class Restriction
   def to_text
     result = "#{starts.month}/#{starts.day}"
     return result if (starts.seconds_since_midnight == 0 and \
-                      ends.seconds_since_midnight == 86399.0)
+                      ends.seconds_since_midnight == 86399)
     starts_text = format_time(starts, 0)
     ends_text = format_time(ends, 86399)
     "#{result} #{starts_text}-#{ends_text}"
@@ -89,5 +89,12 @@ class Restriction
   def self.to_text(restrictions)
     return "" unless restrictions
     restrictions.map(&:to_text).join(", ")
+  end
+
+private
+  def rounded_end_of_day(time)
+    # #end_of_day includes .999999 usec, which throws off our other
+    # calculations.
+    time.beginning_of_day + 86399
   end
 end
