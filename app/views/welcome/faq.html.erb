@@ -28,7 +28,6 @@
   among attendees.</p>
 </li>
 
-<% unless conference_mode %>
 <li>
   <h4>How do I use this thing?</h4>
   <p>First, sign up, so we'll know who you are when you come back to the site.</p>
@@ -65,30 +64,30 @@
   <p>There are probably better strategies, but this one seems to work pretty
   well.</p>
 </li>
-<% end %>
 
 <li>
-  <h4>Can I add my own favorite <%= _[:festival] %>?</h4>
+  <h4>Can I add my own favorite festival?</h4>
   <p>Not by yourself, just yet, but we're working on it. In the meantime, drop
   us a line on the <%= link_to "Feedback Page", feedback_url %> and we'll set something up.</p>
 </li>
 
 <li>
   <h4>What other features are you working on?</h4>
-  <p>The short list includes (in no particular order) <% unless conference_mode %>letting you sort 
-  the films in different ways on the films page (by how you've ranked them, for instance), <% end %>
-  better printed formatting, and formatting a tiny schedule page for your smartphone. Again, if you can think of something to add to the list, 
+  <p>The short list includes (in no particular order) letting you sort 
+  the films in different ways on the films page (by how you've ranked them, 
+  for instance), better printed formatting, and formatting a tiny schedule 
+  page for your smartphone. Again, if you can think of something to add to the list, 
   <%= link_to "we'd love to hear about it", feedback_url %>.
   </p>
   <p>Down the line, we want to do more to build community around festivals, 
-  adding discussions<%= ", ratings for films," unless conference_mode %> and other social features. 
-  We'd also like to work more directly with <%= _[:festival] %> organizers, too, helping
-  to improve the social experience around <%= _[:festivals] %> (so if you're running a 
-  <%= _[:festival] %>, <%= link_to "please contact us!", feedback_url %>).</p>
+  adding discussions, ratings for films, and other social features. 
+  We'd also like to work more directly with festival organizers, too, helping
+  to improve the social experience around festivals (so if you're running a 
+  festival, <%= link_to "please contact us!", feedback_url %>).</p>
 <li>
   <h4>Where'd you get the nifty icons?</h4>
-  <p>The <% unless conference_mode %>flags (<%= %w{us br dk np ke au}.map {|co| flag_icon_tag co }.join(" ") %>)
-  and many of the other <% end %>icons we use (like <%= image_tag "fam3silk/film_go.png" %> 
+  <p>The flags (<%= %w{us br dk np ke au}.map {|co| flag_icon_tag co }.join(" ") %>)
+  and many of the other icons we use (like <%= image_tag "fam3silk/film_go.png" %> 
   and <%= image_tag "fam3silk/date.png" %>) come from web developer Mark James, who asks only that we 
   <%= link_to "link to his site", "http://www.famfamfam.com/lab/icons/silk/" %> to use them - done, and thanks, Mark!
    </p>

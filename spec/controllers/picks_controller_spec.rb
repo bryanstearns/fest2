@@ -6,8 +6,7 @@ describe PicksController do
   def make_pick
     login_as ordinary_user
     
-    @festival = mock_model(Festival, :public => true, :is_festival => true,
-                           :is_conference => false)
+    @festival = mock_model(Festival, :public => true)
     @film = mock_model(Film, :to_param => "1", :festival => @festival)
     Film.stub!(:find).and_return(@film)
     @pick = mock_model(Pick, :to_param => "1", :festival => @festival, 

@@ -2,11 +2,8 @@ require File.dirname(__FILE__) + '/../../spec_helper'
 
 describe "/festivals/edit.html.erb" do
   include FestivalsHelper
-  include ConferenceVsFestivalHelper
   
   before do
-    force_festival_mode    
-
     @festival = mock_model(Festival)
     fields = []
     [:name, :location, :url, :film_url_format, :slug].each \

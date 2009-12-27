@@ -20,17 +20,17 @@ class FestivalsController < ApplicationController
   # GET /festivals/x_2009/stearns/sekrit.xml
   # GET /festivals/x_2009/stearns/sekrit.rss
   def show
-    @festival = Festival.find_by_slug(params[_[:festival_id]] || params[:id])
+    @festival = Festival.find_by_slug!(params[:festival_id] || params[:id])
     check_festival_access
 
     if params.delete(:landing)
       if logged_in?
-        redirect_to poly_festival_url(@festival) and return \
+        redirect_to festival_url(@festival) and return \
           if current_user.has_screenings_for(@festival)
-        redirect_to poly_festival_assistant_url(@festival) and return \
+        redirect_to festival_assistant_url(@festival) and return \
           if current_user.has_rankings_for(@festival)
       end
-      redirect_to poly_festival_films_url(@festival) and return
+      redirect_to festival_films_url(@festival) and return
     end
 
     if params[:other_user_id]
@@ -71,9 +71,9 @@ class FestivalsController < ApplicationController
       format.ical do
         redirect_to login_url and return unless @displaying_user
         ical_schedule = @festival.to_ical(@displaying_user.id) do |screening|
-          @festival.external_film_url(screening.film) || poly_festival_url(@festival)
-#          poly_film_screening_url(screening.film, screening, 
-#                                  :host => request.host_with_port)  
+          @festival.external_film_url(screening.film) || festival_url(@festival)
+#          film_screening_url(screening.film, screening, 
+#                             :host => request.host_with_port)  
         end
         render :text => ical_schedule
       end
@@ -83,7 +83,7 @@ class FestivalsController < ApplicationController
   # POST /festivals/1/pick_screening
   def pick_screening
     if logged_in?
-      @festival = Festival.find_by_slug(params[:id])
+      @festival = Festival.find_by_slug!(params[:id])
       screening = Screening.find(params[:screening_id])
       state = (params[:state] || "picked").to_sym
       changed = screening.set_state(current_user, state)
@@ -96,16 +96,16 @@ class FestivalsController < ApplicationController
   
   # POST /festivals/1/reset_rankings
   def reset_rankings
-    @festival = Festival.find_by_slug(params[:id])
+    @festival = Festival.find_by_slug!(params[:id])
     @festival.reset_rankings(current_user) if logged_in?
-    redirect_to poly_festival_films_url(@festival)
+    redirect_to festival_films_url(@festival)
   end
     
   # POST /festivals/1/reset_screenings
   def reset_screenings
-    @festival = Festival.find_by_slug(params[:id])
+    @festival = Festival.find_by_slug!(params[:id])
     @festival.reset_screenings(current_user) if logged_in?
-    redirect_to poly_festival_url(@festival)
+    redirect_to festival_url(@festival)
   end
     
   # GET /festivals/new
@@ -121,20 +121,19 @@ class FestivalsController < ApplicationController
 
   # GET /festivals/1/edit
   def edit
-    @festival = Festival.find_by_slug(params[:id], :include => [:venues, { :films => :screenings }])
+    @festival = Festival.find_by_slug!(params[:id], :include => [:venues, { :films => :screenings }])
   end
 
   # POST /festivals
   # POST /festivals.xml
   def create
     @festival = Festival.new(params[:festival])
-    @festival.is_conference = conference_mode
     @saved = @festival.save
     
     respond_to do |format|
       if @saved
         flash[:notice] = 'Festival was successfully created.'
-        format.html { redirect_to(poly_edit_festival_url(@festival)) }
+        format.html { redirect_to(edit_festival_url(@festival)) }
         format.xml  { render :xml => @festival, :status => :created, :location => @festival }
       else
         format.html { render :action => "new" }
@@ -146,7 +145,7 @@ class FestivalsController < ApplicationController
   # PUT /festivals/1
   # PUT /festivals/1.xml
   def update
-    @festival = Festival.find_by_slug(params[:id])
+    @festival = Festival.find_by_slug!(params[:id])
 
     respond_to do |format|
       if @festival.update_attributes(params[:festival])
@@ -163,11 +162,11 @@ class FestivalsController < ApplicationController
   # DELETE /festivals/1
   # DELETE /festivals/1.xml
   def destroy
-    @festival = Festival.find_by_slug(params[:id])
+    @festival = Festival.find_by_slug!(params[:id])
     @festival.destroy
 
     respond_to do |format|
-      format.html { redirect_to(poly_festivals_url) }
+      format.html { redirect_to(festivals_url) }
       format.xml  { head :ok }
     end
   end
@@ -210,25 +209,23 @@ private
       %Q[jQuery("#{screening_ids.map {|id| "#screening-" + id.to_s}.join(",")}").attr("class", "screening #{state}#{clickable}").attr("title", "#{tooltip}");]
     end.join("\n")
 
-    unless conference_mode
-      screenings_by_priority = screenings.group_by do |s|
-        p = pick_by_film_id[s.film_id]
-        (p and p.priority)
-      end
-      js += screenings_by_priority.map do |priority, screenings|
-        unless priority.nil?
-          priority_image_tag = view_helper.image_tag \
-            "priority/p#{priority}.png",
-            :height => 10, :width => 46
-          %Q[jQuery("#{screenings.map {|s| "#screening-" + s.id.to_s}.join(",")}").find('.priority').html('#{priority_image_tag}');]
-        end
-      end.join("\n")
+    screenings_by_priority = screenings.group_by do |s|
+      p = pick_by_film_id[s.film_id]
+      (p and p.priority)
     end
+    js += screenings_by_priority.map do |priority, screenings|
+      unless priority.nil?
+        priority_image_tag = view_helper.image_tag \
+          "priority/p#{priority}.png",
+          :height => 10, :width => 46
+        %Q[jQuery("#{screenings.map {|s| "#screening-" + s.id.to_s}.join(",")}").find('.priority').html('#{priority_image_tag}');]
+      end
+    end.join("\n")
     js
   end
 
   def make_cache_key(show_press)
-    key = "#{_[:festivals]}/show/#{params[:id]}/#{@festival.updated_at.to_i}"
+    key = "show/#{params[:id]}/#{@festival.updated_at.to_i}"
     key += show_press ? "/press" : "/nopress"
     key
   end

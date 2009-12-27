@@ -99,13 +99,6 @@ end
 
 require 'ruby-debug'
 
-module ConferenceVsFestivalHelper
-  def force_festival_mode
-    template.should_receive(:_).any_number_of_times.and_return(mock("dictionary", :[] => "festival"))
-    template.should_receive(:conference_mode).any_number_of_times.and_return(false)
-  end
-end
-
 # Helpful: http://rubyforge.org/pipermail/rspec-users/2006-December/000408.html
 # and: http://programmingishard.com/code/tags/rspec
 module AdminUserSpecHelper  

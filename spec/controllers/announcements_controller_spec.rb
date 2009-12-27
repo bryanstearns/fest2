@@ -5,15 +5,17 @@ describe AnnouncementsController do
   
   def make_announcement
       @announcement = mock_model(Announcement, :published => true, 
-        :to_param => "1", :for_festival => true, :for_conference => true)
+        :to_param => "1")
       @announcements = [@announcement]
       @announcements.stub!(:find).and_return(@announcement)
-      Announcement.stub!(:festivals).and_return(@announcements)
+      Announcement.stub!(:published).and_return(@announcements)
   end
   
   def make_announcements
+      @announcement = mock_model(Announcement, :published => true, 
+        :to_param => "1")
       @announcements = [@announcement]
-      Announcement.stub!(:festivals).and_return(@announcements)
+      Announcement.stub!(:published).and_return(@announcements)
   end
   
   describe "handling GET /announcements" do
@@ -37,7 +39,7 @@ describe AnnouncementsController do
     end
   
     it "should find all published announcements" do
-      Announcement.should_receive(:festivals).and_return(@announcements)
+      Announcement.should_receive(:published).and_return(@announcements)
       do_get
     end
   
@@ -66,7 +68,7 @@ describe AnnouncementsController do
     end
 
     it "should find all published announcements" do
-      Announcement.should_receive(:festivals).and_return(@announcements)
+      Announcement.should_receive(:published).and_return(@announcements)
       do_get
     end
   
@@ -141,8 +143,7 @@ describe AnnouncementsController do
 
     before(:each) do
       login_as admin_user
-      @announcement = mock_model(Announcement, :for_festival =>true, 
-        :for_conference => false)
+      @announcement = mock_model(Announcement)
       Announcement.stub!(:new).and_return(@announcement)
     end
   
@@ -163,12 +164,6 @@ describe AnnouncementsController do
     it "should create an new announcement" do
       Announcement.should_receive(:new).and_return(@announcement)
       do_get
-    end
-  
-    it "should create the right flavor of announcement" do
-      do_get
-      @announcement.for_festival.should == true
-      @announcement.for_conference.should == false
     end
   
     it "should not save the new announcement" do

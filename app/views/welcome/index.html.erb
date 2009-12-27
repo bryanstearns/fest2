@@ -1,21 +1,14 @@
 <% content_for :header do %>
   <% round_corners :width => "100%" do |rc| %>
-    <% if conference_mode %>
-      <h2>Get more out of your conference experience</h2>
-      <ul style="margin: 0px; padding-bottom: 10px;">
-        <li>Keep track of the sessions you really want to attend</li>
-      </ul>
-    <% else %>
-      <h2>Get more out of your film festival experience!</h2>
-      See more of the movies you want to see... it's as easy as 1 - 2 - 3:
-      <ol style="margin: 0px; padding-bottom: 10px;">
-        <li>Prioritize films</li>
-        <li>Tell us when you're available, and we'll find screenings for you automatically</li>
-        <li>Browse your schedule (soon: on your smartphone, too)</li>
-      </ol>
-      <% unless logged_in? %>
-      <%= link_to "Sign up", signup_url %> or <%= link_to "Log in", login_url %> to get started!
-      <% end %>
+    <h2>Get more out of your film festival experience!</h2>
+    See more of the movies you want to see... it's as easy as 1 - 2 - 3:
+    <ol style="margin: 0px; padding-bottom: 10px;">
+      <li>Prioritize films</li>
+      <li>Tell us when you're available, and we'll find screenings for you automatically</li>
+      <li>Browse your schedule (soon: on your smartphone, too)</li>
+    </ol>
+    <% unless logged_in? %>
+    <%= link_to "Sign up", signup_url %> or <%= link_to "Log in", login_url %> to get started!
     <% end %>
   <% end %>
 <% end %>
@@ -47,16 +40,16 @@
     end
   end
   if show_festivals.empty? %>
-  <p>More <%= _[:festivals] %> coming soon; if you're interested in one in particular, tell us about it on the feedback page.</p>
+  <p>More festivals coming soon; if you're interested in one in particular, tell us about it on the feedback page.</p>
     <% if have_old %>
-    <p><%= link_to "Click here", festivals_url %> to see past <%= _[:festivals] %>.</p>
+    <p><%= link_to "Click here", festivals_url %> to see past festivals.</p>
     <% end %>
   <% else %>
-  <h3>Click an upcoming <%= _[:festival] %>:</h3>
+  <h3>Click an upcoming festival:</h3>
   <ul id="upcomingfestivals">
   <%= render :partial => 'festivals/festival', :collection => show_festivals.sort_by {|f| f.starts } %>
     <% if have_old %>
-  <li><%= link_to "Click here", festivals_url %> to see past <%= _[:festivals] %></li>
+  <li><%= link_to "Click here", festivals_url %> to see past festivals</li>
     <% end %>
   </ul>
   <% end %>

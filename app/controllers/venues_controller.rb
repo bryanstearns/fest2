@@ -5,7 +5,7 @@ class VenuesController < ApplicationController
   # GET /venues
   # GET /venues.xml
   def index
-    @festival = Festival.find_by_slug(params[_[:festival_id]], :include => :venues)
+    @festival = Festival.find_by_slug!(params[:festival_id], :include => :venues)
     check_festival_access
     @venues = @festival.venues
 
@@ -100,7 +100,7 @@ class VenuesController < ApplicationController
 
 protected
   def load_festival
-    @festival = Festival.find_by_slug(params[_[:festival_id]])
+    @festival = Festival.find_by_slug!(params[:festival_id])
     check_festival_access
   end
 end

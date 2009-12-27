@@ -9,17 +9,15 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20090225020342) do
+ActiveRecord::Schema.define(:version => 20091226214920) do
 
   create_table "announcements", :force => true do |t|
-    t.string   "subject",                           :null => false
+    t.string   "subject",                         :null => false
     t.text     "contents"
-    t.boolean  "published",      :default => false
+    t.boolean  "published",    :default => false
     t.datetime "published_at"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.boolean  "for_conference", :default => false
-    t.boolean  "for_festival",   :default => false
   end
 
   create_table "festivals", :force => true do |t|
@@ -34,7 +32,6 @@ ActiveRecord::Schema.define(:version => 20090225020342) do
     t.boolean  "scheduled",       :default => false
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.boolean  "is_conference",   :default => false
     t.datetime "revised_at"
   end
 

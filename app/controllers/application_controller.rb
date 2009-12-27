@@ -30,16 +30,12 @@ class ApplicationController < ActionController::Base
   # from your application log (in this case, all fields with names like "password"). 
   filter_parameter_logging :password
 
-  # What mode are we in?
-  include ConferenceVsFestival
-
   # Make sure we flush CachedModel's cache
   after_filter { CachedModel.cache_reset }
 
   # Do authentication stuff
   include AuthenticatedSystem
-  before_filter :conference_versus_festival,
-                :set_mobile_format,
+  before_filter :set_mobile_format,
                 :login_from_cookie,
                 :admin_check
   
@@ -56,7 +52,7 @@ class ApplicationController < ActionController::Base
     redirect_to login_url and return unless logged_in?
     # logger.info ":id = #{params.inspect}, current_user.admin = #{current_user.admin}, fest_admin = #{current_user.subscriptions.find_by_festival_id(params[:id]).admin rescue "rescued false"}"
     raise(ActiveRecord::RecordNotFound) \
-      unless current_user.admin or (current_user.subscriptions.find_by_festival_id(params[_[:festival_id]] || params[:id]).admin rescue false)
+      unless current_user.admin or (current_user.subscriptions.find_by_festival_id(params[:festival_id] || params[:id]).admin rescue false)
     true
   end
 
@@ -72,7 +68,7 @@ class ApplicationController < ActionController::Base
     # Called by unprivileged operations: does nothing on public festivals, but
     # raises if the festival isn't public and the user doesn't have access.    
     raise(ActiveRecord::RecordNotFound) \
-      unless @festival and (@festival.is_conference == conference_mode) \
+      unless @festival \
         and (@festival.public or \
              (logged_in? and (current_user.admin or \
                               (current_user.subscription_for(@festival).admin \
@@ -104,7 +100,7 @@ class ApplicationController < ActionController::Base
     if (unlimited_if_admin and (current_user.admin rescue false))
       :unlimited
     else
-      _[:festivals].to_sym
+      :published
     end
   end
 

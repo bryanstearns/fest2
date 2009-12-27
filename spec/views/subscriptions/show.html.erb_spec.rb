@@ -2,7 +2,6 @@ require File.expand_path(File.dirname(__FILE__) + '/../../spec_helper')
 
 describe "/subscriptions/show.html.erb" do
   include SubscriptionsHelper
-  include ConferenceVsFestivalHelper
   
   before do
     @festival = mock_model(Festival, :name => "howdy", :dates => "dates",

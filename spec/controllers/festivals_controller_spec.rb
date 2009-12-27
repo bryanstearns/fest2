@@ -6,7 +6,6 @@ describe FestivalsController do
   def make_festival
     venues = []
     @festival = mock_model(Festival, :venues => venues, :public => true,
-                           :is_conference => false, 
                            :screenings => [],
                            :updated_at => Time.zone.now - 1.day)
     @festival.stub!(:to_ical).and_return("ICAL")
@@ -18,8 +17,8 @@ describe FestivalsController do
     venues.stub!(:create).and_return(nil)
     
     Festival.stub!(:new).and_return(@festival)
-    Festival.stub!(:find_by_slug).and_return(@festival)
-    Festival.stub!(:festivals).and_return(@festivals)
+    Festival.stub!(:find_by_slug!).and_return(@festival)
+    Festival.stub!(:published).and_return(@festivals)
   end
   
   describe "in general," do
@@ -46,7 +45,7 @@ describe FestivalsController do
     end
     
     it "should find all public festivals" do
-      Festival.should_receive(:festivals).and_return([@festival])
+      Festival.should_receive(:published).and_return([@festival])
       do_get
     end
     
@@ -73,7 +72,7 @@ describe FestivalsController do
     end
   
     it "should find all festivals" do
-      Festival.should_receive(:festivals).and_return(@festivals)
+      Festival.should_receive(:published).and_return(@festivals)
       do_get
     end
     
@@ -103,7 +102,7 @@ describe FestivalsController do
     end
     
     it "should find the festival requested" do
-      Festival.should_receive(:find_by_slug).and_return(@festival)
+      Festival.should_receive(:find_by_slug!).and_return(@festival)
       do_get
     end
     
@@ -131,7 +130,7 @@ describe FestivalsController do
     end
     
     it "should find the festival requested" do
-      Festival.should_receive(:find_by_slug).and_return(@festival)
+      Festival.should_receive(:find_by_slug!).and_return(@festival)
       do_get
     end
     
@@ -165,7 +164,7 @@ describe FestivalsController do
     end
     
     it "should find the festival requested" do
-      Festival.should_receive(:find_by_slug).and_return(@festival)
+      Festival.should_receive(:find_by_slug!).and_return(@festival)
       do_get_as ordinary_user
     end
     
@@ -234,7 +233,7 @@ describe FestivalsController do
     end
     
     it "should find the festival requested" do
-      Festival.should_receive(:find_by_slug).and_return(@festival)
+      Festival.should_receive(:find_by_slug!).and_return(@festival)
       do_get
     end
     
@@ -249,7 +248,6 @@ describe FestivalsController do
     before do
       login_as admin_user
       make_festival
-      @festival.stub!(:is_conference=)
       @festival.stub!(:to_param).and_return("1")
     end
     
@@ -284,7 +282,7 @@ describe FestivalsController do
     before do
       login_as admin_user
       @festival = mock_model(Festival, :to_param => "1")
-      Festival.stub!(:find_by_slug).and_return(@festival)
+      Festival.stub!(:find_by_slug!).and_return(@festival)
     end
   
     def put_with_successful_update
@@ -298,7 +296,7 @@ describe FestivalsController do
     end
     
     it "should find the festival requested" do
-      Festival.should_receive(:find_by_slug).with("1").and_return(@festival)
+      Festival.should_receive(:find_by_slug!).with("1").and_return(@festival)
       put_with_successful_update
     end
   
@@ -327,7 +325,7 @@ describe FestivalsController do
     before do
       login_as admin_user
       @festival = mock_model(Festival, :destroy => true)
-      Festival.stub!(:find_by_slug).and_return(@festival)
+      Festival.stub!(:find_by_slug!).and_return(@festival)
     end
     
     def do_destroy
@@ -335,7 +333,7 @@ describe FestivalsController do
     end
   
     it "should find the festival requested" do
-      Festival.should_receive(:find_by_slug).with("1").and_return(@festival)
+      Festival.should_receive(:find_by_slug!).with("1").and_return(@festival)
       do_destroy
     end
     

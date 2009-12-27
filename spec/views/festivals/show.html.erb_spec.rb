@@ -2,10 +2,8 @@ require File.dirname(__FILE__) + '/../../spec_helper'
 
 describe "/festivals/show.html.erb" do
   include FestivalsHelper
-  include ConferenceVsFestivalHelper
 
   before do
-    force_festival_mode
     @festival = mock_model(Festival)
     @festival.stub!(:name).and_return("Festival Name")
     @festival.stub!(:dates).and_return("festival dates")

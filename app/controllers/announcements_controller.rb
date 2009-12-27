@@ -29,10 +29,7 @@ class AnnouncementsController < ApplicationController
   # GET /announcements/new
   # GET /announcements/new.xml
   def new
-    @announcement = Announcement.new(
-      :for_festival => !conference_mode, 
-      :for_conference => conference_mode)
-    
+    @announcement = Announcement.new
     respond_to do |format|
       format.html # new.html.erb
       format.xml  { render :xml => @announcement }

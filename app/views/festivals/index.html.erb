@@ -1,9 +1,9 @@
 <%# The (admin) festival list -%>
-<% content_for :title do %><%= _[:Festivals] %><% end %>
+<% content_for :title do %>Festivals<% end %>
 
 <% content_for :header do %>
   <% round_corners :context => self, :width => "100%" do |rc| %>
-    <h3>All <%= _[:Festivals] %></h3>
+    <h3>All Festivals</h3>
   <% end %>
 <% end %>
 
@@ -14,6 +14,6 @@
 </div>
 
 <% if logged_in? and current_user.admin %>
-  <%= link_to("New #{_[:festival]}", poly_new_festival_path) %> |
+  <%= link_to("New festival", new_festival_path) %> |
 <% end %>
 <%= link_to "Back to Home", home_url %>

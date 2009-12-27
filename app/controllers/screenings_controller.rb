@@ -106,7 +106,7 @@ class ScreeningsController < ApplicationController
 
 protected
   def load_film
-    @film = Film.find(params[_[:film_id]], :include => :festival)
+    @film = Film.find(params[:film_id], :include => :festival)
     @festival = @film.festival
     check_festival_access
   end

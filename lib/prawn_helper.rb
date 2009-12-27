@@ -2,8 +2,7 @@
 module PrawnHelper
   class Presenter
     include FestivalsHelper
-    attr_accessor :pdf, :festival, :user, :picks, :orientation, 
-      :conference_mode
+    attr_accessor :pdf, :festival, :user, :picks, :orientation
     attr_accessor :header_height, :footer_height, :column_count,
       :column_gutter, :column_width, :column_height, :column_index, :y
 
@@ -19,7 +18,6 @@ module PrawnHelper
       @user = user
       @picks = picks
       @orientation = options[:orientation] || :landscape
-      @conference_mode = options[:conference_mode] || false
 
       options.each {|k,v| instance_variable_set("@#{k}".to_sym, v)}
 
@@ -173,7 +171,7 @@ module PrawnHelper
     end
 
     def draw_content
-      days(festival, conference_mode, @show_press).each do |day|
+      days(festival, @show_press).each do |day|
         draw_day(day)
       end
       @y -= 3

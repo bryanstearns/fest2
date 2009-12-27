@@ -46,7 +46,7 @@ class QuestionsController < ApplicationController
     @question = Question.new(params[:question])
     saved = @question.save
     
-    Mailer.deliver_got_feedback(@question, _) if saved
+    Mailer.deliver_got_feedback(@question) if saved
 
     respond_to do |format|
       if saved

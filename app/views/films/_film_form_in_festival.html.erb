@@ -21,14 +21,15 @@
       </td>
 			<td>
 				<%= submit_to_remote "save", "Save",
-                             :url => film.new_record? ? poly_festival_films_url(festival) : poly_festival_film_url(festival, film),
-                             :html => { :accesskey => "s" } %>
+              :url => film.new_record? ? festival_films_url(festival) \
+                                       : festival_film_url(festival, film),
+              :html => { :accesskey => "s" } %>
 				<%= link_to_function "Cancel" do |page| 
               page['new_festival_film'].show
               page['festival_film_form'].replace_html ''
             end %>
         <%= link_to_remote "New Film",
-							              :url => poly_new_festival_film_url(festival), 
+							              :url => new_festival_film_url(festival), 
                             :method => "get" unless film.new_record? %>
       </td>
 		</tr>
@@ -38,7 +39,7 @@
 
 <% unless film.new_record? %>
 <%= link_to_remote "New Screening",
-    { :url => poly_new_film_screening_url(@film),
+    { :url => new_film_screening_url(@film),
       :method => "get" },
     { :id => "new_festival_screening" } %>
 

@@ -6,7 +6,6 @@
     </div>
     <div class="date">
 	  <%= announcement.published ? announcement.published_at.to_date.to_s(:long) : 'unpublished' %>
-	  <%= announcement.targets if (current_user.admin rescue false) %>
     </div>
     <%= announcement.contents %>
 <% end %>

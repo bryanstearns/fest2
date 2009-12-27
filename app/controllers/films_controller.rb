@@ -10,10 +10,7 @@ class FilmsController < ApplicationController
   # GET /festivals/1/films
   # GET /festivals/1/films.xml
   def index
-    festival_id = params[_[:festival_id]]
-    raise(ActiveRecord::RecordNotFound) unless festival_id
-    @festival = Festival.find_by_slug(festival_id, :include => :films)
-    raise(ActiveRecord::RecordNotFound) unless @festival.is_conference == conference_mode
+    @festival = Festival.find_by_slug!(params[:festival_id], :include => :films)
     @films = @festival.films
     user_id = logged_in? ? current_user.id : 0
     @picks = Hash.new {|h, film_id| h[film_id] = Pick.new(:user_id => user_id,
@@ -169,7 +166,7 @@ class FilmsController < ApplicationController
 
 protected
   def load_festival
-    @festival = Festival.find_by_slug(params[_[:festival_id]])
+    @festival = Festival.find_by_slug!(params[:festival_id])
     check_festival_access
   end
 end

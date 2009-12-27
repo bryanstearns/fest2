@@ -1,29 +1,26 @@
 ActionController::Routing::Routes.draw do |map|
   map.resources :announcements
 
-  [[:festivals, :films, :screenings],
-   [:conferences, :presentations, :slots]].each do |festz, filmz, screeningz|
-    map.resources festz, :controller => 'festivals', :member => { 
-      :pick_screening => :post, 
-      :reset_rankings => :post,
-      :reset_screenings => :post, 
-    } do |festival|
-      festival.resources filmz, :controller => 'films'
-      festival.resources :venues
-      festival.resource :assistant, :controller => 'subscriptions', 
-        :only => [:show, :update]
-      festival.user '/:other_user_id/:key.:format', :controller => 'festivals', :action => 'show', :method => :get
-    end
-    map.resources filmz, :controller => 'films', :collection => {
-      :amazon => :get,
-      :amazon_lookup => :post,
-    }, :member => {
-      :dvd => :get,
-      :amazon_confirm => :post,
-    } do |film|
-      film.resources screeningz, :controller => 'screenings'
-      film.resources :picks
-    end
+  map.resources :festivals, :controller => 'festivals', :member => { 
+    :pick_screening => :post, 
+    :reset_rankings => :post,
+    :reset_screenings => :post, 
+  } do |festival|
+    festival.resources :films, :controller => 'films'
+    festival.resources :venues
+    festival.resource :assistant, :controller => 'subscriptions', 
+      :only => [:show, :update]
+    festival.user '/:other_user_id/:key.:format', :controller => 'festivals', :action => 'show', :method => :get
+  end
+  map.resources :films, :controller => 'films', :collection => {
+    :amazon => :get,
+    :amazon_lookup => :post,
+  }, :member => {
+    :dvd => :get,
+    :amazon_confirm => :post,
+  } do |film|
+    film.resources :screenings, :controller => 'screenings'
+    film.resources :picks
   end
 
   # The welcome controller provides a few site-global static-like pages

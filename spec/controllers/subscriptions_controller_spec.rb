@@ -5,9 +5,9 @@ describe SubscriptionsController do
   
   def make_festival
     @festival = mock_model(Festival, :public => true, :scheduled => true,
-      :to_param => "slug", :is_conference => false, :id => 1)
+      :to_param => "slug", :id => 1)
     @festival.stub!(:reset_screenings)
-    Festival.stub!(:find_by_slug).and_return(@festival)
+    Festival.stub!(:find_by_slug!).and_return(@festival)
   end
 
   describe "in general," do
@@ -19,7 +19,7 @@ describe SubscriptionsController do
     def make_subscription
       @subscription = mock(Subscription, :user_id => ordinary_user.id, 
         :festival_id => @festival.id, :unselect => "future")
-      controller.current_user.stub!(:subscription_for)\
+      controller.send(:current_user).stub!(:subscription_for)\
         .with(@festival, :create => true).and_return(@subscription)
     end
 
@@ -52,7 +52,7 @@ describe SubscriptionsController do
       end
 
       it "should find the subscription requested" do
-        controller.current_user.should_receive(:subscription_for)\
+        controller.send(:current_user).should_receive(:subscription_for)\
           .with(@festival, :create => true).and_return(@subscription)
         do_get
       end
@@ -64,10 +64,6 @@ describe SubscriptionsController do
     end
 
     describe "handling PUT /festivals/1/films/1" do
-      before(:each) do
-        @film.stub!(:update_attributes).and_return(true)
-      end
-    
       describe "with successful update" do
         def do_put
           @subscription.should_receive(:update_attributes).and_return(true)
@@ -75,7 +71,7 @@ describe SubscriptionsController do
         end
   
         it "should find the subscription requested" do
-          controller.current_user.should_receive(:subscription_for)\
+          controller.send(:current_user).should_receive(:subscription_for)\
             .with(@festival, :create => true).and_return(@subscription)
           do_put
         end

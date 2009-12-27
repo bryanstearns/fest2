@@ -5,10 +5,10 @@
     <td><%= h venue.abbrev %></td>
 		<td>
 				<%= link_to_remote "Edit",
-	          :url => poly_edit_festival_venue_url(festival, venue),
+	          :url => edit_festival_venue_url(festival, venue),
 	          :method => :get %>
 				<%= link_to_remote "Delete",
-	          :url => poly_festival_venue_url(festival, venue),
+	          :url => festival_venue_url(festival, venue),
 	          :method => :delete,
 	          :confirm => "Are you sure you want to delete this venue?" %>			
 		</td>

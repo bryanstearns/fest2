@@ -1,8 +1,8 @@
 xml.instruct! :xml, :version => "1.0"
 xml.rss :version => "2.0" do
   xml.channel do
-    xml.title "#{_[:Festival]}Fanatic.com News"
-    xml.description "What's new on http://#{_[:festival]}fanatic.com"
+    xml.title "FestivalFanatic.com News"
+    xml.description "What's new on http://festivalfanatic.com"
     xml.link announcements_url(:format => :rss)
     
     for announcement in @announcements

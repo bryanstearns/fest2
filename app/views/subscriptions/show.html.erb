@@ -1,10 +1,11 @@
 <%# User settings for a festival -%>
 <% content_for :title do %>Settings for <%= @festival.name %><% end %>
 <% content_for :header do %>
-  <%= render :partial => "festivals/header", :locals => { :festival => @festival, :hide_tabs => conference_mode } %>
+  <%= render :partial => "festivals/header",
+        :locals => { :festival => @festival, :hide_tabs => false } %>
 <% end %>
 
-<% form_for @subscription, :url => poly_festival_assistant_path(@festival) do |f| %>
+<% form_for @subscription, :url => festival_assistant_path(@festival) do |f| %>
   <p>This is the good part: we'll try to build you a schedule that includes as many of your higher-priority films as possible; click the "Schedule Films!" button below to make this happen.</p>
   
   <%= f.error_messages :header_message => "Oops, something went wrong..." %>

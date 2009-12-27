@@ -11,8 +11,8 @@ class WelcomeController < ApplicationController
     @announcement_limit = 2
     @announcements_cache_key = cache_prefix + "/announcements"
     unless read_fragment(@announcements_cache_key)
-      @announcements = Announcement.send(_[:festivals]).find(:all, 
-        :limit => @announcement_limit + 1)
+      @announcements = \
+        Announcement.published.all(:limit => @announcement_limit + 1)
     end
     
     load_amazon_films(3)
@@ -34,15 +34,15 @@ class WelcomeController < ApplicationController
     role = logged_in? \
       ? (current_user.admin ? "admin" : "user") \
       : "guest"
-    "#{_[:festivals]}/welcome/#{Date.today}/#{role}"
+    "welcome/#{Date.today}/#{role}"
   end
 
   def load_amazon_films(limit=nil)
     @amazon_limit = limit
     @amazon_cache_key = cache_prefix + "/amazon"
-    unless read_fragment(@amazon_cache_key)
-      @amazon_films = conference_mode ? [] : Film.on_amazon
-    end
+
+    # Don't do Amazon stuff now - it's broken.
+    @amazon_films = [] #Film.on_amazon unless read_fragment(@amazon_cache_key)
   end
   
 end

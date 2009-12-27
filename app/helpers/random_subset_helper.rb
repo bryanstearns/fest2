@@ -17,7 +17,7 @@ module RandomSubsetHelper
     unless result
       # Gotta render the whole collection (individually), then save the results
       result = collection.map do |c| 
-        controller.render_to_string :partial => partial, :object => c
+        controller.send(:render_to_string, :partial => partial, :object => c)
       end
       controller.write_fragment(cache_key, result)
     end

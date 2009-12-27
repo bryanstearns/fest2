@@ -35,7 +35,7 @@ class SubscriptionsController < ApplicationController
         
       if good
         format.html do
-          redirect_to poly_festival_url(@festival)
+          redirect_to festival_url(@festival)
         end
         format.xml  { head :ok }
       else
@@ -50,7 +50,7 @@ class SubscriptionsController < ApplicationController
 
 protected
   def load_festival
-    @festival = Festival.find_by_slug(params[_[:festival_id]], :include => :screenings)
+    @festival = Festival.find_by_slug!(params[:festival_id], :include => :screenings)
     check_festival_access
   end
 end

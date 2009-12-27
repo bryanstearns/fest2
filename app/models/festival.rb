@@ -30,8 +30,7 @@ class Festival < CachedModel
   # before_save {|festival| festival.slug = festival.name.gsub(/[^a-z0-9]+/i, '-') }
   
   named_scope :unlimited, :conditions => [], :order => "starts desc"
-  named_scope :conferences, :conditions => ['public = ? and is_conference = ?', true, true], :order => "starts desc"
-  named_scope :festivals, :conditions => ['public = ? and is_conference = ?', true, false], :order => "starts desc"
+  named_scope :published, :conditions => ['public = ?', true], :order => "starts desc"
   
   def dates
     startish = "#{Date::MONTHNAMES[starts.month]} #{starts.day}"

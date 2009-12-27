@@ -18,7 +18,7 @@ class UsersController < ApplicationController
     @user.save
     if @user.errors.empty?
       self.current_user = @user
-      Mailer.deliver_new_user(@user, _)
+      Mailer.deliver_new_user(@user)
       redirect_back_or_default('/')
       flash[:notice] = "Thanks for signing up! To help you get started, have a look at the 'frequently-asked-questions' page: click where it says 'FAQ' at the top."
     else
@@ -31,7 +31,7 @@ class UsersController < ApplicationController
       flash[:warning] = "Oops: Fill in your login name, <i>then</i> click the 'click here' link below."
     else
       user = User.find_by_login(params[:login])
-      Mailer.deliver_reset_password(user, _) if user
+      Mailer.deliver_reset_password(user) if user
       flash[:notice] = "We've sent a password-reset link to your registered email address."
     end
     redirect_to login_path

@@ -4,7 +4,7 @@ describe ScreeningsController do
   include AdminUserSpecHelper
 
   def make_film_and_screening
-    @festival = mock_model(Festival, :public => true, :is_conference => false)
+    @festival = mock_model(Festival, :public => true)
     @film = mock_model(Film, :to_param => "1", :festival => @festival)
     Film.stub!(:find).and_return(@film)
     @screening = mock_model(Screening, :to_param => "1", :festival => @festival, :starts => "now")

@@ -4,8 +4,8 @@ describe VenuesController do
   include AdminUserSpecHelper
 
   def make_venue
-    @festival = mock_model(Festival, :public => true, :to_param => "1", :is_conference => false)
-    Festival.stub!(:find_by_slug).and_return(@festival)
+    @festival = mock_model(Festival, :public => true, :to_param => "1")
+    Festival.stub!(:find_by_slug!).and_return(@festival)
     @venue = mock_model(Venue, :to_param => "1", :festival => @festival)
     @venues = [@venue]
     @venues.stub!(:find).and_return(@venue)

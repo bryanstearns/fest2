@@ -5,8 +5,8 @@
 <head>
   <meta http-equiv="content-type" content="text/html;charset=UTF-8" />
   <% title = yield :title -%>
-  <title><%= title %><%= ": " unless title.blank? %><%= _[:Festival] %> Fanatic<%= " (#{ENV['RAILS_ENV']})" if ENV['RAILS_ENV'] != 'production' %></title>
-  <link rel="alternate" type="application/rss+xml" title="<%= _[:Festival] %>Fanatic.com News" href="<%= announcements_url(:format => :rss) %>" />
+  <title><%= title %><%= ": " unless title.blank? %>Festival Fanatic<%= " (#{ENV['RAILS_ENV']})" if ENV['RAILS_ENV'] != 'production' %></title>
+  <link rel="alternate" type="application/rss+xml" title="FestivalFanatic.com News" href="<%= announcements_url(:format => :rss) %>" />
   <%= javascript_include_tag :defaults, "jquery-1.3.2.min", "jquery.form" %>
   <%= stylesheet_link_tag 'style', 'rails_stuff', 'rounded', 'filmlist', 'festedit', :media => 'screen, print' %>
   <%= yield :additional_stylesheets %>
@@ -40,7 +40,7 @@
 <% if logged_in? %>
 <%= current_user.login %> is a 
 <% end %>
-<%= link_to "#{_[:festival]} fanatic!", home_url %>
+<%= link_to "festival fanatic!", home_url %>
 </h1>
 
 <%= yield :header %>

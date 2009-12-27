@@ -9,13 +9,13 @@
       else
         url = amazon[:url] # go direct
       end
-      content = ""
-      content += image_tag(amazon[:image], :height => amazon[:height], 
+      content = []
+      content << image_tag(amazon[:image], :height => amazon[:height], 
         :width => amazon[:width], :title => h(amazon[:title]), :alt =>" ") + "<br/>" \
         if amazon[:image]
-      content += amazon[:title]
+      content << amazon[:title]
     %>
-    <%= link_to content, url, :target => "_blank" %>
+    <%= link_to content.join, url, :target => "_blank" %>
     <%= postamble rescue nil %>
   </li>
 <% else %>

@@ -10,36 +10,34 @@ class Mailer < ActionMailer::Base
     body "This message generated at #{Time.now}."
   end
   
-  def got_feedback(question, _)
-    common_admin_setup "#{_[:Festival]} Fanatic feedback", _
+  def got_feedback(question)
+    common_admin_setup "Festival Fanatic feedback"
     headers 'Reply-To' => question.email
     body :question => question
   end
 
-  def new_user(user, _)
-    common_admin_setup "New #{_[:Festival]} Fanatic user", _
+  def new_user(user)
+    common_admin_setup "New Festival Fanatic user"
     body :user => user
   end
 
-  def reset_password(user, _)
-    common_setup "Reset your #{_[:Festival]}Fanatic.com password", _
+  def reset_password(user)
+    common_setup "Reset your FestivalFanatic.com password"
     recipients user.email
-    bcc "#{_[:festival][0..3]}fan@#{_[:festival]}fanatic.com"
-    body :user => user, :_ => _
+    bcc "festfan@festivalfanatic.com"
+    body :user => user
   end
 
 private
-  def common_setup(subj, _)
-    _ ||= Hash.new { |h, k| k.to_s }
-    from "#{_[:Festival]} Fanatic <#{_[:festival][0..3]}fan@#{_[:festival]}fanatic.com>"
+  def common_setup(subj)
+    from "Festival Fanatic <festfan@festivalfanatic.com>"
     #bcc  "stearns@example.com"
     subj = "[#{RAILS_ENV}] #{subj}" if RAILS_ENV != 'production'
     subject subj
   end
   
-  def common_admin_setup(subj, _=nil)
-    _ ||= Hash.new { |h, k| k.to_s }
-    common_setup(subj, _)
-    recipients "#{_[:festival][0..3]}fan@#{_[:festival]}fanatic.com"
+  def common_admin_setup(subj)
+    common_setup(subj)
+    recipients "festfan@festivalfanatic.com"
   end
 end

@@ -34,16 +34,16 @@ module FestivalsHelper
                 :venues, :venue_viewings, :venue_width
     attr_accessor :page_break_before
     
-    def self.collect(festival, conference_mode, show_press)
+    def self.collect(festival, show_press)
       # Collect & return info about each day's screenings      
       screenings = festival.screenings.with_press(show_press)
       screenings_by_date = screenings.group_by { |s| s.starts.date }
       screenings_by_date.map do |date, screenings| 
-        DayInfo.new(date, screenings, conference_mode, show_press)
+        DayInfo.new(date, screenings, show_press)
       end
     end
     
-    def initialize(date, screenings, conference_mode, show_press)
+    def initialize(date, screenings, show_press)
       @date = date
       @screenings = screenings.sort_by(&:starts)
 
@@ -54,7 +54,7 @@ module FestivalsHelper
       @minutes_long = (@ends - @starts).to_minutes
 
       # Figure out grid geometry
-      @hour_height = conference_mode ? 70.0 : 40.0 # Height of one hour in the grid, in pixels
+      @hour_height = 40.0 # Height of one hour in the grid, in pixels
       @padding_height = 9.0 # Padding we add around the screening
       @minute_height = hour_height / 60.0
       @grid_height = @minutes_long * minute_height
@@ -90,10 +90,10 @@ module FestivalsHelper
     end
   end
   
-  def days(festival, conference_mode, show_press)
+  def days(festival, show_press)
     # Collect & return info about each day's screenings
     today = Date.today
-    days = DayInfo.collect(festival, conference_mode, show_press).sort_by do |d|
+    days = DayInfo.collect(festival, show_press).sort_by do |d|
       d.date # don't sort past days to end; was: d.date + (d.date < today ? 60.days : 0)
     end
     

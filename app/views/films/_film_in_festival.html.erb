@@ -8,10 +8,10 @@
 	            unless film.url_fragment.blank? or festival.film_url_format.blank? %></td>
 			<td>
 				<%= link_to_remote "Edit",
-	          :url => poly_edit_festival_film_url(festival, film),
+	          :url => edit_festival_film_url(festival, film),
 	          :method => :get %>
 				<%= link_to_remote "Delete",
-	          :url => poly_festival_film_url(festival, film),
+	          :url => festival_film_url(festival, film),
 	          :method => :delete,
 	          :confirm => "Are you sure you want to delete \"#{film.name}\"?" %>
 			</td>

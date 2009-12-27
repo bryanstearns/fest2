@@ -5,7 +5,6 @@ describe "/announcements/edit.html.erb" do
   
   before do
     @announcement = mock_model(Announcement, :subject=>"subject", :contents=> "contents",
-                               :for_festival => true, :for_conference => false,
                                :published => true, :published_at => DateTime.now)
     assigns[:announcement] = @announcement
   end

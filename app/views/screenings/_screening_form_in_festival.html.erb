@@ -24,7 +24,9 @@
 		  <td><%= f.check_box :press %></td>
 			<td>
 				<%= submit_to_remote "save", "Save",
-            :url => screening.new_record? ? poly_film_screenings_url(film) : poly_film_screening_url(film, screening) %>
+            :url => screening.new_record? \
+              ? film_screenings_url(film) \
+              : film_screening_url(film, screening) %>
 				<%= link_to_function "Cancel" do |page| 
               page['new_festival_screening'].show
               page['festival_screening_form'].replace_html ''

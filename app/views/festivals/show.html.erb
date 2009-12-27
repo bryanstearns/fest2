@@ -51,7 +51,7 @@ to un-select all your selected screenings and start over.</li>
 which you can print with <a href="http://get.adobe.com/reader/" target="_blank">Adobe Reader</a>. (This is a list format; other formats coming soon).</li>
 <% end %>
 <% if logged_in? && !@read_only %>
-<li>You can <%= link_to 'download this schedule in iCalendar format', poly_festival_path(@festival, :format => :ical) %> (if you don't know what this means, ignore it!).</li>
+<li>You can <%= link_to 'download this schedule in iCalendar format', festival_path(@festival, :format => :ical) %> (if you don't know what this means, ignore it!).</li>
 <% readonly_url = festival_user_url(@festival.to_param, :other_user_id => @displaying_user.to_param,
                                     :key => @displaying_user_subscription.key) %>
 <li>You can share your schedule with your friends by giving them this link:<br/><%= link_to h(readonly_url), readonly_url %></li>
@@ -63,7 +63,7 @@ which you can print with <a href="http://get.adobe.com/reader/" target="_blank">
 <% cache @cache_key do %>
 <div id="days" class="days">
   <%= render :partial => "day", 
-             :collection => days(@festival, conference_mode, @show_press) %>
+             :collection => days(@festival, @show_press) %>
 </div>
 <%= content_tag(:span, "Revised at #{@festival.revised_at.strftime("%H:%M %a, %b %d")}", :class => "revised") if @festival.revised_at %>
 <% end # caching -%>

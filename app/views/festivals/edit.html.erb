@@ -8,8 +8,8 @@
 
 <p>(See the editing hints at the bottom of the page...)</p>
 
-<%= link_to 'Show', poly_festival_path(@festival) %> |
-<%= link_to 'Back', poly_festivals_path %>
+<%= link_to 'Show', festival_path(@festival) %> |
+<%= link_to 'Back', festivals_path %>
 
 <%= error_messages_for :festival %>
 
@@ -80,7 +80,7 @@ function autocomplete_country_for(textbox_id, menu_id) {
 <h2>Films and Screenings</h2>
 
 <%= link_to_remote "New Film",
-    :url => poly_new_festival_film_url(@festival),
+    :url => new_festival_film_url(@festival),
     :method => "get",
     :html => { :id => "new_festival_film",
                :accesskey => "n" } %>
@@ -93,7 +93,7 @@ function autocomplete_country_for(textbox_id, menu_id) {
 <h2>Venues</h2>
 
 <%= link_to_remote "New Venue",
-    { :url => poly_new_festival_venue_url(@festival),
+    { :url => new_festival_venue_url(@festival),
       :method => "get" },
     { :id => "new_festival_venue" } %>
 		

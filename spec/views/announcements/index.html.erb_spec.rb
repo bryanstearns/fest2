@@ -2,16 +2,14 @@ require File.dirname(__FILE__) + '/../../spec_helper'
 
 describe "/announcements/index.html.erb" do
   include AnnouncementsHelper
-  include ConferenceVsFestivalHelper
   
   before(:each) do
-    force_festival_mode
-    
-    announcement_98 = mock_model(Announcement, :subject => "98", :contents => "contents98", 
-                                 :published => true, :published_at => Date.today)
-    announcement_99 = mock_model(Announcement, :subject => "99", :contents => "contents99", 
-                                 :published => true, :published_at => Date.today)
-
+    announcement_98 = mock_model(Announcement, :subject => "98", 
+      :contents => "contents98", :published => true,
+      :published_at => Date.today)
+    announcement_99 = mock_model(Announcement, :subject => "99",
+      :contents => "contents99", :published => true,
+      :published_at => Date.today)
     assigns[:announcements] = [announcement_98, announcement_99]
   end
 
