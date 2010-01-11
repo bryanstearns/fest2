@@ -103,7 +103,7 @@ task :fakefest => :environment do
   user = User.new(:login => "stearns",
                   :password => "xXxXxXxXxXx",
                   :password_confirmation => "xXxXxXxXxXx",
-                  :email => "stearns@festivalfanatic.com")
+                  :email => "stearns@example.com")
   user.admin = true # attr_accessible makes us do this separately
   user.save!
   users = { :stearns => user }
@@ -111,7 +111,7 @@ task :fakefest => :environment do
     user = User.create(:login => login,
                        :password => password,
                        :password_confirmation => password,
-                       :email => "stearns+#{login}@selfamusementpark.com")
+                       :email => "stearns@example.com")
     #puts "User #{user.login} created (#{user.id})"
     users[login.to_sym] = user
   end  

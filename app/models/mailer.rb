@@ -31,6 +31,7 @@ class Mailer < ActionMailer::Base
 private
   def common_setup(subj)
     from "Festival Fanatic <festfan@festivalfanatic.com>"
+    headers 'return-path' => "festfan@festivalfanatic.com"
     #bcc  "stearns@example.com"
     subj = "[#{RAILS_ENV}] #{subj}" if RAILS_ENV != 'production'
     subject subj

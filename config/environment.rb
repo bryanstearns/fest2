@@ -80,7 +80,13 @@ Rails::Initializer.run do |config|
   # BJS: Configure mailer
   config.action_mailer.delivery_method = :smtp
   config.action_mailer.smtp_settings = {
-    :domain => "festivalfanatic.com",
-    :address => "selfamusementpark.com"
+    :tls => true,
+    :address => 'smtp.gmail.com',
+    :port => 587,
+    :domain => 'festivalfanatic.com',
+    :enable_starttls_auto => true,
+    :authentication => :login,
+    :user_name => 'festfan@festivalfanatic.com',
+    :password => 'xXxXxXxXxXx'
   }
 end
