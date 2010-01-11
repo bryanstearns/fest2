@@ -28,10 +28,10 @@ namespace :db do
     `mysql -ufest -pfest #{db_config[RAILS_ENV]["database"]} <tmp/production.sql`
     puts "Migrating"
     Rake::Task['db:migrate'].invoke
+    Rake::Task['db:check'].invoke
     if RAILS_ENV == "development"
       puts "Cloning structure to test"
       Rake::Task['db:test:clone'].invoke
     end
-    Rake::Task['db:check'].invoke
   end
 end
