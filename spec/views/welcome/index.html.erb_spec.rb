@@ -20,7 +20,6 @@ describe "The welcome page" do
     #end
     
     it "should list no festivals" do
-      puts response.body
       response.should have_tag("p", /More .* coming soon/)
     end
   end
