@@ -30,7 +30,7 @@ Rails::Initializer.run do |config|
   config.gem 'system_timer'
   config.gem 'memcache-client', :lib => 'memcache'
   config.gem 'cached_model'
-  config.gem 'prawn'
+  config.gem 'prawn', :version => "0.6.3"
 
   # Only load the plugins named here, in the order given. By default, all plugins 
   # in vendor/plugins are loaded in alphabetical order.
