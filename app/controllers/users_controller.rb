@@ -1,7 +1,9 @@
 class UsersController < ApplicationController
-  # Be sure to include AuthenticationSystem in Application Controller instead
-  # include AuthenticatedSystem
-  
+  before_filter :require_admin, :only => [:index]
+
+  def index
+    @users = User.all(:order => "email")
+  end
 
   # render new.rhtml
   def new
@@ -29,12 +31,18 @@ class UsersController < ApplicationController
   def send_password_reset
     if params[:login].blank?
       flash[:warning] = "Oops: Fill in your login name, <i>then</i> click the 'click here' link below."
-    else
-      user = User.find_by_login(params[:login])
-      Mailer.deliver_reset_password(user) if user
-      flash[:notice] = "We've sent a password-reset link to your registered email address."
+      redirect_to login_path and return
     end
-    redirect_to login_path
+
+    user = User.find_by_login(params[:login])
+    Mailer.deliver_reset_password(user) if user
+    if current_user.try(:admin)
+      flash[:notice] = "Password-reset link sent to #{user.email}"
+      redirect_to users_path
+    else
+      flash[:notice] = "We've sent a password-reset link to your registered email address."
+      redirect_to login_path
+    end
   end
   
   def reset_password
