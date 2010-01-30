@@ -28,6 +28,12 @@ class Mailer < ActionMailer::Base
     body :user => user
   end
 
+  def admin_message(subject, details)
+    common_setup subject
+    recipients "festfan@festivalfanatic.com"
+    body :details => details
+  end
+
 private
   def common_setup(subj)
     from "Festival Fanatic <festfan@festivalfanatic.com>"

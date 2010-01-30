@@ -35,7 +35,13 @@ class UsersController < ApplicationController
     end
 
     user = User.find_by_login(params[:login])
-    Mailer.deliver_reset_password(user) if user
+    if user
+      Mailer.deliver_reset_password(user)
+    else
+      Mailer.deliver_admin_message("Password reset, user not found",
+        "Someone asked to reset their password using the login\n" +
+        "'#{params[:login]}', but no user with this login was found.")
+    end
     if current_user.try(:admin)
       flash[:notice] = "Password-reset link sent to #{user.email}"
       redirect_to users_path
