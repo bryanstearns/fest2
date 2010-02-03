@@ -14,7 +14,7 @@
 		  <td><%= f.text_field :abbrev, :size => 10 %></td>
 			<td>
 				<%= submit_to_remote "save", "Save",
-            :url => venue.new_record? ? poly_festival_venues_url(festival) : poly_festival_venue_url(festival, venue) %>
+            :url => venue.new_record? ? festival_venues_url(festival) : festival_venue_url(festival, venue) %>
 				<%= link_to_function "Cancel" do |page| 
               page['new_festival_venue'].show
               page['festival_venue_form'].replace_html ''
