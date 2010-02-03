@@ -56,6 +56,21 @@ class Festival < CachedModel
   end
   alias_method_chain :to_xml, :options
 
+  def to_csv
+    screenings.sort_by(&:starts).map do |screening|
+      film = screening.film
+      name = film.name
+      name += " #{film.country_names}" unless film.countries.blank?
+      result = [
+        screening.starts.to_s(:csv),
+        screening.venue.abbrev,
+        "\"#{name}\"",
+        screening.ends.to_s(:csv)
+      ]
+      result.join(',')
+    end.join("\n")
+  end
+
   def to_ical(user_id)
     cal = Calendar.new
     screenings = picks.find_all_by_user_id(user_id).map(&:screening).compact.sort_by(&:starts)

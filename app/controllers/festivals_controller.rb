@@ -49,7 +49,9 @@ class FestivalsController < ApplicationController
         if logged_in?
     end
       
-    @show_press = @displaying_user_subscription.show_press rescue false
+    @show_press = params[:with_press] \
+      ? (params[:with_press] == "1") \
+      : (@displaying_user_subscription.show_press rescue false)
     @cache_key = make_cache_key(@show_press)
     
     respond_to do |format|
@@ -76,6 +78,10 @@ class FestivalsController < ApplicationController
 #                             :host => request.host_with_port)  
         end
         render :text => ical_schedule
+      end
+      format.csv do 
+        csv_schedule = @festival.to_csv
+        render :text => csv_schedule
       end
     end
   end
