@@ -23,3 +23,6 @@ unless config.action_controller.consider_all_requests_local
   ExceptionNotifier.exception_recipients = %w(festfan@festivalfanatic.com)
   ExceptionNotifier.sender_address = %("FestivalFanatic" <festfan@festivalfanatic.com>)
 end
+
+FestivalsHelper::ViewingInfo.show_ids = true # Add IDs to grid cells?
+

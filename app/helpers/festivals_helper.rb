@@ -6,6 +6,8 @@ module FestivalsHelper
     # also layout information.
     attr_reader :screening, :film, :space_before, :height, 
                 :other_screenings, :screening_index, :screening_count
+
+    cattr_accessor :show_ids
     
     def initialize(screening, space_before, height, show_press)
       @screening = screening
@@ -24,6 +26,18 @@ module FestivalsHelper
       position = (screening_index == screening_count) ? "last" : screening_index.ordinalize
       return "#{position} of #{screening_count}"
     end    
+
+    def film_name
+      name = film.name
+      name = "[#{film.id}] #{name}" if self.show_ids
+      name
+    end
+
+    def screening_times
+      times = screening.times
+      times = "[#{screening.id}] #{times}" if self.show_ids
+      times
+    end
   end
   
   class DayInfo

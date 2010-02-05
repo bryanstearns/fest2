@@ -6,10 +6,10 @@
                                 :title => "Available on DVD; click for its Amazon.com page"), 
                     :href => dvd_film_url(viewing_info.film), :target => "_blank") if viewing_info.film.amazon_url -%>
   <%= flag_icon_tag viewing_info.film.countries, :class => "flag" %>
-  <span class="name"><%= viewing_info.film.name %></span>
+  <span class="name"><%= viewing_info.film_name %></span>
   
   <div class="screeningtime">
-    <span><%= viewing_info.screening.times %>,</span>
+    <span><%= viewing_info.screening_times %>,</span>
     <span>
       <%= viewing_info.ordinalize %>
       <%= " (press)" if viewing_info.screening.press %>
