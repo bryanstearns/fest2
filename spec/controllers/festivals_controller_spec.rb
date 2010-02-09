@@ -7,8 +7,9 @@ describe FestivalsController do
     venues = []
     @festival = mock_model(Festival, :venues => venues, :public => true,
                            :screenings => [],
-                           :updated_at => Time.zone.now - 1.day)
-    @festival.stub!(:to_ical).and_return("ICAL")
+                           :updated_at => Time.zone.now - 1.day,
+                           :slug => 'slug')
+    @festival.stub!(:to_ics).and_return("ICS")
     @festival.stub!(:to_xml).and_return("XML")
     @festivals = [@festival]
     @festivals.stub!(:to_xml).and_return("XML")
@@ -141,7 +142,7 @@ describe FestivalsController do
     end
   end
 
-  describe "handling GET /festivals/1.ical" do
+  describe "handling GET /festivals/1.ics" do
   
     before do
       make_festival
@@ -149,7 +150,7 @@ describe FestivalsController do
     
     def do_get_as(user)
       login_as user unless user.nil?
-      @request.env["HTTP_ACCEPT"] = "text/icalendar"
+      @request.env["HTTP_ACCEPT"] = "text/calendar"
       get :show, :id => "1"
     end
   
@@ -168,10 +169,10 @@ describe FestivalsController do
       do_get_as ordinary_user
     end
     
-    it "should render the found festival as ical" do
-      #@festival.should_receive(:to_ical).with(any_args).and_return("ICAL")
+    it "should render the found festival as ics" do
+      #@festival.should_receive(:to_ics).with(any_args).and_return("ICS")
       do_get_as ordinary_user
-      response.body.should == "ICAL"
+      response.body.should == "ICS"
     end
   end
 

@@ -5,5 +5,4 @@
 # Mime::Type.register_alias "text/html", :iphone
 
 # BJS: Added:
-Mime::Type.register "text/icalendar", :ical
 Mime::Type.register_alias "text/html", :mobile

@@ -124,4 +124,26 @@ module FestivalsHelper
     
     days
   end
+
+  def readonly_festival_url(format = nil)
+    festival_user_url(@festival.to_param,
+                      :other_user_id => @displaying_user.to_param,
+                      :key => @displaying_user_subscription.key,
+                      :format => format)
+  end
+
+  def icalendar_festival_url
+    readonly_festival_url(:ics)
+  end
+
+  def google_festival_url
+    "http://www.google.com/calendar/render?cid=" + 
+      readonly_festival_url(:ics)
+  end
+
+  def yahoo_festival_url
+    "http://add.my.yahoo.com/content?.intl=us&url=" +
+      readonly_festival_url(:ics)
+  end
+
 end

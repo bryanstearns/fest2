@@ -15,7 +15,7 @@ class FestivalsController < ApplicationController
 
   # GET /festivals/x_2009
   # GET /festivals/x_2009.xml
-  # GET /festivals/x_2009.ical
+  # GET /festivals/x_2009.ics
   # GET /festivals/x_2009/stearns/sekrit
   # GET /festivals/x_2009/stearns/sekrit.xml
   # GET /festivals/x_2009/stearns/sekrit.rss
@@ -53,35 +53,39 @@ class FestivalsController < ApplicationController
       ? (params[:with_press] == "1") \
       : (@displaying_user_subscription.show_press rescue false)
     @cache_key = make_cache_key(@show_press)
+
+    filename = [@festival.slug, 
+                (@displaying_user.to_param rescue nil), 
+                params[:format]].compact.join(".")
     
     respond_to do |format|
       format.html do
         @screening_javascript = screening_settings_to_js(@displaying_user)
         # show.html.erb
       end
-      format.xml  { render :xml => @festival }
+      format.xml do
+        xml_schedule = @festival.to_xml
+        send_data(xml_schedule, :filename => filename,
+                  :type => "application/xml")
+      end
       # format.mobile # show.mobile.erb
       format.pdf do
         @picks = @displaying_user ? @displaying_user.picks.find_all_by_festival_id(@festival.id) : []
-        filename = [@festival.slug, 
-                    (@displaying_user.to_param rescue nil), 
-                    "pdf"].compact.join(".")
         prawnto :prawn => { :skip_page_creation => true },
                 :filename => filename
-        # show.pdf.prawn
       end
-      format.ical do
+      format.ics do
         redirect_to login_url and return unless @displaying_user
-        ical_schedule = @festival.to_ical(@displaying_user.id) do |screening|
+        ics_schedule = @festival.to_ics(@displaying_user.id) do |screening|
           @festival.external_film_url(screening.film) || festival_url(@festival)
 #          film_screening_url(screening.film, screening, 
 #                             :host => request.host_with_port)  
         end
-        render :text => ical_schedule
+        send_data(ics_schedule, :filename => filename, :type => :ics)
       end
       format.csv do 
         csv_schedule = @festival.to_csv
-        render :text => csv_schedule
+        send_data(csv_schedule, :filename => filename, :type => :csv)
       end
     end
   end

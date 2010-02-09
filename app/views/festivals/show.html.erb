@@ -51,10 +51,15 @@ to un-select all your selected screenings and start over.</li>
 which you can print with <a href="http://get.adobe.com/reader/" target="_blank">Adobe Reader</a>. (This is a list format; other formats coming soon).</li>
 <% end %>
 <% if logged_in? && !@read_only %>
-<li>You can <%= link_to 'download this schedule in iCalendar format', festival_path(@festival, :format => :ical) %> (if you don't know what this means, ignore it!).</li>
-<% readonly_url = festival_user_url(@festival.to_param, :other_user_id => @displaying_user.to_param,
-                                    :key => @displaying_user_subscription.key) %>
-<li>You can share your schedule with your friends by giving them this link:<br/><%= link_to h(readonly_url), readonly_url %></li>
+<li>
+  You can <%= link_to 'download this schedule in iCalendar format', 
+                      icalendar_festival_url %>,
+  or add it to your <%= link_to 'Google calendar', google_festival_url,
+                                :target => "_blank" %>
+  or <%= link_to 'My Yahoo! calendar', yahoo_festival_url,
+                 :target => "_blank" %>.
+</li>
+<li>You can share your schedule with your friends by giving them this link:<br/><%= link_to h(readonly_festival_url), readonly_festival_url %></li>
 <% end %>
 </ul>
 <% end %>

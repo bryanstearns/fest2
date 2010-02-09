@@ -55,7 +55,7 @@ context "Festival with fixtures loaded" do
   end
   
   it "should convert itself to icalendar format" do
-    festivals(:intramonth).to_ical(1).should match(/BEGIN:VCALENDAR.*/)
+    festivals(:intramonth).to_ics(1).should match(/BEGIN:VCALENDAR.*/)
   end
   
   it "should provide good URLs for its films" do

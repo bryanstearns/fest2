@@ -60,7 +60,7 @@ class Festival < CachedModel
     screenings.sort_by(&:starts).map do |screening|
       film = screening.film
       name = film.name
-      name += " #{film.country_names}" unless film.countries.blank?
+      name += " (#{film.country_names})" unless film.countries.blank?
       result = [
         screening.starts.to_s(:csv),
         screening.venue.abbrev,
@@ -71,7 +71,7 @@ class Festival < CachedModel
     end.join("\n")
   end
 
-  def to_ical(user_id)
+  def to_ics(user_id)
     cal = Calendar.new
     screenings = picks.find_all_by_user_id(user_id).map(&:screening).compact.sort_by(&:starts)
     screenings.each do |s|
