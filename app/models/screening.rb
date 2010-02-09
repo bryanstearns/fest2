@@ -44,8 +44,10 @@ class Screening < CachedModel
   end
 
   def conflicts_with(other)
-    return (starts < other.ends and ends > other.starts and \
-           festival == other.festival)
+    return false unless festival_id == other.festival_id
+    minimum_start_break = minimum_end_break = 12.minutes
+    return (((starts - other.ends) < minimum_start_break) and \
+            ((ends - other.starts) > -minimum_end_break))
   end
   
   def conflicting_picks(user)

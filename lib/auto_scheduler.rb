@@ -161,11 +161,14 @@ class AutoScheduler
     end.compact.sort_by {|x| x[0] }
   end
   
+=begin
+  # not used
   def resort_prioritized_unselected_picks
     # Sort the picks by priority, then by the number of remaining screenings.
     @prioritized_unselected_picks = @prioritized_unselected_picks.sort_by \
       { |p| ((p.priority||0) * 10) - @film_to_remaining_screenings[p.film].size }
   end
+=end
 
   def go
     scheduled_count = 0
@@ -173,6 +176,7 @@ class AutoScheduler
       resort
       cost, screening, pick = @prioritized_available_screenings.shift || break
       logit "pass #{scheduled_count}: scheduling #{screening.inspect} at #{cost} for #{pick.priority rescue 'nil'}"
+      #debugger
       schedule(pick, screening)
       scheduled_count += 1
     end
