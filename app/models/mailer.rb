@@ -17,7 +17,9 @@ class Mailer < ActionMailer::Base
   end
 
   def new_user(user)
-    common_admin_setup "New Festival Fanatic user"
+    common_setup "Welcome to Festival Fanatic"
+    recipients user.email
+    bcc "festfan@festivalfanatic.com"
     body :user => user
   end
 

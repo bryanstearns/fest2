@@ -1,5 +1,30 @@
 <html>
   <body>
-    <p>New user <b><%=h @user.login %></b> / <%= mail_to @user.email %> signed up!</p>
+    <p>
+      Thanks for signing up at Festival Fanatic! We hope we can help you
+      get more out of your film festival experience.
+    </p>
+
+    <p>
+      For future reference, your login username is '<%= @user.login %>'.
+    </p>
+
+    <p>
+      Please let us know if you have problems with the site, corrections to
+      the schedules we publish, or ideas on how to make the site better.
+    </p>
+
+    <p>
+      Thanks!<br/>
+      ... Bryan Stearns<br/>
+    </p>
+
+    <p>
+      ---<br/>
+      <%= link_to h("festfan@festivalfanatic.com"),
+                  "mailto:festfan@festivalfanatic.com" %><br/>
+      <% link = home_url(:host => "festivalfanatic.com") -%>
+      <%= link_to h(link), link %>
+    </p>
   </body>
 </html>
