@@ -11,10 +11,9 @@
                       :href => dvd_film_url(film), :target => "_blank") if film.amazon_url -%>
   	  <%= content_tag(:div, h(film.description), :class => "description") if film.description -%>
   	  <% 
-  	    now = Time.now
         screenings = show_press ? film.screenings : film.public_screenings
-  	    screenings = screenings.sort_by { |x| x.starts + (x.ends < now ? 10.years : 0) }
   	    unless screenings.empty?
+          screenings = screenings.sort_by(&:starts)
   	  -%>
     	  <div class="screenings">
     	    <label><%= pluralize(screenings.size, "screening") %>:</label>

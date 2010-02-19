@@ -59,12 +59,11 @@ describe "/films/index.html.erb" do
 
   it "should render screenings in order" do
     render "/films/index.html.erb"
-    # Completed screenings should be at the end of the list
     past_index = response.body.index("past: Venue Name")
     current_index = response.body.index("current: Venue Name")
     future_index = response.body.index("future: Venue Name")
+    past_index.should satisfy {|i| i < current_index }
     current_index.should satisfy {|i| i < future_index }
-    future_index.should satisfy {|i| i < past_index }
   end
   
   it "shouldn't render picks unless logged in" do
