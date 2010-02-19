@@ -53,6 +53,6 @@ class Subscription < ActiveRecord::Base
   end
 
   def sharable_path
-    "/festivals/#{festival_id}/#{user.login}/#{key}"
+    "/festivals/#{festival_id}/#{user.username}/#{key}"
   end
 end

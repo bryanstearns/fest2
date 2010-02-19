@@ -29,7 +29,7 @@ module AuthenticatedSystem
     #
     #  # only allow nonbobs
     #  def authorized?
-    #    current_user.login != "bob"
+    #    current_user.username != "bob"
     #  end
     def authorized?
       logged_in?

@@ -132,7 +132,7 @@ module PrawnHelper
     def draw_header
       pdf.header pdf.margin_box.top_left do
         font(:h1) do
-          prefix = "#{user.login} is a " if user
+          prefix = "#{user.username} is a " if user
           pdf.text "#{prefix}festival fanatic!", :align => :left 
           pdf.move_up pdf.font.height
           pdf.text festival.name, :align => :right

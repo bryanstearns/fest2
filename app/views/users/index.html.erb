@@ -7,17 +7,17 @@
 
 <table>
   <tr>
-    <th>Login</th>
+    <th>Username</th>
     <th>Email</th>
     <th></th>
     <th></th>
   </tr>
   <% @users.each do |user| %>
     <tr>
-      <td><%= h(user.login) %><%= " <b>(admin)</b>" if user.admin %></td>
+      <td><%= h(user.username) %><%= " <b>(admin)</b>" if user.admin %></td>
       <td><%= h(user.email) %></td>
       <td><%= link_to "send password reset",
-                      send_password_reset_path(:login => user.login),
+                      send_password_reset_path(:username => user.username),
                       :method => :post %></td>
     </tr>
   <% end -%>

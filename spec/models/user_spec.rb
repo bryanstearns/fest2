@@ -17,10 +17,10 @@ describe User do
     end
   end
 
-  it 'requires login' do
+  it 'requires username' do
     lambda do
-      u = create_user(:login => nil)
-      u.errors.on(:login).should_not be_nil
+      u = create_user(:username => nil)
+      u.errors.on(:username).should_not be_nil
     end.should_not change(User, :count)
   end
 
@@ -51,7 +51,7 @@ describe User do
   end
 
   it 'does not rehash password' do
-    users(:quentin).update_attributes(:login => 'quentin2')
+    users(:quentin).update_attributes(:username => 'quentin2')
     User.authenticate('quentin2', 'test').should == users(:quentin)
   end
 
@@ -129,7 +129,7 @@ describe User do
 
 protected
   def create_user(options = {})
-    record = User.new({ :login => 'quire', :email => 'quire@example.com', :password => 'quire', :password_confirmation => 'quire' }.merge(options))
+    record = User.new({ :username => 'quire', :email => 'quire@example.com', :password => 'quire', :password_confirmation => 'quire' }.merge(options))
     record.save
     record
   end

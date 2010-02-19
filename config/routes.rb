@@ -43,6 +43,7 @@ ActionController::Routing::Routes.draw do |map|
   map.signup '/signup', :controller => 'users', :action => 'new'
   map.login  '/login', :controller => 'session', :action => 'new'
   map.logout '/logout', :controller => 'session', :action => 'destroy'
+  map.forgot_password '/forgot_password', :controller => 'users', :action => 'forgot_password'
   map.send_password_reset '/send_password_reset', :controller => 'users', :action => 'send_password_reset', :method => :post
   map.reset_password '/users/:id/reset_password/:secret', :controller => 'users', :action => 'reset_password', :method => :post
 end

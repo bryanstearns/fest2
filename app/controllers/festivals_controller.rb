@@ -34,10 +34,10 @@ class FestivalsController < ApplicationController
     end
 
     if params[:other_user_id]
-      login = params[:other_user_id]
-      login = "Alejandro_Adams" if login =~ /^Alejandro.*Adams$/
-      login.gsub!('_', ' ')
-      @displaying_user = User.find_by_login(login)
+      username = params[:other_user_id]
+      username = "Alejandro_Adams" if username =~ /^Alejandro.*Adams$/
+      username.gsub!('_', ' ')
+      @displaying_user = User.find_by_username(username)
       raise ActiveRecord::RecordNotFound unless @displaying_user
       @displaying_user_subscription = @displaying_user.subscription_for(@festival, :create => true)
       raise ActiveRecord::RecordNotFound unless @displaying_user_subscription \
@@ -190,7 +190,8 @@ private
     pick_by_film_id = picks.index_by(&:film_id)
     you, youare, youhavenot = (for_user == current_user) \
       ? ["You", "You're", "You haven't"] \
-      : [for_user.login, "#{for_user.login} is", "#{for_user.login} hasn't"]
+      : [for_user.username, "#{for_user.username} is",
+         "#{for_user.username} hasn't"]
 
     # Make the javascript to update the states and tooltips, and to insert
     # the priority symbols

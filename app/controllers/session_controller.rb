@@ -8,7 +8,7 @@ class SessionController < ApplicationController
   end
 
   def create
-    self.current_user = User.authenticate(params[:login], params[:password])
+    self.current_user = User.authenticate(params[:username], params[:password])
     if logged_in?
       if params[:remember_me] == "1"
         current_user.remember_me unless current_user.remember_token?
@@ -17,7 +17,7 @@ class SessionController < ApplicationController
       redirect_back_or_default('/')
       flash[:notice] = "Logged in successfully"
     else
-      flash[:warning] = "Sorry, login and password not recognized"
+      flash[:warning] = "Oops, that's not a recognized username and password."
       @attempt_failed = true
       render :action => 'new'
     end

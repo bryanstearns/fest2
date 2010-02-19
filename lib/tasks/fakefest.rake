@@ -100,20 +100,20 @@ task :fakefest => :environment do
                                :public => true, :scheduled => false)
 
   # Create our users, and subscribe to a couple of festivals
-  user = User.new(:login => "stearns",
+  user = User.new(:username => "stearns",
                   :password => "xXxXxXxXxXx",
                   :password_confirmation => "xXxXxXxXxXx",
                   :email => "stearns@example.com")
   user.admin = true # attr_accessible makes us do this separately
   user.save!
   users = { :stearns => user }
-  [['ebert', 'siskel'], ['siskel', 'ebert']].each do |login, password|
-    user = User.create(:login => login,
+  [['ebert', 'siskel'], ['siskel', 'ebert']].each do |username, password|
+    user = User.create(:username => username,
                        :password => password,
                        :password_confirmation => password,
                        :email => "stearns@example.com")
-    #puts "User #{user.login} created (#{user.id})"
-    users[login.to_sym] = user
+    #puts "User #{user.username} created (#{user.id})"
+    users[username.to_sym] = user
   end  
   users[:ebert].subscriptions.create(:festival => sequelFest, :admin => true)
   users[:ebert].subscriptions.create(:festival => tinyFest)
