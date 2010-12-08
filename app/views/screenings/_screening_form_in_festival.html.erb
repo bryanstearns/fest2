@@ -15,14 +15,15 @@
 		    <%= f.datetime_select :starts %>
         <% javascript_tag do %>
           <%# Enable +/- for screening date; (screening_starts_2i is month, _3i is day) %>
-          Event.observe($('screening_starts_3i'), 'keydown', 
-                        screening_date_key.bindAsEventListener($('screening_starts_3i')));
+          <%# TODO: check jquery version %>
+          jQuery('#screening_starts_3i').keydown(screening_date_key);
         <% end %>
       </td>
 		  <td><%= select 'screening', 'venue_id', 
               festival.venues.collect {|v| [v.name, v.id]} %></td>
 		  <td><%= f.check_box :press %></td>
 			<td>
+              <%# TODO: jQuery-ize this form submission %>
 				<%= submit_to_remote "save", "Save",
             :url => screening.new_record? \
               ? film_screenings_url(film) \

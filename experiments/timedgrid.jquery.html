@@ -1,0 +1,90 @@
+<html>
+  <head>
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.4/jquery.min.js\"></script>
+    <script type="text/javascript">
+      
+    function time_to_pct(tm) {
+      // Grid is 5 hours tall, so that's 300 minutes
+      return tm / 300.0;
+    }
+    
+    function position_timed_element(timedElementID, startTime, duration) {
+      // Convert the times to percentages
+      var startPct = time_to_pct(startTime);
+      var endPct = time_to_pct(startTime + duration);
+      
+      // Get absolute positions of the ends of the range
+      var rangeStart = jQuery('#starttime').offsetTop;
+      var rangeHeight = jQuery('#endtime').offsetTop - rangeStart;
+
+      var timedElement = jQuery('#' + timedElementID);
+      var newTop = rangeStart + (startPct * rangeHeight) - timedElement.offsetTop;
+      var newHeight = ((endPct - startPct) * rangeHeight) - 13;
+      
+      timedElement.setStyle({ left: '0px', 
+                              top: newTop + 'px', 
+                              height: newHeight + 'px' });
+    }
+    
+    jQuery(function() {
+      position_timed_element('e1', 60, 120); // 13:00 - 15:00
+      position_timed_element('e2', 180, 90); // 15:00 - 16:30
+      position_timed_element('e3', 0, 90); // 12:00 - 13:30
+      position_timed_element('e4', 135, 105); // 14:15 - 16:00
+    });
+    </script>
+    <style>
+      table.grid {
+        border: thin solid red;
+        overflow: hidden;
+      }
+      table.grid td {
+        vertical-align: top;
+      }
+      td.times div {
+        font-size: 12px;
+        font-weight: bold;
+        color: #888;
+        position: relative;
+        height: 40px;
+        text-align: right;
+      }
+      #endtime {
+        height: 1em;
+      }
+      div.timed {
+        position: relative;
+        background: #bbb;
+        border: thin solid #666;
+        padding: 5px;
+      }
+    </style>
+  </head>
+  <body>
+    <table class="grid">
+      <tr>
+        <th>&nbsp;</th>
+        <th>A</th>
+        <th>B</th>
+      </tr>
+      <tr>
+        <td class="times">
+          <div id="starttime">12:00:</div>
+          <div>1:00:</div>
+          <div>2:00:</div>
+          <div>3:00:</div>
+          <div>4:00:</div>
+          <div id="endtime">5:00:</div>
+        </td>
+        <td class="timedevents">
+          <div id="e1" class="timed">1:00-3:00</div>
+          <div id="e2" class="timed">3:00-4:30</div>
+        </td>
+        <td class="timedevents">
+          <div id="e3" class="timed">12:00-1:30</div>
+          <div id="e4" class="timed">2:15-4:00</div>
+        </td>
+      </tr>
+    </table>
+  </body>
+</html>

@@ -42,8 +42,8 @@ function screening_date_key(e) {
       return;
   }
   var day = parseInt(this.value);
-  var month = parseInt($('screening_starts_2i').value);
-  var year = parseInt($('screening_starts_1i').value);
+  var month = parseInt(jQuery('#screening_starts_2i').val);
+  var year = parseInt(jQuery('#screening_starts_1i').val);
   <%# window.status = "delta = " + delta + ", day = " + day + ", month = " + month + ", dim = " + days_in_month(month, year); %>
   if (day == 1 && delta == -1) { <%# Back a month %>
     if (month == 1) {
@@ -60,16 +60,17 @@ function screening_date_key(e) {
       month += 1;
     day = 1;
   } else { <%# just adjust within the month %>
-    $('screening_starts_3i').value = day + delta;
+    jQuery('#screening_starts_3i').val(day + delta);
     return;
   }
   <%# Change month & maybe year, & reset the day-of-month value %>
-  $('screening_starts_3i').value = day;
-  $('screening_starts_2i').value = month;
-  $('screening_starts_1i').value = year;
+  jQuery('#screening_starts_3i').val(day);
+  jQuery('#screening_starts_2i').val(month);
+  jQuery('#screening_starts_1i').val(year);
 }
 
 // Autocompletion for country names
+// TODO: jQueryize
 function autocomplete_country_for(textbox_id, menu_id) {
   return new Autocompleter.Local(textbox_id, menu_id,
     <%= Countries::NAMES.to_json %>,

@@ -77,7 +77,10 @@ class ApplicationController < ActionController::Base
     false # for now; was: request.user_agent =~ /(Mobile.+Safari)/
   end
   def set_mobile_format
-    request.format = :mobile if is_mobile_request?
+    if is_mobile_request?
+      Rails.logger.info("Handling request as _mobile_!")
+      request.format = :mobile
+    end
   end
 
   # Give access to some view helpers from within controllers;
