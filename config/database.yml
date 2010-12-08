@@ -1,4 +1,5 @@
 <%
+  require 'fileutils'
   project_name = 'fest'
   path = FileUtils.pwd.split('/')
   database_name = (path[-2] == "releases") ? path[-3].gsub('.','_') : path[-1]
