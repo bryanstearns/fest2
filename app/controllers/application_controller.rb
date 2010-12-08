@@ -22,9 +22,6 @@ class ApplicationController < ActionController::Base
     %w[xml pdf].any? {|fmt| c.request.format.to_s.include?(fmt) } \
     ) ? false : "standard-layout" }
   
-  # Tell me when I'm hosed
-  include ExceptionNotifiable
-
   # See ActionController::Base for details 
   # Uncomment this to filter the contents of submitted sensitive data parameters
   # from your application log (in this case, all fields with names like "password"). 
@@ -110,6 +107,7 @@ class ApplicationController < ActionController::Base
 #    raise(NonAjaxEditsNotSupported) if request.format == Mime::HTML
 #  end
   
+=begin
   def rescue_action_in_public(exception)
     # We override ExceptionNotifiable's version of this, to force redirection
     # in all cases to our oops page (after sending mail just the way it does,
@@ -141,6 +139,7 @@ class ApplicationController < ActionController::Base
       redirect_to oops_url
     end
   end
+=end
 
   # Override local_request? to always return false, per
   # http://www.semergence.com/2006/12/01/when-local-is-remote-in-rails-and-other-tales-of-eccentric-error-enforcement/
