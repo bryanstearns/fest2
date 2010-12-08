@@ -19,6 +19,8 @@ module PrawnHelper
       @picks = picks
       @orientation = options[:orientation] || :landscape
 
+      # @debug = true
+
       options.each {|k,v| instance_variable_set("@#{k}".to_sym, v)}
 
       @font_size = 8
@@ -42,8 +44,8 @@ module PrawnHelper
     end
 
     def setup
-      @header_height = 15
-      @footer_height = 15
+      @header_height = 25
+      @footer_height = 0
       @column_count = (orientation == :landscape) ? 4 : 3
       @column_gutter = 4 
       @column_width = (pdf.margin_box.width - \
@@ -53,13 +55,11 @@ module PrawnHelper
       @small_adj = font(:plain).ascender - font(:small).ascender
 
       @column_index = -1
-      next_column(:initial)
-    end
 
-    def draw
-      draw_header
-      draw_footer
-      draw_content
+      @pdf.repeat :all do
+        draw_header
+      end
+      next_column(:initial)
     end
 
     def start_page
@@ -130,32 +130,27 @@ module PrawnHelper
     end
 
     def draw_header
-      pdf.header pdf.margin_box.top_left do
+      # pdf.header pdf.margin_box.top_left do
+      @y = pdf.margin_box.top
         font(:h1) do
           prefix = "#{user.username} is a " if user
-          pdf.text "#{prefix}festival fanatic!", :align => :left 
+          pdf.text "#{prefix}festival fanatic!", :align => :left
           pdf.move_up pdf.font.height
           pdf.text festival.name, :align => :right
         end
         hr("aaaaaa")
-      end
-    end
 
-    def draw_footer
-      fest_date = (festival.revised_at || festival.modified_at).to_s(:full)
-      #user_date = picks.max(&:updated_at).to_s(:full)
+      as_of = (picks.map(&:updated_at) + [festival.revised_at])\
+              .compact.max.to_s(:full)
 
-      pdf.footer [pdf.margin_box.left, 
-                  pdf.margin_box.bottom + footer_height] do
-        hr("aaaaaa")
-        font(:small) do
-          pdf.move_down(2)
-          pdf.text "http://festivalfanatic.com/", :align => :left
-          pdf.move_up(pdf.font.height)
-          pdf.text "festival as of #{fest_date}", # choices as of #{user_date}"
-            :align => :right
-        end
+      font(:small) do
+        pdf.move_down(2)
+        pdf.text "http://festivalfanatic.com/", :align => :left
+        pdf.move_up(pdf.font.height)
+        # pdf.text "festival as of #{fest_date}", # choices as of #{user_date}"
+        pdf.text "as of #{as_of}", :align => :right
       end
+      # end
     end
 
     def next_column(reason)
@@ -170,7 +165,7 @@ module PrawnHelper
       @right = @left + column_width
     end
 
-    def draw_content
+    def draw
       days(festival, @show_press).each do |day|
         draw_day(day)
       end

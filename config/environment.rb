@@ -30,7 +30,8 @@ Rails::Initializer.run do |config|
   config.gem 'system_timer'
   config.gem 'memcache-client', :lib => 'memcache'
   config.gem 'cached_model'
-  config.gem 'prawn', :version => "0.6.3"
+  config.gem 'prawn', :version => "0.8.4"
+  config.gem 'prawnto', :version => "0.0.4"
   config.gem 'icalendar', :version => "1.1.0"
   config.gem 'hoptoad_notifier', :version => "2.3.12"
   config.gem 'haml', :version => "3.0.24"
