@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20100219030735) do
+ActiveRecord::Schema.define(:version => 20101208043821) do
 
   create_table "announcements", :force => true do |t|
     t.string   "subject",                         :null => false
@@ -50,11 +50,13 @@ ActiveRecord::Schema.define(:version => 20100219030735) do
   end
 
   create_table "picks", :force => true do |t|
-    t.integer "user_id",      :null => false
-    t.integer "film_id",      :null => false
-    t.integer "festival_id",  :null => false
-    t.integer "screening_id"
-    t.integer "priority"
+    t.integer  "user_id",      :null => false
+    t.integer  "film_id",      :null => false
+    t.integer  "festival_id",  :null => false
+    t.integer  "screening_id"
+    t.integer  "priority"
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "questions", :force => true do |t|
@@ -88,12 +90,14 @@ ActiveRecord::Schema.define(:version => 20100219030735) do
   add_index "sessions", ["updated_at"], :name => "index_sessions_on_updated_at"
 
   create_table "subscriptions", :force => true do |t|
-    t.integer "festival_id",                                   :null => false
-    t.integer "user_id",                                       :null => false
-    t.boolean "admin",                      :default => false
-    t.boolean "show_press"
-    t.text    "restrictions"
-    t.string  "key",          :limit => 10
+    t.integer  "festival_id",                                   :null => false
+    t.integer  "user_id",                                       :null => false
+    t.boolean  "admin",                      :default => false
+    t.boolean  "show_press"
+    t.text     "restrictions"
+    t.string   "key",          :limit => 10
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "users", :force => true do |t|
@@ -110,9 +114,11 @@ ActiveRecord::Schema.define(:version => 20100219030735) do
   end
 
   create_table "venues", :force => true do |t|
-    t.integer "festival_id", :null => false
-    t.string  "name"
-    t.string  "abbrev"
+    t.integer  "festival_id", :null => false
+    t.string   "name"
+    t.string   "abbrev"
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
 end
