@@ -33,6 +33,7 @@ Rails::Initializer.run do |config|
   config.gem 'prawn', :version => "0.6.3"
   config.gem 'icalendar', :version => "1.1.0"
   config.gem 'hoptoad_notifier', :version => "2.3.12"
+  config.gem 'haml', :version => "3.0.24"
 
   # Only load the plugins named here, in the order given. By default, all plugins 
   # in vendor/plugins are loaded in alphabetical order.
