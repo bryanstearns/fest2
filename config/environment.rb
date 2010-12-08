@@ -31,6 +31,7 @@ Rails::Initializer.run do |config|
   config.gem 'memcache-client', :lib => 'memcache'
   config.gem 'cached_model'
   config.gem 'prawn', :version => "0.6.3"
+  config.gem 'icalendar', :version => "1.1.0"
   config.gem 'hoptoad_notifier', :version => "2.3.12"
 
   # Only load the plugins named here, in the order given. By default, all plugins 
