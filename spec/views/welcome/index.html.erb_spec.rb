@@ -5,8 +5,6 @@ describe "The welcome page" do
     assigns[:festivals] = []
     assigns[:announcements] = []
     assigns[:announcement_limit] = 2
-    assigns[:amazon_films] = []
-    assigns[:amazon_limit] = 2    
   end
   
   describe "logged out and without festivals" do
@@ -57,24 +55,6 @@ describe "The welcome page" do
       # template.should_receive(:logged_in?).and_return(false)
       render 'welcome/index'
       response.should have_tag("ul.announcements")
-    end
-  end
-  
-  describe "with Amazon ads" do
-    it "should show the ads" do
-      template.should_receive(:render_random_subset_with_caching)\
-              .and_return(["advertizement"])
-      render 'welcome/index'
-      response.should have_tag("div.ad_section", /advertizement/)
-    end
-  end
-
-  describe "without Amazon ads" do
-    it "should not show any ads" do
-      template.should_receive(:render_random_subset_with_caching)\
-              .and_return([])
-      render 'welcome/index'
-      response.should_not have_tag("div.ad_section")
     end
   end
 end

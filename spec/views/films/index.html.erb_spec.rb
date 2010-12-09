@@ -33,13 +33,11 @@ describe "/films/index.html.erb" do
       mock_model(Film, :name => "Last Film", :id => 1, :minutes => 58, :festival => festival,
                  :screenings => screenings, :public_screenings => screenings, 
                  :description => nil, :sort_name => "Last Film",
-                 :countries => nil, :country_names => "",
-                 :amazon_asin => "blah", :amazon_confirmed => false, :amazon_url => "x"),
+                 :countries => nil, :country_names => ""),
       mock_model(Film, :name => "The First Film", :id => 2, :minutes => 90, :festival => festival, 
                  :screenings => [], :public_screenings => [],
                  :description => "This would be a description of the film.",
-                 :sort_name => "First Film", :countries => "dk", :country_names => "Denmark",
-                 :amazon_asin => "blah", :amazon_confirmed => false, :amazon_url => "x"),
+                 :sort_name => "First Film", :countries => "dk", :country_names => "Denmark"),
     ]
     assigns[:films] = films
     

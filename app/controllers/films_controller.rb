@@ -1,11 +1,9 @@
 class FilmsController < ApplicationController
   before_filter :require_admin_subscription, :except => [ 
-    :index, :show, :dvd
+    :index, :show
   ]
   # before_filter :disallow_html_edits, :except => [ :index, :show ]
-  before_filter :load_festival, :except => [ 
-    :index, :dvd, :amazon, :amazon_lookup, :amazon_confirm 
-  ]
+  before_filter :load_festival, :except => [ :index ]
   
   # GET /festivals/1/films
   # GET /festivals/1/films.xml
@@ -102,66 +100,6 @@ class FilmsController < ApplicationController
       format.js # destroy.rjs
       format.xml  { head :ok }
     end
-  end
-
-  # GET /films/amazon
-  def amazon
-    films = Film.find(:all, :include => :festival, 
-                       :conditions => ['amazon_url is not null or amazon_data is not null'])
-    @festivals = films.group_by(&:festival)
-  end
-
-  # POST /films/amazon_lookup
-  def amazon_lookup
-    @festivals = Festival.find(:all, :include => :films)
-    @festivals.each do |fest|
-      fest.films.each do |film|
-        if film.amazon_url.blank?
-          results = Amazon::lookup(film.name)
-          if results
-            film.amazon_data = results.to_yaml
-            film.save!
-          end
-        end
-      end
-    end
-    redirect_to :action => "amazon"
-  end
-
-  # POST /films/1/amazon_confirm?choice=[cancel,accept,reject]
-  def amazon_confirm
-    @film = Film.find(params[:id])
-    case params[:choice]
-      when "cancel"
-        @film.amazon_ad = @film.amazon_url = nil
-      when "delete"
-        @film.amazon_data = nil
-      else
-        info = YAML.load(@film.amazon_data).detect { |d| d[:asin] == params[:choice] }
-        @film.amazon_ad = YAML.dump(info)
-        @film.amazon_url = info[:url]
-    end
-    updated = @film.save
-    
-    respond_to do |format|
-      format.html { raise NonAjaxEditsNotSupported }
-      format.js do
-        render :update do |page|
-          if updated
-            page.replace dom_id(@film), :partial => 'films/film_at_amazon', :object => @film
-          else
-            page.alert flash[:notice]
-            flash.discard
-          end
-        end
-      end
-    end
-  end
-
-  def dvd
-    @film = Film.find(params[:id])
-    raise(ActiveRecord::RecordNotFound) unless @film and @film.amazon_url
-    redirect_to @film.amazon_url
   end
 
 protected

@@ -7,8 +7,6 @@
     <td>
   	  <%= link_to_film film, :target => "_blank", :class => "name" %>
   	  <span class="duration">(<%= film.minutes %> minutes<%= ", #{film.country_names('/')}" unless film.countries.blank? %>)</span>
-	  <%= content_tag(:a, image_tag("fam3silk/dvd.png", :class => "dvd", :alt => "DVD", :title => "Available on DVD; click for its Amazon.com page"), 
-                      :href => dvd_film_url(film), :target => "_blank") if film.amazon_url -%>
   	  <%= content_tag(:div, h(film.description), :class => "description") if film.description -%>
   	  <% 
         screenings = show_press ? film.screenings : film.public_screenings

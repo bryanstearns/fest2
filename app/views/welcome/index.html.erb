@@ -13,19 +13,6 @@
   <% end %>
 <% end %>
 
-<% amazon_choices = render_random_subset_with_caching(@controller, 
-                      @amazon_films, @amazon_limit, "films/amazon", 
-                      @amazon_cache_key) %>
-<% unless amazon_choices.empty? %>
-<div class="ad_section">
-  <iframe src="http://rcm.amazon.com/e/cm?t=festivalfcom-20&o=1&p=20&l=ur1&category=dvd&banner=130ZQ0QAXHY8DR8Z9GR2&f=ifr" width="120" height="90" scrolling="no" border="0" marginwidth="0" style="border:none;" frameborder="0"></iframe>
-  These festival films are available on DVD from Amazon:
-  <ul>
-  <%= amazon_choices.join("\n") %>
-  </ul>
-</div>
-<% end %>
-
 <% cache @festivals_cache_key do %>
 <div class="festival_section">
   <% 
@@ -69,5 +56,5 @@
 <% end %>
 
 <div id="copyright">
-  Copyright &copy; 2007-2009 The Thomas Eliot Company; all rights reserved.
+  Copyright &copy; 2007-2010 Bryan Stearns; all rights reserved.
 </div>

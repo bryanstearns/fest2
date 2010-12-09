@@ -12,13 +12,7 @@ ActionController::Routing::Routes.draw do |map|
       :only => [:show, :update]
     festival.user '/:other_user_id/:key.:format', :controller => 'festivals', :action => 'show', :method => :get
   end
-  map.resources :films, :controller => 'films', :collection => {
-    :amazon => :get,
-    :amazon_lookup => :post,
-  }, :member => {
-    :dvd => :get,
-    :amazon_confirm => :post,
-  } do |film|
+  map.resources :films, :controller => 'films' do |film|
     film.resources :screenings, :controller => 'screenings'
     film.resources :picks
   end
@@ -29,7 +23,6 @@ ActionController::Routing::Routes.draw do |map|
     m.about '/about', :action => "about"
     m.community '/community', :action => "community" # for now...
     m.faq '/faq', :action => "faq"
-    m.dvds '/dvds', :action => "dvds"
     m.oops '/oops', :action => "oops"
   end
 

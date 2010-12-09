@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20101208043821) do
+ActiveRecord::Schema.define(:version => 20101209004601) do
 
   create_table "announcements", :force => true do |t|
     t.string   "subject",                         :null => false
@@ -44,9 +44,6 @@ ActiveRecord::Schema.define(:version => 20101208043821) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "countries"
-    t.text     "amazon_data"
-    t.text     "amazon_ad"
-    t.string   "amazon_url"
   end
 
   create_table "picks", :force => true do |t|

@@ -10,8 +10,6 @@ class Film < CachedModel
   validates_presence_of :duration
   validates_presence_of :festival_id
 
-  named_scope :on_amazon, :conditions => 'amazon_ad is not null'
-
   def minutes
     self[:duration] && (self[:duration] / 60)
   end

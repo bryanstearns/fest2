@@ -2,9 +2,6 @@
 <div id="screening-<%= viewing_info.screening.id %>"
      class="screening unranked"
      style="height: <%= viewing_info.height %>px; margin-top: <%= viewing_info.space_before %>px">
-  <%= content_tag(:a, image_tag("fam3silk/dvd.png", :class => "flag dvd", :alt => "DVD", 
-                                :title => "Available on DVD; click for its Amazon.com page"), 
-                    :href => dvd_film_url(viewing_info.film), :target => "_blank") if viewing_info.film.amazon_url -%>
   <%= flag_icon_tag viewing_info.film.countries, :class => "flag" %>
   <span class="name"><%= viewing_info.film_name %></span>
   
