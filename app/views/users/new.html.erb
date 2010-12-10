@@ -1,13 +1,10 @@
 <% content_for :title do %>Sign up<% end %>
-<% content_for :header do %>
-  <% round_corners :width => "100%" do |rc| %>
-    <h2>Sign up!</h2>
-    <ul style="margin: 0px; padding-bottom: 10px;">
-      <li>Your email address is required, but we'll only use it to contact you about this site; 
-          we'll never sell it or give it to anyone else.</li>
-    </ul>
-  <% end %>
-<% end %>
+
+<h2>Sign up!</h2>
+<ul style="margin: 0px; padding-bottom: 10px;">
+  <li>Your email address is required, but we'll only use it to contact you about this site; 
+      we'll never sell it or give it to anyone else.</li>
+</ul>
 
 <%= error_messages_for :user %>
 

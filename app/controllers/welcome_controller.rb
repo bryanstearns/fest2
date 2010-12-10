@@ -5,7 +5,16 @@ class WelcomeController < ApplicationController
 
     @festivals_cache_key = cache_prefix
     unless read_fragment(@festivals_cache_key)
-      @festivals = Festival.send(find_scope(false))
+      @have_old = false
+      @festivals = Festival.send(find_scope(false)).inject([]) do |a, f|
+        a << if f.ends < today
+          @have_old = true
+          nil
+        else
+          f
+        end
+        a
+      end.compact
     end
 
     @announcement_limit = 2

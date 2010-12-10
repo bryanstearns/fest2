@@ -1,17 +1,14 @@
 <% content_for :title do %>Log in<% end %>
-<% content_for :header do %>
-  <% round_corners :width => "100%" do |rc| %>
-    <h2>Welcome back</h2>
-    <ul style="margin: 0px; padding-bottom: 10px;">
-      <li>New here? Use the 
-          <%= link_to "Signup Page", signup_url %>
-          to set up your username and password.</li>
-      <li> Forgot your username or password?
-          <%= link_to "Click here", forgot_password_path %>
-          and we'll help you out.</li>
-    </ul>
-  <% end %>
-<% end %>
+
+<h2>Welcome back</h2>
+<ul style="margin: 0px; padding-bottom: 10px;">
+  <li>New here? Use the 
+      <%= link_to "Signup Page", signup_url %>
+      to set up your username and password.</li>
+  <li> Forgot your username or password?
+      <%= link_to "Click here", forgot_password_path %>
+      and we'll help you out.</li>
+</ul>
 
 <% form_tag session_path, :id => "login_form" do -%>
 

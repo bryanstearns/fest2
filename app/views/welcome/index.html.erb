@@ -1,41 +1,40 @@
-<% content_for :header do %>
-  <% round_corners :width => "100%" do |rc| %>
-    <h2>Get more out of your film festival experience!</h2>
-    See more of the movies you want to see... it's as easy as 1 - 2 - 3:
-    <ol style="margin: 0px; padding-bottom: 10px;">
-      <li>Prioritize films</li>
-      <li>Tell us when you're available, and we'll find screenings for you automatically</li>
-      <li>Browse your schedule (soon: on your smartphone, too)</li>
-    </ol>
-    <% unless logged_in? %>
-    <%= link_to "Sign up", signup_url %> or <%= link_to "Log in", login_url %> to get started!
-    <% end %>
+<div class="summary">
+  <h2>Get more out of your film festival experience!</h2>
+  <p>See more of the movies you want to see... it's as easy as 1 - 2 - 3:</p>
+  <ol id="steps">
+    <li>
+      Prioritize films
+      <img src="images/prioritize.png" alt="prioritizing films" />
+    </li>
+    <li>
+      Tell us when you're available, and we'll find screenings for you automatically
+      <img src="images/availability.png" alt="setting availability" />
+    </li>
+    <li>
+      Browse your schedule (soon: on your smartphone, too)
+      <img src="images/schedule.png" alt="browsing schedule" />
+    </li>
+  </ol>
+
+  <% get_started_content = capture do %>
+    Get Started
   <% end %>
-<% end %>
+  <%= link_to get_started_content, signup_url %>
+  <span>or <%= link_to "log in", login_url %> if you already have an account</span>
+</div>
 
 <% cache @festivals_cache_key do %>
 <div class="festival_section">
-  <% 
-  today = Date.today
-  have_old = false
-  show_festivals = []
-  @festivals.each do |f|
-    if f.ends < today
-      have_old = true
-    else
-      show_festivals << f
-    end
-  end
-  if show_festivals.empty? %>
+  <% if @festivals.empty? %>
   <p>More festivals coming soon; if you're interested in one in particular, tell us about it on the feedback page.</p>
-    <% if have_old %>
+    <% if @have_old %>
     <p><%= link_to "Click here", festivals_url %> to see past festivals.</p>
     <% end %>
   <% else %>
   <h3>Click an upcoming festival:</h3>
   <ul id="upcomingfestivals">
-  <%= render :partial => 'festivals/festival', :collection => show_festivals.sort_by {|f| f.starts } %>
-    <% if have_old %>
+  <%= render :partial => 'festivals/festival', :collection => @festivals.sort_by {|f| f.starts } %>
+    <% if @have_old %>
   <li><%= link_to "Click here", festivals_url %> to see past festivals</li>
     <% end %>
   </ul>

@@ -1,11 +1,7 @@
 <%# Edit an existing festival: /festivals/x/edit -%>
-<% content_for :title do %>Edit <%= @festival.name %><% end %>
-<% content_for :header do %>
-  <% round_corners :context => self, :width => "100%" do |rc| %>
-    Editing <%= h(@festival.name) %>
-  <% end %>
-<% end %>
+<% content_for :title do %>Edit <%= h @festival.name %><% end %>
 
+<h2>Editing <%= h(@festival.name) %></h2>
 <p>(See the editing hints at the bottom of the page...)</p>
 
 <%= link_to 'Show', festival_path(@festival) %> |
