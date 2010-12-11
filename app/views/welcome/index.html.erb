@@ -1,18 +1,19 @@
+
 <div class="summary">
   <h2>Get more out of your film festival experience!</h2>
   <p>See more of the movies you want to see... it's as easy as 1 - 2 - 3:</p>
   <ol id="steps">
     <li>
       Prioritize films
-      <img src="images/prioritize.png" alt="prioritizing films" />
+      <img src="images/prioritize.png" alt="prioritizing films" width="128" height="96" />
     </li>
     <li>
       Tell us when you're available, and we'll find screenings for you automatically
-      <img src="images/availability.png" alt="setting availability" />
+      <img src="images/availability.png" alt="setting availability" width="128" height="96" />
     </li>
     <li>
       Browse your schedule (soon: on your smartphone, too)
-      <img src="images/schedule.png" alt="browsing schedule" />
+      <img src="images/schedule.png" alt="browsing schedule" width="128" height="96" />
     </li>
   </ol>
 
@@ -22,6 +23,8 @@
   <%= link_to get_started_content, signup_url %>
   <span>or <%= link_to "log in", login_url %> if you already have an account</span>
 </div>
+
+<% if false %>
 
 <% cache @festivals_cache_key do %>
 <div class="festival_section">
@@ -53,6 +56,8 @@
 </div>
   <% end %>
 <% end %>
+
+<% end  %>
 
 <div id="copyright">
   Copyright &copy; 2007-2010 Bryan Stearns; all rights reserved.
