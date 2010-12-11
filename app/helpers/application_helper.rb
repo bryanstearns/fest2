@@ -25,6 +25,21 @@ module ApplicationHelper
     end
   end
 
+  def stylesheet_includes(jquery_ui_version)
+    families = %w[Lobster]
+    results = ["<link rel=\"stylesheet\" type=\"text/css\" " +
+               "href=\"http://fonts.googleapis.com/css?family=#{families.join('|')}\">"]
+
+    results += [
+      stylesheet_link_tag('compiled/screen', :media => 'screen, projection'),
+      stylesheet_link_tag('compiled/print', :media => 'print'),
+      "<!--[if IE 6]>",
+      stylesheet_link_tag('compiled/ie', :media => 'screen, projection'),
+      "<![endif]-->"
+    ]
+    results.join("\n")
+  end
+
   def javascript_includes(jquery_version, jquery_ui_version)
     javascripts = []
     script_includes = []

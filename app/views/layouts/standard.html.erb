@@ -19,13 +19,8 @@
         title="FestivalFanatic.com News" 
         href="<%= announcements_url(:format => :rss) %>" />
 
-  <%= stylesheet_link_tag 'compiled/screen', :media => 'screen, projection' %>
-  <%= stylesheet_link_tag 'compiled/print', :media => 'print' %>
-  <!--[if IE 6]>
-  <%= stylesheet_link_tag 'compiled/ie', :media => 'screen, projection' %>
-  <![endif]-->
+  <%= stylesheet_includes(jquery_ui_version) %>
   <%= yield :additional_stylesheets %>
-
   <%= javascript_includes(jquery_version, jquery_ui_version) %>
   <script type="text/javascript">
     jQuery.noConflict();
