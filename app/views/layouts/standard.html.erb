@@ -30,7 +30,7 @@
     <%= @content_for_more_page_scripts %>
   </script>
 </head>
-<body>
+<%= tag(:body, :class => body_class) %>
 <div class="navigation">
   <%= navigation %>
 </div>
