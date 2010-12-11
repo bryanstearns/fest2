@@ -1,9 +1,31 @@
 # Methods added to this helper will be available to all templates in the application.
 module ApplicationHelper
+  def navigation
+    linknames = ["Home", "FAQ", "Feedback"]
+    if logged_in?
+      linknames << "Log out"
+    else
+      linknames << "Sign up"
+      linknames << "Log in"
+    end
+    linknames.map do |name|
+      url_name = name.gsub(/ /,'').downcase
+      url = send("#{url_name}_url".to_sym)
+      link_to(name, url) unless current_page? url
+    end.compact.join(' | ')
+  end
 
-  def javascript_includes
-    jquery_version = "1.4.4"
-    jquery_ui_version = "1.8.6"        
+  def site_name
+    link = "Festival Fanatic"
+    link = link_to(link, home_url) unless current_page?(home_url)
+    if logged_in?
+      "<span>#{current_user.username}</span> is a #{link}!"
+    else
+      "Are you a #{link}?"
+    end
+  end
+
+  def javascript_includes(jquery_version, jquery_ui_version)
     javascripts = []
     script_includes = []
     if Rails.env.production?
@@ -13,7 +35,8 @@ module ApplicationHelper
     else
       javascripts << "jquery-1.4.4"
     end
-    javascripts << "jquery-ui-#{jquery_ui_version}.custom.min"
+    javascripts << "jquery-ui-#{jquery_ui_version}.custom.min" \
+      if jquery_ui_version
     javascripts << "jqtouch" if request.format == :mobile
     javascripts << "application"
     "#{script_includes.join("\n")}\n" + javascript_include_tag(javascripts)

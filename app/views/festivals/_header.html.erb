@@ -1,17 +1,16 @@
 <%# The header for publicly-visible Festival pages: 
     /festivals/x, /festivals/x/films/, etc. -%>
-  <% round_corners :context => self, :tabs => !hide_tabs, :width => "100%" do |rc| %>
     <div>
       <span class="festivalname"><%= @festival.name %></span>
       <span class="festivaldates"><%= @festival.dates %></span>
     </div>
-    <% 
-    unless hide_tabs
-      rc.tabs do
-        rc.tab("Your Film Priorities", festival_films_path(@festival))
-        rc.tab("Scheduling Assistant", festival_assistant_path(@festival))
-        rc.tab("Your Festival Schedule", festival_path(@festival))
-      end
-    end
-    -%>
-  <% end %>
+    <% unless hide_tabs %>
+    <ul class="navlinks">
+      <li><%= link_to_unless_current "Your Film Priorities",
+                      festival_films_path(@festival) %></li>
+      <li><%= link_to_unless_current "Scheduling Assistant",
+                      festival_assistant_path(@festival) %></li>
+      <li><%= link_to_unless_current "Your Festival Schedule",
+                      festival_path(@festival) %></li>
+    </ul>
+    <% end -%>

@@ -20,7 +20,7 @@ class ApplicationController < ActionController::Base
   # Use our standard layout for all non-AJAX/non-RSS-feed requests
   layout proc {|c| (c.request.xhr? || \
     %w[xml pdf].any? {|fmt| c.request.format.to_s.include?(fmt) } \
-    ) ? false : "standard-layout" }
+    ) ? false : "standard" }
   
   # See ActionController::Base for details 
   # Uncomment this to filter the contents of submitted sensitive data parameters

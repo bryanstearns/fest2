@@ -1,24 +1,32 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-       "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<!-- <%= SOURCE_REVISION_DETAILS %> -->
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
-<head>
-  <meta http-equiv="content-type" content="text/html;charset=UTF-8" />
+<%
+  body_class ||= ''
+  body_class << " #{controller_name} #{controller_name}_#{action_name}"
+
+  jquery_version = "1.4.4"
+  jquery_ui_version = "1.8.6"
+-%>
+<!DOCTYPE html>
+<html lang="en"><!-- <%= SOURCE_REVISION_DETAILS %> -->
+  <head>
+  <meta http-equiv="Content-Type" content="text/html;charset=utf-8">
   <% title = yield :title -%>
   <title>
     <%= title %><%= ": " unless title.blank? %>
     Festival Fanatic<%= " (#{Rails.env})" unless Rails.env.production? %>
   </title>
+
   <link rel="alternate" type="application/rss+xml" 
         title="FestivalFanatic.com News" 
         href="<%= announcements_url(:format => :rss) %>" />
-  <%= javascript_includes %>
-  <%= stylesheet_link_tag 'style', 'rails_stuff', 'rounded', 'filmlist',
-                          'festedit', :media => 'screen, print' %>
-  <%= stylesheet_link_tag 'handheld', 
-        :media => 'handheld, only screen and (max-device-width: 480px)' %>
+
+  <%= stylesheet_link_tag 'compiled/screen', :media => 'screen, projection' %>
+  <%= stylesheet_link_tag 'compiled/print', :media => 'print' %>
+  <!--[if IE 6]>
+  <%= stylesheet_link_tag 'compiled/ie', :media => 'screen, projection' %>
+  <![endif]-->
   <%= yield :additional_stylesheets %>
-  <%= stylesheet_link_tag 'print', :media => 'print' %>
+
+  <%= javascript_includes(jquery_version, jquery_ui_version) %>
   <script type="text/javascript">
     jQuery.noConflict();
     var AUTH_TOKEN = <%= form_authenticity_token.inspect \
@@ -29,27 +37,10 @@
 </head>
 <body>
 <div class="navigation">
-  <% 
-  linknames = ["Home", "FAQ", "Feedback"]
-	if logged_in?
-	  linknames << "Log out" 
-  else
-    linknames << "Sign up"
-    linknames << "Log in"
-  end
-  %>
-  <%= linknames.map do |name|
-    url_name = name.gsub(/ /,'').downcase
-    url = send("#{url_name}_url".to_sym)
-    link_to name, url unless current_page? url
-  end.compact.join(' | ')
-  %>
+  <%= navigation %>
 </div>
 <h1 class="sitename">
-<% if logged_in? %>
-<%= current_user.username %> is a 
-<% end %>
-<%= link_to "festival fanatic!", home_url %>
+  <%= site_name %>
 </h1>
 
 <%= yield :header %>
@@ -75,7 +66,7 @@
   <% end %>
 <% end %>
 
-<%= yield  %>
+<%= yield %>
 
 <% if Rails.env == 'production' %>
 <script type="text/javascript">
