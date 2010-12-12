@@ -2,7 +2,8 @@
 <div id="screening-<%= viewing_info.screening.id %>"
      class="screening unranked"
      style="height: <%= viewing_info.height %>px; margin-top: <%= viewing_info.space_before %>px">
-  <%= flag_icon_tag viewing_info.film.countries, :class => "flag" %>
+  <div class="priority"></div>
+  <%# flag_icon_tag viewing_info.film.countries, :class => "flag" %>
   <span class="name"><%= viewing_info.film_name %></span>
   
   <div class="screeningtime">
@@ -12,5 +13,5 @@
       <%= " (press)" if viewing_info.screening.press %>
     </span>
   </div>
-  <div class="priority"></div>
+
 </div>

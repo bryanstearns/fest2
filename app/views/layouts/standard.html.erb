@@ -1,6 +1,6 @@
 <%
   body_class ||= ''
-  body_class << " #{controller_name} #{controller_name}_#{action_name}"
+  body_class << " #{controller_name} #{controller_name}_#{action_name} bp"
 
   jquery_version = "1.4.4"
   jquery_ui_version = "1.8.6"
@@ -30,49 +30,54 @@
     <%= @content_for_more_page_scripts %>
   </script>
 </head>
-<%= tag(:body, :class => body_class) %>
-<div class="navigation">
-  <%= navigation %>
-</div>
-<h1 class="sitename">
-  <%= site_name %>
-</h1>
+<body class="<%= body_class.strip %>">
+  <div id="header">
+    <div id="navigation">
+      <%= navigation %>
+    </div>
+    <h1 id="site_name"><%= site_name %></h1>
+  </div>
 
-<%= yield :header %>
+  <div id="content">
+    <blockquote class="badbrowser ie6" style="display:none">
+      <b>Uh-oh: You're using an outdated browser!</b>
+        Your browser is pretty old; this site will run better with newer
+        browsers. We recommend Firefox 3.6, which you can download free from
+        <a href="http://getfirefox.com">http://getfirefox.com</a>.
+    </blockquote>
+    <noscript>
+      <blockquote class="badbrowser">
+        <b>Uh-oh: Your browser doesn't like us!</b>
+        Your browser doesn't support Javascript (or you've turned it off).
+        Please turn it back on &mdash; most of this site won't work right
+        without it!
+      </blockquote>
+    </noscript>
 
-<blockquote class="badbrowser ie6" style="display:none">
-  <b>Uh-oh: You're using an outdated browser!</b>
-    Your browser is pretty old; this site will run better with newer
-    browsers - we recommend Firefox 3.5, which you can download free from
-    <a href="http://getfirefox.com">here</a>.
-</blockquote>
-<noscript>
-  <blockquote class="badbrowser">
-    <b>Uh-oh: Your browser doesn't like us!</b>
-      Your browser doesn't support Javascript (or you've turned it off). 
-      Please turn it back on &mdash; most of this site won't work right 
-      without it!
-  </blockquote>
-</noscript>
+    <% for name in [:notice, :warning, :message ] %>
+      <% if flash[name] %>
+        <div id="<%=name %>" class="flash <%= name %>"><%= flash[name] %></div>
+      <% end %>
+    <% end %>
 
-<% for name in [:notice, :warning, :message ] %>
-  <% if flash[name] %>
-    <div id="<%=name %>" class="flash <%= name %>"><%= flash[name] %></div>
+    <%= yield %>
+  </div>
+
+  <div id="footer">
+    Copyright &copy; 2007-2010 Bryan Stearns; all rights reserved.
+  </div>
+
+  <% if Rails.env == 'production' %>
+  <script type="text/javascript">
+    var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+    document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+  </script>
+  <script type="text/javascript">
+    try {
+      var pageTracker = _gat._getTracker("UA-7187738-1");
+      pageTracker._trackPageview();
+    } catch(err) {}
+  </script>
   <% end %>
-<% end %>
-
-<%= yield %>
-
-<% if Rails.env == 'production' %>
-<script type="text/javascript">
-var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
-document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
-</script>
-<script type="text/javascript">
-try {
-var pageTracker = _gat._getTracker("UA-7187738-1");
-pageTracker._trackPageview();
-} catch(err) {}</script>
-<% end %>
 </body>
 </html>

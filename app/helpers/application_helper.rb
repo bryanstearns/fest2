@@ -12,7 +12,7 @@ module ApplicationHelper
       url_name = name.gsub(/ /,'').downcase
       url = send("#{url_name}_url".to_sym)
       link_to(name, url) unless current_page? url
-    end.compact.join(' | ')
+    end.compact.join(' ')
   end
 
   def site_name
@@ -26,9 +26,9 @@ module ApplicationHelper
   end
 
   def stylesheet_includes(jquery_ui_version)
-    families = %w[Lobster]
+    families = ["Droid Sans", "Droid Serif"]
     results = ["<link rel=\"stylesheet\" type=\"text/css\" " +
-               "href=\"http://fonts.googleapis.com/css?family=#{families.join('|')}\">"]
+               "href=\"http://fonts.googleapis.com/css?family=#{families.join('|').gsub(' ', '+')}\">"]
 
     results += [
       stylesheet_link_tag('compiled/screen', :media => 'screen, projection'),

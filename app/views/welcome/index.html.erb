@@ -1,27 +1,25 @@
-
-<div class="summary">
-  <h2>Get more out of your film festival experience!</h2>
-  <p>See more of the movies you want to see... it's as easy as 1 - 2 - 3:</p>
-  <ol id="steps">
+<div id="summary">
+  <h2><strong>Get more</strong> from your film festival experience!</h2>
+  <p>
+    Festival Fanatic can help you see more of the movies you want to see...
+    it's as easy as 1 - 2 - 3:
+  </p>
+  <ol>
     <li>
-      Prioritize films
-      <img src="images/prioritize.png" alt="prioritizing films" width="128" height="96" />
+      Prioritize films<br/>
     </li>
     <li>
-      Tell us when you're available, and we'll find screenings for you automatically
-      <img src="images/availability.png" alt="setting availability" width="128" height="96" />
+      Tell us when you're available, and we'll find screenings for you automatically<br/>
     </li>
     <li>
       Browse your schedule (soon: on your smartphone, too)
-      <img src="images/schedule.png" alt="browsing schedule" width="128" height="96" />
     </li>
   </ol>
 
-  <% get_started_content = capture do %>
-    Get Started
-  <% end %>
-  <%= link_to get_started_content, signup_url %>
-  <span>or <%= link_to "log in", login_url %> if you already have an account</span>
+  <span id="action">
+    <%= link_to "<strong>Sign Up</strong> (it's free!)", signup_url, :class => 'button' %>
+    or <%= link_to "log in", login_url %> if you already have an account
+  </span>
 </div>
 
 <% if false %>
@@ -58,7 +56,3 @@
 <% end %>
 
 <% end  %>
-
-<div id="copyright">
-  Copyright &copy; 2007-2010 Bryan Stearns; all rights reserved.
-</div>
