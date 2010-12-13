@@ -1,8 +1,5 @@
 <%# Display one festival schedule: /festivals/1 -%>
 <% content_for :title do %>Schedule for <%= @festival.name %><% end %>
-<% content_for :additional_stylesheets do %>
-  <%# stylesheet_link_tag 'daygrid', :media => 'screen, print' %>
-<% end %>
 
 <%= render :partial => "festivals/header", :locals => { :festival => @festival, :hide_tabs => @read_only } %>
 
@@ -72,7 +69,7 @@ which you can print with <a href="http://get.adobe.com/reader/" target="_blank">
 <%= content_tag(:span, "Revised at #{@festival.revised_at.strftime("%H:%M %a, %b %d")}", :class => "revised") if @festival.revised_at %>
 <% end # caching -%>
 
-<% content_for("page_scripts") do %>
+<% content_for :page_scripts do %>
 jQuery(function() {
   <%# Apply picks for this user -%>
   <%= @screening_javascript %>

@@ -4,7 +4,7 @@
   <%= render :partial => "festivals/header", :locals => { :festival => @festival, :hide_tabs => false } %>
 <% end -%>
 
-<% content_for "page_scripts" do %>
+<% content_for :page_scripts do %>
 jQuery(function() {
   <%# Autosubmit the sort form %>
   jQuery("#order").change(function(e) { jQuery("#sortform").submit(); });

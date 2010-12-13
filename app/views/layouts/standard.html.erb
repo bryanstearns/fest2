@@ -20,14 +20,12 @@
         href="<%= announcements_url(:format => :rss) %>" />
 
   <%= stylesheet_includes(jquery_ui_version) %>
-  <%= yield :additional_stylesheets %>
   <%= javascript_includes(jquery_version, jquery_ui_version) %>
   <script type="text/javascript">
     jQuery.noConflict();
     var AUTH_TOKEN = <%= form_authenticity_token.inspect \
                          if protect_against_forgery? %>;
-    <%= @content_for_page_scripts %>
-    <%= @content_for_more_page_scripts %>
+    <%= yield :page_scripts %>
   </script>
 </head>
 <body class="<%= body_class.strip %>">
