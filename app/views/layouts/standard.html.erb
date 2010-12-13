@@ -36,22 +36,22 @@
     <h1 id="site_name"><%= site_name %></h1>
   </div>
 
-  <div id="content">
-    <blockquote class="badbrowser ie6" style="display:none">
-      <b>Uh-oh: You're using an outdated browser!</b>
-        Your browser is pretty old; this site will run better with newer
-        browsers. We recommend Firefox 3.6, which you can download free from
-        <a href="http://getfirefox.com">http://getfirefox.com</a>.
-    </blockquote>
-    <noscript>
-      <blockquote class="badbrowser">
-        <b>Uh-oh: Your browser doesn't like us!</b>
-        Your browser doesn't support Javascript (or you've turned it off).
-        Please turn it back on &mdash; most of this site won't work right
-        without it!
-      </blockquote>
-    </noscript>
+  <div class="badbrowser ie6" style="display:none">
+    <b>Uh-oh: You're using an outdated browser!</b>
+      Your browser is pretty old; this site will run better with newer
+      browsers. We recommend Firefox 3.6, which you can download free from
+      <a href="http://getfirefox.com">http://getfirefox.com</a>.
+  </div>
+  <noscript>
+    <div class="badbrowser">
+      <b>Uh-oh: Your browser doesn't like us!</b>
+      Your browser doesn't support Javascript (or you've turned it off).
+      Please turn it back on &mdash; most of this site won't work right
+      without it!
+    </div>
+  </noscript>
 
+  <div id="content">
     <% for name in [:notice, :warning, :message ] %>
       <% if flash[name] %>
         <div id="<%=name %>" class="flash <%= name %>"><%= flash[name] %></div>

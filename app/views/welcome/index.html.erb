@@ -1,3 +1,4 @@
+<% cache @festivals_cache_key do %>
 <div id="summary">
   <h2><strong>Get more</strong> from your film festival experience!</h2>
   <p>
@@ -15,44 +16,29 @@
       Browse your schedule (soon: on your smartphone, too)
     </li>
   </ol>
+  
+  <% unless @current_festivals.empty? %>
+    <div id="current">
+      Now scheduling these festivals:
+      <ul>
+        <%= render :partial => 'festivals/festival', :collection => @current_festivals.sort_by {|f| f.starts } %>
+      </ul>
+    </div>
+  <% end -%>
 
-  <span id="action">
+  <% unless @upcoming_festivals.empty? %>
+    <div id="upcoming">
+      You'll soon be able to schedule <%= this_these(@upcoming_festivals, "festival") %>:
+      <ul>
+        <%= render :partial => 'festivals/festival', :collection => @upcoming_festivals.sort_by {|f| f.starts },
+                   :locals => { :with_links => false } %>
+      </ul>
+    </div>
+  <% end -%>
+
+  <div id="action">
     <%= link_to "<strong>Sign Up</strong> (it's free!)", signup_url, :class => 'button' %>
     or <%= link_to "log in", login_url %> if you already have an account
-  </span>
+  </div>
 </div>
-
-<% if false %>
-
-<% cache @festivals_cache_key do %>
-<div class="festival_section">
-  <% if @festivals.empty? %>
-  <p>More festivals coming soon; if you're interested in one in particular, tell us about it on the feedback page.</p>
-    <% if @have_old %>
-    <p><%= link_to "Click here", festivals_url %> to see past festivals.</p>
-    <% end %>
-  <% else %>
-  <h3>Click an upcoming festival:</h3>
-  <ul id="upcomingfestivals">
-  <%= render :partial => 'festivals/festival', :collection => @festivals.sort_by {|f| f.starts } %>
-    <% if @have_old %>
-  <li><%= link_to "Click here", festivals_url %> to see past festivals</li>
-    <% end %>
-  </ul>
-  <% end %>
-</div>      
-<% end %>
-
-<% cache @announcements_cache_key do %>
-  <% unless @announcements.empty? %>
-<div class="news_section">
-  <h3>News <%= link_to icon_tag("feed", :style=>"border: none"), announcements_url(:format => :rss) %></h3>
-  <ul class="announcements">
-    <%= render :partial => 'announcements/announcement', :collection => @announcements,
-               :locals => { :announcement_limit => @announcement_limit } %>
-  </ul>
-</div>
-  <% end %>
-<% end %>
-
-<% end  %>
+<% end %><%# cache by festivals %>

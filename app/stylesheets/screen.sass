@@ -91,6 +91,7 @@ body.bp
 
   .button
     +fancy-button($default_button_color)
+    font-family: $control_family
 
 =stars
   font-size: 130%
@@ -145,7 +146,7 @@ body.bp
   float: right
   font-size: 110%
   a
-    margin: 20px
+    margin: 10px
 
 #header
   margin-top: 10px
@@ -153,6 +154,23 @@ body.bp
   margin: 10px 20px 10px 20px
   #site_name
     font-size: 3em
+    a
+      font-weight: normal
+
+.badbrowser
+  +centered()
+  +border-radius(5px)
+  +box-shadow()
+  width: 550px
+  text-align: center
+  font-size: 85%
+  padding: 5px
+  background-color: lighten(#FFB6C1, 10)
+  color: red
+  margin-top: 5px
+  margin-bottom: 10px
+  a
+    color: red
 
 #content
   +border-radius(10px)
@@ -178,6 +196,9 @@ body.welcome_index
     +centered()
     width: 700px
 
+    div
+      margin-top: 15px
+
   #summary
     font-size: 120%
     h2
@@ -186,9 +207,13 @@ body.welcome_index
         font-weight: bold
     li img
       float: right
-
   .button
     +fancy-button($big_green_button_color)
+    font-family: $control_family
+    font-size: 120%
+    line-height: 1.6em
+  #action
+    font-size: 110%
 
 // The schedule page
 body.festivals_show
@@ -242,6 +267,11 @@ body.festivals_show
     font-size: 85%
     span
       white-space: nowrap
+
+  .details
+    +box-shadow()
+    position: absolute
+    z-index: 100
 
   .legend li
     padding: 3px

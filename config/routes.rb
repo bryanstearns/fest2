@@ -1,5 +1,6 @@
 ActionController::Routing::Routes.draw do |map|
   map.resources :announcements
+  map.news '/news', :controller => 'announcements', :action => 'index'
 
   map.resources :festivals, :controller => 'festivals', :member => { 
     :pick_screening => :post, 

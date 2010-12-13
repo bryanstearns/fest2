@@ -1,7 +1,7 @@
 # Methods added to this helper will be available to all templates in the application.
 module ApplicationHelper
   def navigation
-    linknames = ["Home", "FAQ", "Feedback"]
+    linknames = ["Home", "News", "FAQ", "Feedback"]
     if logged_in?
       linknames << "Log out"
     else
@@ -25,8 +25,16 @@ module ApplicationHelper
     end
   end
 
+  def this_these(collection, name)
+    if collection.size == 1
+      "this #{name}"
+    else
+      "these #{name.pluralize}"
+    end
+  end
+  
   def stylesheet_includes(jquery_ui_version)
-    families = ["Droid Sans", "Droid Serif"]
+    families = ["Droid Sans", "Droid Sans:bold", "Droid Serif", "Droid Serif:bold"]
     results = ["<link rel=\"stylesheet\" type=\"text/css\" " +
                "href=\"http://fonts.googleapis.com/css?family=#{families.join('|').gsub(' ', '+')}\">"]
 

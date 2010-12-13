@@ -1,7 +1,8 @@
 <%# One festival on the front page, or in the list on /festivals -%>
+<% with_links ||= true %>
 <li>
-  <%= link_to_if festival.scheduled, h(festival.name), 
-      festival_path(festival, :landing => 1) %>
-  <%= "(coming soon!)" unless festival.scheduled %>
-  <div class="details"> <%= h("#{festival.location}, ") unless festival.location.blank? %><%= festival.dates %></div>
+  <%= link_to_if festival.scheduled && with_links != false,
+                 h(festival.name),
+                 festival_path(festival, :landing => 1) %><br/>
+  <span class="details"> <%= h("#{festival.location}, ") unless festival.location.blank? %><%= festival.dates %></span>
 </li>

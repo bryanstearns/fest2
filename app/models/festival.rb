@@ -25,13 +25,11 @@ class Festival < CachedModel
   validates_format_of :film_url_format, :with => /^https?\:\/\/[^\/]+\/[^\*]*\*[^\*]*$/,
     :unless => Proc.new {|festival| festival.film_url_format.blank? },
     :message => "must be blank, or a URL with a '*' where the film identifier should go"
-  
-  # "slug" is now an independent (required) field.
-  # before_save {|festival| festival.slug = festival.name.gsub(/[^a-z0-9]+/i, '-') }
-  
+
   named_scope :unlimited, :conditions => [], :order => "starts desc"
   named_scope :published, :conditions => ['public = ?', true], :order => "starts desc"
-  
+  named_scope :current, lambda { { :conditions => ['ends >= ?', 3.days.from_now] } }
+
   def dates
     startish = "#{Date::MONTHNAMES[starts.month]} #{starts.day}"
     startish += ", #{starts.year}" if starts.year != ends.year or starts == ends
