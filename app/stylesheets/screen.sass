@@ -92,6 +92,55 @@ body.bp
   .button
     +fancy-button($default_button_color)
 
+=stars
+  font-size: 130%
+  line-height: 60%
+  letter-spacing: -0.1em
+  color: $star_color
+
+.stars0:after
+  +stars
+  content: "\2606\2606\2606\2606\2606"
+.stars1:before
+  +stars
+  content: "\2605\2606\2606\2606\2606"
+.stars2:before
+  +stars
+  content: "\2605\2605\2606\2606\2606"
+.stars3:before
+  +stars
+  content: "\2605\2605\2605\2606\2606"
+.stars4:before
+  +stars
+  content: "\2605\2605\2605\2605\2606"
+.stars5:before
+  +stars
+  content: "\2605\2605\2605\2605\2605"
+
+=ranking()
+  font-size: 130%
+  line-height: 60%
+  letter-spacing: -0.2em
+
+.ranking0:before
+  +ranking()
+  content: "\26AA\26AA\26AA\26AA\26AA"
+.ranking1:before
+  +ranking()
+  content: "\26AB\26AA\26AA\26AA\26AA"
+.ranking2:before
+  +ranking()
+  content: "\26AA\26AB\26AA\26AA\26AA"
+.ranking3:before
+  +ranking()
+  content: "\26AA\26AA\26AB\26AA\26AA"
+.ranking4:before
+  +ranking()
+  content: "\26AA\26AA\26AA\26AB\26AA"
+.ranking5:before
+  +ranking()
+  content: "\26AA\26AA\26AA\26AA\26AB"
+
 #navigation
   float: right
   font-size: 110%
