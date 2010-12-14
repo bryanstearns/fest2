@@ -2,7 +2,17 @@ require 'digest/sha1'
 class User < ActiveRecord::Base
   has_many :picks, :dependent => :destroy
   has_many :subscriptions, :dependent => :destroy
-  has_many :festivals, :through => :subscriptions
+  has_many :festivals, :through => :subscriptions do
+    def best_default(slug)
+      # which festival should we show this user by default?
+      # Use the newest instance of the last festival they used, or let
+      # Festival pick.
+      (slug && Festival.find_all_by_slug_group_and_public(\
+                 slug.split("_").first, true,
+                 :limit => 1, :order => "starts desc")) || \
+        Festival.best_default
+    end
+  end
   
   # Virtual attribute for the unencrypted password
   attr_accessor :password

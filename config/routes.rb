@@ -20,12 +20,13 @@ ActionController::Routing::Routes.draw do |map|
 
   # The welcome controller provides a few site-global static-like pages
   map.with_options :controller => 'welcome' do |m|
-    m.home '', :action => 'index'
+    m.home '/home', :action => 'index'
     m.about '/about', :action => "about"
     m.community '/community', :action => "community" # for now...
     m.faq '/faq', :action => "faq"
     m.oops '/oops', :action => "oops"
   end
+  map.root :controller => 'welcome', :action => 'index'
 
   # Questions does feedback editing, but we also alias /feedback to its 'new'
   map.resources :questions

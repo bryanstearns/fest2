@@ -1,6 +1,8 @@
 class FestivalsController < ApplicationController
   before_filter :require_admin_subscription, :except => \
     [:index, :show, :pick_screening, :reset_rankings, :reset_screenings]
+  before_filter :load_festival, :only => \
+    [:show, :pick_screening, :reset_rankings, :reset_screenings]
 
   # GET /festivals
   # GET /festivals.xml
@@ -20,9 +22,6 @@ class FestivalsController < ApplicationController
   # GET /festivals/x_2009/stearns/sekrit.xml
   # GET /festivals/x_2009/stearns/sekrit.rss
   def show
-    @festival = Festival.find_by_slug!(params[:festival_id] || params[:id])
-    check_festival_access
-
     if params.delete(:landing)
       if logged_in?
         redirect_to festival_url(@festival) and return \
@@ -93,7 +92,6 @@ class FestivalsController < ApplicationController
   # POST /festivals/1/pick_screening
   def pick_screening
     if logged_in?
-      @festival = Festival.find_by_slug!(params[:id])
       screening = Screening.find(params[:screening_id])
       state = (params[:state] || "picked").to_sym
       changed = screening.set_state(current_user, state)
@@ -106,14 +104,12 @@ class FestivalsController < ApplicationController
   
   # POST /festivals/1/reset_rankings
   def reset_rankings
-    @festival = Festival.find_by_slug!(params[:id])
     @festival.reset_rankings(current_user) if logged_in?
     redirect_to festival_films_url(@festival)
   end
     
   # POST /festivals/1/reset_screenings
   def reset_screenings
-    @festival = Festival.find_by_slug!(params[:id])
     @festival.reset_screenings(current_user) if logged_in?
     redirect_to festival_url(@festival)
   end
@@ -182,6 +178,13 @@ class FestivalsController < ApplicationController
   end
 
 private
+  def load_festival
+    @festival = Festival.find_by_slug!(params[:festival_id] || params[:id])
+    check_festival_access
+    cookies[:festival] = { :value => @festival.slug,
+                           :expires => 10.years.from_now }
+  end
+
   def screening_settings_to_js(for_user, screenings=nil)
     return "" unless for_user
     screenings ||= @festival.screenings

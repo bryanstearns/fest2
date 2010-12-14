@@ -32,6 +32,14 @@ class Festival < CachedModel
   named_scope :published, :conditions => ['public = ?', true], :order => "starts desc"
   named_scope :current, lambda { { :conditions => ['ends >= ?', 3.days.from_now] } }
 
+  def self.best_default
+    # For new users, the best festival to show is the next one that hasn't ended yet.
+    # If there isn't one, just show the most-recent one
+    # (Note that published sorts newest-first!)
+    Festival.published.first(:conditions => ['ends >= ?', 3.days.from_now]) \
+      || Festival.published.first
+  end
+
   def dates
     startish = "#{Date::MONTHNAMES[starts.month]} #{starts.day}"
     startish += ", #{starts.year}" if starts.year != ends.year or starts == ends

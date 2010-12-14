@@ -11,13 +11,14 @@ module ApplicationHelper
     linknames.map do |name|
       url_name = name.gsub(/ /,'').downcase
       url = send("#{url_name}_url".to_sym)
-      link_to(name, url) unless current_page? url
+      link_to(name, url) unless (current_page?(url) or (request.path == '/' and url_name == 'home'))
     end.compact.join(' ')
   end
 
   def site_name
     link = "Festival Fanatic"
-    link = link_to(link, home_url) unless current_page?(home_url)
+    link = link_to(link, home_url) \
+      unless (current_page?(home_url) or current_page?(root_url))
     if logged_in?
       "<span>#{current_user.username}</span> is a #{link}!"
     else
