@@ -1,25 +1,35 @@
-<% content_for :title do %>Sign up<% end %>
+<% content_for :title do %>Sign Up<% end %>
 
-<h2>Sign up!</h2>
+<h2>Sign Up</h2>
+<h3>Thanks for becoming a Festival Fanatic!</h3>
+<p>We're glad to have you...</p>
 <ul style="margin: 0px; padding-bottom: 10px;">
-  <li>Your email address is required, but we'll only use it to contact you about this site; 
-      we'll never sell it or give it to anyone else.</li>
+  <li>You'll use your email address and a password to sign in, so they're required;
+      we'll never share your email address with other users, sell it, or give
+      it to anyone else, and we'll only use it to contact you about this site.</li>
+  <li>We'll display your name when you share buzz about movies with others;
+      your full name would be nice, but a first name & last initial is ok if
+      you're shy.</li>
+  <li>After you register, you'll get an email message with an activation link,
+      so we'll know it's really you. Keep an eye out for it, check your 'spam'
+      folder too, and send a note to the Feedback link if it doesn't arrive
+      within an hour or so &mdash; it's usually lightening-fast.</li>
 </ul>
 
 <%= error_messages_for :user %>
 
 <% form_for(@user) do |f| -%>
-<p><label for="username">Username</label><br/>
-<%= f.text_field :username %></p>
+  <p><label for="email">Your E-mail Address</label><br/>
+  <%= f.text_field :email %></p>
 
-<p><label for="email">Email</label><br/>
-<%= f.text_field :email %></p>
+  <p><label for="username">Your Name</label><br/>
+  <%= f.text_field :username %></p>
 
-<p><label for="password">Password</label><br/>
-<%= f.password_field :password %></p>
+  <p><label for="password">Your Password</label><br/>
+  <%= f.password_field :password %></p>
 
-<p><label for="password_confirmation">Confirm Password</label><br/>
-<%= f.password_field :password_confirmation %></p>
+  <p><label for="password_confirmation">Your Password, again</label><br/>
+  <%= f.password_field :password_confirmation %></p>
 
-<p><%= submit_tag 'Sign up' %></p>
+  <p><%= submit_tag 'Sign me up!' %></p>
 <% end -%>

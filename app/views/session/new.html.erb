@@ -4,16 +4,16 @@
 <ul style="margin: 0px; padding-bottom: 10px;">
   <li>New here? Use the 
       <%= link_to "Signup Page", signup_url %>
-      to set up your username and password.</li>
-  <li> Forgot your username or password?
+      to set up your account.</li>
+  <li> Forgot your password?
       <%= link_to "Click here", forgot_password_path %>
       and we'll help you out.</li>
 </ul>
 
 <% form_tag session_path, :id => "login_form" do -%>
 
-<p><label for="username">Username</label><br/>
-<%= text_field_tag 'username' %></p>
+<p><label for="email">Email Address</label><br/>
+<%= text_field_tag 'email' %></p>
 
 <p><label for="password">Password</label><br/>
 <%= password_field_tag 'password' %></p>

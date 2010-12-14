@@ -22,8 +22,8 @@ class User < ActiveRecord::Base
   validates_presence_of     :password_confirmation,      :if => :password_required?
   validates_length_of       :password, :within => 4..40, :if => :password_required?
   validates_confirmation_of :password,                   :if => :password_required?
-  validates_length_of       :username, :within => 3..40
-  validates_length_of       :email,    :within => 3..100
+  validates_length_of       :username, :within => 3..40, :if => :username?
+  validates_length_of       :email,    :within => 3..100, :if => :email?
   validates_uniqueness_of   :username, :email, :case_sensitive => false
   before_save :encrypt_password
   
@@ -31,9 +31,9 @@ class User < ActiveRecord::Base
   # anything else you want your user to change should be added here.
   attr_accessible :username, :email, :password, :password_confirmation
 
-  # Authenticates a user by their username and unencrypted password.  Returns the user or nil.
-  def self.authenticate(username, password)
-    u = find_by_username(username, :include => :subscriptions) # need the salt
+  # Authenticates a user by their email and unencrypted password.  Returns the user or nil.
+  def self.authenticate(email, password)
+    u = find_by_email(email, :include => :subscriptions) # need the salt
     u && u.authenticated?(password) ? u : nil
   end
 
@@ -105,18 +105,15 @@ class User < ActiveRecord::Base
     (picks.count(:conditions => ["festival_id = ? and priority is not null", festival.id]) > 0)
   end
 
-  protected
-    # before filter 
-    def encrypt_password
-      return if password.blank?
-      self.salt = Digest::SHA1.hexdigest("--#{Time.now.to_s}--#{username}--") \
-        if new_record?
-      self.crypted_password = encrypt(password)
-    end
+protected
+  def encrypt_password
+    return if password.blank?
+    self.salt = Digest::SHA1.hexdigest("--#{Time.now.to_s}--#{username}--") \
+      if new_record?
+    self.crypted_password = encrypt(password)
+  end
       
-    def password_required?
-      crypted_password.blank? || !password.blank?
-    end
-    
-    
+  def password_required?
+    crypted_password.blank? || !password.blank?
+  end
 end
