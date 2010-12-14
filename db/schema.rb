@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20101209004601) do
+ActiveRecord::Schema.define(:version => 20101214030828) do
 
   create_table "announcements", :force => true do |t|
     t.string   "subject",                         :null => false
@@ -19,6 +19,8 @@ ActiveRecord::Schema.define(:version => 20101209004601) do
     t.datetime "created_at"
     t.datetime "updated_at"
   end
+
+  add_index "announcements", ["published", "published_at"], :name => "index_announcements_on_published_and_published_at"
 
   create_table "festivals", :force => true do |t|
     t.string   "name"
@@ -33,7 +35,13 @@ ActiveRecord::Schema.define(:version => 20101209004601) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.datetime "revised_at"
+    t.string   "slug_group"
   end
+
+  add_index "festivals", ["ends", "public"], :name => "index_festivals_on_ends_and_public"
+  add_index "festivals", ["slug", "public"], :name => "index_festivals_on_slug_and_public"
+  add_index "festivals", ["slug_group", "public"], :name => "index_festivals_on_slug_group_and_public"
+  add_index "festivals", ["starts", "public"], :name => "index_festivals_on_starts_and_public"
 
   create_table "films", :force => true do |t|
     t.integer  "festival_id",  :null => false
@@ -46,6 +54,8 @@ ActiveRecord::Schema.define(:version => 20101209004601) do
     t.string   "countries"
   end
 
+  add_index "films", ["festival_id"], :name => "index_films_on_festival_id"
+
   create_table "picks", :force => true do |t|
     t.integer  "user_id",      :null => false
     t.integer  "film_id",      :null => false
@@ -55,6 +65,8 @@ ActiveRecord::Schema.define(:version => 20101209004601) do
     t.datetime "created_at"
     t.datetime "updated_at"
   end
+
+  add_index "picks", ["user_id", "festival_id"], :name => "index_picks_on_user_id_and_festival_id"
 
   create_table "questions", :force => true do |t|
     t.string   "email"
@@ -76,15 +88,7 @@ ActiveRecord::Schema.define(:version => 20101209004601) do
     t.boolean  "press"
   end
 
-  create_table "sessions", :force => true do |t|
-    t.string   "session_id"
-    t.text     "data"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  add_index "sessions", ["session_id"], :name => "index_sessions_on_session_id"
-  add_index "sessions", ["updated_at"], :name => "index_sessions_on_updated_at"
+  add_index "screenings", ["festival_id"], :name => "index_screenings_on_festival_id"
 
   create_table "subscriptions", :force => true do |t|
     t.integer  "festival_id",                                   :null => false
@@ -96,6 +100,8 @@ ActiveRecord::Schema.define(:version => 20101209004601) do
     t.datetime "created_at"
     t.datetime "updated_at"
   end
+
+  add_index "subscriptions", ["festival_id", "user_id"], :name => "index_subscriptions_on_festival_id_and_user_id"
 
   create_table "users", :force => true do |t|
     t.string   "username"
@@ -110,6 +116,9 @@ ActiveRecord::Schema.define(:version => 20101209004601) do
     t.datetime "updated_at"
   end
 
+  add_index "users", ["email"], :name => "index_users_on_email", :unique => true
+  add_index "users", ["username"], :name => "index_users_on_username"
+
   create_table "venues", :force => true do |t|
     t.integer  "festival_id", :null => false
     t.string   "name"
@@ -117,5 +126,7 @@ ActiveRecord::Schema.define(:version => 20101209004601) do
     t.datetime "created_at"
     t.datetime "updated_at"
   end
+
+  add_index "venues", ["festival_id"], :name => "index_venues_on_festival_id"
 
 end
