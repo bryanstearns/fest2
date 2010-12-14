@@ -26,6 +26,8 @@ class Festival < CachedModel
     :unless => Proc.new {|festival| festival.film_url_format.blank? },
     :message => "must be blank, or a URL with a '*' where the film identifier should go"
 
+  before_save :save_slug_group
+
   named_scope :unlimited, :conditions => [], :order => "starts desc"
   named_scope :published, :conditions => ['public = ?', true], :order => "starts desc"
   named_scope :current, lambda { { :conditions => ['ends >= ?', 3.days.from_now] } }
@@ -116,5 +118,9 @@ class Festival < CachedModel
 
   def has_press_screenings?
     screenings.any?(&:press)
+  end
+
+  def save_slug_group
+    self.slug_group = self.slug.split('_').first
   end
 end
