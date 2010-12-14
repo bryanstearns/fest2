@@ -1,7 +1,7 @@
 # Methods added to this helper will be available to all templates in the application.
 module ApplicationHelper
   def navigation
-    linknames = ["Home", "News", "FAQ", "Feedback"]
+    linknames = ["Home", "News", "Festivals", "FAQ", "Feedback"]
     if logged_in?
       linknames << "Log out"
     else
@@ -64,5 +64,15 @@ module ApplicationHelper
     javascripts << "jqtouch" if request.format == :mobile
     javascripts << "application"
     "#{script_includes.join("\n")}\n" + javascript_include_tag(javascripts)
+  end
+
+  def best_user_path_for(festival, user)
+    if user.nil? or festival.ends < Date.today or user.has_screenings_for(festival)
+      festival_path(festival)
+    elsif user.has_rankings_for(festival)
+      festival_assistant_path(festival)
+    else
+      festival_films_path(festival)
+    end
   end
 end

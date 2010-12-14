@@ -1,15 +1,23 @@
-<%# The (admin) festival list -%>
+<%# The festival list -%>
 <% content_for :title do %>Festivals<% end %>
 
 <h2>All Festivals</h2>
 
 <div class="festival_section">
 <ul>
-<%= render :partial => @festivals %>
+<% festivals_grouped(@festivals).each do |festival_group| %>
+  <li>
+    <% latest_festival = festival_group.shift %>
+    <span><%= link_to "#{latest_festival.name} #{latest_festival.starts.year}",
+                      best_user_path_for(latest_festival, current_user) %></span>
+    <% festival_group.each do |older_festival| %>
+      <%= link_to older_festival.starts.year, best_user_path_for(older_festival, current_user) %>
+    <% end %>
+  </li>
+<% end %>
 </ul>
 </div>
 
 <% if logged_in? and current_user.admin %>
-  <%= link_to("New festival", new_festival_path) %> |
+  <%= link_to("New festival", new_festival_path) %>
 <% end %>
-<%= link_to "Back to Home", home_url %>

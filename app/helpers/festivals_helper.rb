@@ -146,4 +146,16 @@ module FestivalsHelper
       readonly_festival_url(:ics)
   end
 
+  def festivals_grouped(festivals)
+    # Group these festivals by their slug_group, with the groups
+    # in alphabetical order by the name of the most-recent festival,
+    # and the individual group entries sorted by time, reversed, eg:
+    # [ [Afest 2010, Afest 2009],
+    #   [Bfest 2007],
+    #   [Cfest 2009, Cfest 2008] ]
+    groups = festivals.group_by(&:slug_group)
+    groups.map do |slug_group, festivals|
+      festivals.sort_by {|festival| -festival.starts.jd }
+    end.sort_by {|group| group.first.name }
+  end
 end
