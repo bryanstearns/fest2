@@ -78,6 +78,23 @@ body.bp
 
   h1,h2,h3,h4
     font-family: $headline_family
+  h1 // the site name in the header
+    font-size: 2em
+  h2 // the festival name (or page title)
+    text-align: center
+    font-size: 1.5em
+    span // a subtitle on the same line
+      +nowrap()
+      margin-left: 1em
+      font-size: 0.7em
+
+  h3 // subheadings on the page
+    font-size: 1.3em
+    font-weight: bold
+  h4
+    font-size: 1.0em
+    font-weight: bold
+
 
   a
     color: $text_color
@@ -92,6 +109,9 @@ body.bp
   .button
     +fancy-button($default_button_color)
     font-family: $control_family
+
+  .flash
+    +border-radius(5px)
 
 =stars
   font-size: 130%
@@ -152,10 +172,6 @@ body.bp
   margin-top: 10px
   margin-left: 20px
   margin: 10px 20px 10px 20px
-  #site_name
-    font-size: 3em
-    a
-      font-weight: normal
 
 .badbrowser
   +centered()
@@ -185,6 +201,17 @@ body.bp
   margin-top: 1em
   text-align: center
 
+h2
+  font-family: $headline_family
+  font-size: 2.0em
+  font-weight: bold
+  margin-bottom: 10px
+  margin-right: 10px
+
+.festivaldates
+  font-family: $headline_family
+  font-size: 1.5em
+  
 //
 // Specific pages
 //
@@ -304,3 +331,29 @@ body.festivals_show
     font-size: 85%
     float: right
 
+// The public film-list page
+body.films_index
+  td
+    vertical-align: top
+  td.priorityguide
+    text-align: center
+    font-size: 85%
+  td.sortguide
+    font-size: 85%
+  td
+    padding-bottom: 1em
+  form
+    display: inline
+    white-space: nowrap
+  .name
+    font-weight: bold
+  .screenings
+    ul
+      margin: 0px
+      list-style-type: none
+      padding-left: 1em
+  label,input
+    cursor: pointer
+  label
+    font-size: 85%
+    font-style: italic

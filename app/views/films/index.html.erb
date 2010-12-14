@@ -1,8 +1,5 @@
 <%# The public list of all films in a festival -%>
 <% content_for :title do %>Films at <%= @festival.name %><% end -%>
-<% content_for :header do %>
-  <%= render :partial => "festivals/header", :locals => { :festival => @festival, :hide_tabs => false } %>
-<% end -%>
 
 <% content_for :page_scripts do %>
 jQuery(function() {
@@ -20,6 +17,8 @@ jQuery(function() {
   });
 });
 <% end -%>
+
+<%= render :partial => "festivals/header", :locals => { :festival => @festival, :hide_tabs => false } %>
 
 <h3>How much do you want to see each of these films?</h3>
 
@@ -53,12 +52,12 @@ end.join("")
 -%>
 <table class="filmlist">
   <tr>
-    <td class="priorityguide">Choose priority:<br/>(lower ... higher)</td>
-    <td class="sortguide">
+    <th class="priorityguide">Choose priority:<br/>(lower ... higher)</th>
+    <th class="sortguide">
       Sort by: <% form_tag festival_films_path(@festival), :method => :get, :id => "sortform" do %>
         <%= select_tag "order", sort_options %>
       <% end %>
-    </td>
+    </th>
   </tr>
 <%= render :partial => "film", :collection => sorted_films, 
            :locals => { :picks => @picks, :show_press => @show_press } %>
