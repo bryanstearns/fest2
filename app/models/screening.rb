@@ -40,7 +40,7 @@ class Screening < CachedModel
   end  
 
   def date_and_times
-    "#{starts.date.to_s} #{times}"
+    "#{starts.date.to_s(:day_month_date)}, #{times}"
   end
 
   def conflicts_with(other)

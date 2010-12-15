@@ -3,21 +3,28 @@
 
 <h2>All Festivals</h2>
 
+<p>Click a festival date to view that festival.</p>
+
 <div class="festival_section">
 <ul>
 <% festivals_grouped(@festivals).each do |festival_group| %>
+  <% latest_festival = festival_group.first %>
   <li>
-    <% latest_festival = festival_group.shift %>
-    <span><%= link_to "#{latest_festival.name} #{latest_festival.starts.year}",
-                      best_user_path_for(latest_festival, current_user) %></span>
-    <% festival_group.each do |older_festival| %>
-      <%= link_to older_festival.starts.year, best_user_path_for(older_festival, current_user) %>
-    <% end %>
+    <span class="name"><%= latest_festival.name %></span>
+    <span class="location"><%= latest_festival.location %></span></br>
+    <ul>
+      <% festival_group.each do |festival| %>
+        <li>
+          <%= link_to festival.dates, best_user_path_for(festival, current_user) %>
+          <%= link_to "(edit)", edit_festival_path(festival) if current_user_is_admin? %>
+        </li>
+      <% end %>
+    </ul>
   </li>
 <% end %>
 </ul>
 </div>
 
-<% if logged_in? and current_user.admin %>
+<% if logged_in? and current_user_is_admin? %>
   <%= link_to("New festival", new_festival_path) %>
 <% end %>

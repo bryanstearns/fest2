@@ -71,6 +71,17 @@ class ApplicationController < ActionController::Base
                               rescue false)))
   end
 
+  def best_user_path_for(festival, user)
+    if user.nil? || user.has_screenings_for(festival)
+      festival_path(festival)
+    elsif user.has_rankings_for(festival)
+      festival_assistant_path(festival)
+    else
+      festival_films_path(festival)
+    end
+  end
+
+
   # I can haz iPhone or Android?
   def is_mobile_request?
     false # for now; was: request.user_agent =~ /(Mobile.+Safari)/

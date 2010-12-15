@@ -20,9 +20,14 @@ jQuery(function() {
 
 <%= render :partial => "festivals/header", :locals => { :festival => @festival, :hide_tabs => false } %>
 
-<h3>How much do you want to see each of these films?</h3>
+<h3>The first step: setting your film priorities</h3>
 
-<p>Here are all the films in the festival. Indicate your preference for seeing each film by clicking one of the little circles next to each film &mdash; the scheduling assistant will use these priorities to build a custom schedule for you.</p>
+<p>
+  Before we can build a schedule just for you, you'll need to prioritize the 
+  festival's films: indicate your preference for seeing each film by clicking
+  one of the little circles next to each film &mdash; the scheduling assistant
+  will use these priorities to build a custom schedule for you.
+</p>
 
 <p>The rightmost choice means "<%= ranking_hints[4] %>," 
 and the leftmost means "<%= ranking_hints[0] %>." Each choice is saved as soon as you click, and you can come back later if you don't finish now, or if you want to change a choice. 
@@ -49,7 +54,9 @@ sort_options = %w[Name Country Priority].map do |p|
   selected = " selected='selected'" if p == sort_order
   "<option#{selected}>#{p}</option>"
 end.join("")
--%>
+if sorted_films.empty? -%>
+<div>(Oops! This festival has no films yet.)</div>
+<% else -%>
 <table class="filmlist">
   <tr>
     <th class="priorityguide">Choose priority:<br/>(lower ... higher)</th>
@@ -62,3 +69,4 @@ end.join("")
 <%= render :partial => "film", :collection => sorted_films, 
            :locals => { :picks => @picks, :show_press => @show_press } %>
 </table>
+<% end %>

@@ -156,6 +156,6 @@ module FestivalsHelper
     groups = festivals.group_by(&:slug_group)
     groups.map do |slug_group, festivals|
       festivals.sort_by {|festival| -festival.starts.jd }
-    end.sort_by {|group| group.first.name }
+    end.sort_by {|group| group.first.starts }.reverse
   end
 end
