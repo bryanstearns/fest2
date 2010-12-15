@@ -26,7 +26,7 @@ class WelcomeController < ApplicationController
 
   def cache_prefix
     role = logged_in? \
-      ? (current_user.admin ? "admin" : "user") \
+      ? (current_user_is_admin? ? "admin" : "user") \
       : "guest"
     "welcome/#{Date.today}/#{role}"
   end  

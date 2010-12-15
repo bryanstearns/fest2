@@ -40,7 +40,7 @@ class ApplicationController < ActionController::Base
     # Is the user required to be an admin for this page?
     admin_required = self.class.controller_path.starts_with?("admin/")
     render(:file => "#{RAILS_ROOT}/public/404.html", :status => 404) and return \
-      if admin_required and not (current_user.admin rescue false)
+      if admin_required and not current_user_is_admin?
   end
 
   def require_admin_subscription
@@ -49,7 +49,7 @@ class ApplicationController < ActionController::Base
     redirect_to login_url and return unless logged_in?
     # logger.info ":id = #{params.inspect}, current_user.admin = #{current_user.admin}, fest_admin = #{current_user.subscriptions.find_by_festival_id(params[:id]).admin rescue "rescued false"}"
     raise(ActiveRecord::RecordNotFound) \
-      unless current_user.admin or (current_user.subscriptions.find_by_festival_id(params[:festival_id] || params[:id]).admin rescue false)
+      unless current_user_is_admin? or (current_user.subscriptions.find_by_festival_id(params[:festival_id] || params[:id]).admin rescue false)
     true
   end
 
@@ -57,7 +57,7 @@ class ApplicationController < ActionController::Base
     # Like above, but doesn't check for festival.
     redirect_to login_url and return unless logged_in?
     raise(ActiveRecord::RecordNotFound) \
-      unless current_user.admin
+      unless current_user_is_admin?
     true    
   end
 
@@ -66,10 +66,9 @@ class ApplicationController < ActionController::Base
     # raises if the festival isn't public and the user doesn't have access.    
     raise(ActiveRecord::RecordNotFound) \
       unless @festival \
-        and (@festival.public or \
-             (logged_in? and (current_user.admin or \
-                              (current_user.subscription_for(@festival).admin \
-                               rescue false))))
+        and (@festival.public or current_user_is_admin? or \
+             (logged_in? and (current_user.subscription_for(@festival).admin \
+                              rescue false)))
   end
 
   # I can haz iPhone or Android?
@@ -97,7 +96,7 @@ class ApplicationController < ActionController::Base
   end
 
   def find_scope(unlimited_if_admin=true)
-    if (unlimited_if_admin and (current_user.admin rescue false))
+    if unlimited_if_admin and current_user_is_admin?
       :unlimited
     else
       :published

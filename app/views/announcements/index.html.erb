@@ -6,4 +6,4 @@
     :locals => { :announcement_limit => nil } %>
 </ul>
 
-<%= link_to 'New announcement', new_announcement_path if (current_user.admin rescue false) %>
+<%= link_to 'New announcement', new_announcement_path if current_user_is_admin? %>

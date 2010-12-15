@@ -1,5 +1,9 @@
 # Methods added to this helper will be available to all templates in the application.
 module ApplicationHelper
+  def current_user_is_admin?
+    current_user && current_user.admin
+  end
+
   def navigation
     linknames = ["Home", "News", "Festivals", "FAQ", "Feedback"]
     if logged_in?
