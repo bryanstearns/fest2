@@ -16,8 +16,8 @@
 // But Compass recommends that you scope your blueprint styles
 // So that you can better control what pages use blueprint
 // when stylesheets are concatenated together.
-+blueprint-scaffolding("body.bp")
-body.bp
+// +blueprint-scaffolding("body.bp")
+body //.bp
   +blueprint-typography(true)
   +blueprint-utilities
   +blueprint-debug
@@ -70,7 +70,7 @@ body.two-col
 //
 // Classes used across the site
 //
-body.bp
+body
   margin: 0px
   font-family: $content_family
   background-color: $substrate_background_color
