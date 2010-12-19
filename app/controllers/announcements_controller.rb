@@ -18,7 +18,7 @@ class AnnouncementsController < ApplicationController
   def show
     @announcement = Announcement.send(find_scope).find(params[:id])
     render(:file => "#{RAILS_ROOT}/public/404.html", :status => 404) and return \
-      unless (@announcement.published or current_user_is_admin?))
+      unless (@announcement.published or current_user_is_admin?)
 
     respond_to do |format|
       format.html # show.html.erb

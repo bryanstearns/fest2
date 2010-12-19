@@ -12,6 +12,7 @@ end
 
 class ApplicationController < ActionController::Base
   helper :all # include all helpers, all the time
+  helper_method :current_user_is_admin?
 
   # See ActionController::RequestForgeryProtection for details
   # Uncomment the :secret if you're not using the cookie session store
@@ -61,6 +62,10 @@ class ApplicationController < ActionController::Base
     true    
   end
 
+  def current_user_is_admin?
+    current_user && current_user.admin
+  end
+  
   def check_festival_access
     # Called by unprivileged operations: does nothing on public festivals, but
     # raises if the festival isn't public and the user doesn't have access.    
