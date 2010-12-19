@@ -1,34 +1,17 @@
 # This file is copied to ~/spec when you run 'ruby script/generate rspec'
 # from the project root directory.
-ENV["RAILS_ENV"] = "test"
-require File.expand_path(File.dirname(__FILE__) + "/../config/environment")
-require 'spec'
+ENV["RAILS_ENV"] ||= 'test'
+require File.expand_path(File.join(File.dirname(__FILE__),'..','config','environment'))
+require 'spec/autorun'
 require 'spec/rails'
+require 'ruby-debug'
 
-include AuthenticatedTestHelper
+# Uncomment the next line to use webrat's matchers
+#require 'webrat/integrations/rspec-rails'
 
-# Allow us to specify the request extension (and therefore, mime type), eg:
-#   get :index, :extension => :js
-# Modified from http://www.nnovation.ca/2006/12/17/rspec-rails12-and-testing-return-types
-# which came from: http://blog.methodmissing.com/2006/11/22/testing-different-content-types-with-rspec/
-#module ActionController
-#  module TestProcess
-#    # lifted from rails/actionpack/lib/action_controller/test_process.rb around line 359
-#    def self.included(base)
-#      %w( get post put delete head ).each do |method|
-#        base.class_eval <<-EOV, __FILE__, __LINE__
-#          def #{method}(action, parameters = nil, session = nil, flash = nil)
-#            @request.env['REQUEST_METHOD'] = "#{method.upcase}" if defined?(@request)
-#            # BJS: added:
-#            @request.env['CONTENT_TYPE'] = Mime::EXTENSION_LOOKUP[(parameters.delete(:extension).to_s rescue 'html')] if defined?(@request)
-#            puts "CONTENT_TYPE is #{@request.env['CONTENT_TYPE']}"
-#            process(action, parameters, session, flash)
-#          end
-#        EOV
-#      end
-#    end
-#  end
-#end
+# Requires supporting files with custom matchers and macros, etc,
+# in ./support/ and its subdirectories.
+Dir[File.expand_path(File.join(File.dirname(__FILE__),'support','**','*.rb'))].each {|f| require f}
 
 Spec::Runner.configure do |config|
   # If you're not using ActiveRecord you should remove these
@@ -67,8 +50,8 @@ Spec::Runner.configure do |config|
   # config.mock_with :rr
   #
   # == Notes
-  # 
-  # For more information take a look at Spec::Example::Configuration and Spec::Runner
+  #
+  # For more information take a look at Spec::Runner::Configuration and Spec::Runner
 end
 
 module RoutesHelper
@@ -108,6 +91,7 @@ module AdminUserSpecHelper
     @user.stub!(:subscriptions).and_return([])
     @user.stub!(:has_screenings_for).and_return(false)
     @user.stub!(:has_picks_for).and_return(false)
+    @user.stub!(:forget_me).and_return(false)
     @user
   end
 
@@ -117,10 +101,12 @@ module AdminUserSpecHelper
     @user.stub!(:subscriptions).and_return([])
     @user.stub!(:has_screenings_for).and_return(false)
     @user.stub!(:has_picks_for).and_return(false)
+    @user.stub!(:forget_me).and_return(false)
     @user
   end
 
   def login_as(user)
+    user = User.find_by_username(user) if Symbol === user
     controller.send :current_user=, user
   end
   

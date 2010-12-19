@@ -4,14 +4,16 @@ describe "/festivals/show.html.erb" do
   include FestivalsHelper
 
   before do
-    @festival = mock_model(Festival)
-    @festival.stub!(:name).and_return("Festival Name")
-    @festival.stub!(:dates).and_return("festival dates")
-    @festival.stub!(:slug).and_return("MyString")
-    @festival.stub!(:starts).and_return(Date.today)
-    @festival.stub!(:ends).and_return(Date.today)
-    @festival.stub!(:revised_at).and_return(DateTime.now)
-    @festival.stub!(:films).and_return([])
+    @festival = mock_model(Festival,
+                           :name => "Festival Name",
+                           :dates => "festival dates",
+                           :location => "bogusville",
+                           :slug => "slug",
+                           :slug_group => "slug group",
+                           :starts => Date.today,
+                           :ends => Date.today,
+                           :revised_at => DateTime.now,
+                           :films => [])
     screenings = []
     screenings.stub!(:with_press).and_return([])
     @festival.stub!(:screenings).and_return(screenings)

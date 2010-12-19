@@ -5,14 +5,8 @@ class FestivalsController < ApplicationController
     [:show, :pick_screening, :reset_rankings, :reset_screenings]
 
   # GET /festivals
-  # GET /festivals.xml
   def index
-    @festivals = Festival.send(find_scope) || raise(ActiveRecord::RecordNotFound)
-
-    respond_to do |format|
-      format.html # index.html.erb
-      format.xml  { render :xml => @festivals.to_xml }
-    end
+    @festival_groups = festivals_grouped(Festival.send(find_scope)) || raise(ActiveRecord::RecordNotFound)
   end
 
   # GET /festivals/x_2009
@@ -242,5 +236,18 @@ private
     key = "show/#{params[:id]}/#{@festival.updated_at.to_i}"
     key += show_press ? "/press" : "/nopress"
     key
+  end
+
+  def festivals_grouped(festivals)
+    # Group these festivals by their slug_group, with the groups
+    # in alphabetical order by the name of the most-recent festival,
+    # and the individual group entries sorted by time, reversed, eg:
+    # [ [Afest 2010, Afest 2009],
+    #   [Bfest 2007],
+    #   [Cfest 2009, Cfest 2008] ]
+    groups = festivals.group_by(&:slug_group)
+    groups.map do |slug_group, festivals|
+      festivals.sort_by {|festival| -festival.starts.jd }
+    end.sort_by {|group| group.first.starts }.reverse
   end
 end

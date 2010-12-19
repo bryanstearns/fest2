@@ -2,15 +2,16 @@ require File.dirname(__FILE__) + '/../spec_helper'
 
 describe SessionController do
   fixtures :users
+  include AdminUserSpecHelper
 
   it 'logins and redirects' do
-    post :create, :username => 'quentin', :password => 'test'
+    post :create, :email => 'quentin@example.com', :password => 'test'
     session[:user_id].should_not be_nil
     response.should be_redirect
   end
   
   it 'fails login and does not redirect' do
-    post :create, :username => 'quentin', :password => 'bad password'
+    post :create, :email => 'quentin@example.com', :password => 'bad password'
     session[:user_id].should be_nil
     response.should be_success
   end
@@ -23,13 +24,13 @@ describe SessionController do
   end
 
   it 'remembers me' do
-    post :create, :username => 'quentin', :password => 'test', 
+    post :create, :email => 'quentin@example.com', :password => 'test',
          :remember_me => "1"
     response.cookies["auth_token"].should_not be_nil
   end
   
   it 'does not remember me' do
-    post :create, :username => 'quentin', :password => 'test',
+    post :create, :email => 'quentin@example.com', :password => 'test',
          :remember_me => "0"
     response.cookies["auth_token"].should be_nil
   end

@@ -16,10 +16,4 @@ context WelcomeController do
     do_get
     response.should be_success
   end
-  
-  it "should include the right festivals" do
-    do_get
-    # festivals(:secret) isn't public.
-    assigns[:festivals].to_set.should == [festivals(:intermonth), festivals(:intramonth), festivals(:interyear)].to_set
-  end
 end

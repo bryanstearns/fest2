@@ -7,11 +7,11 @@
 
 <div class="festival_section">
 <ul>
-<% festivals_grouped(@festivals).each do |festival_group| %>
+<% @festivals_grouped.each do |festival_group| %>
   <% latest_festival = festival_group.first %>
   <li>
     <span class="name"><%= latest_festival.name %></span>
-    <span class="location"><%= latest_festival.location %></span></br>
+    <span class="location"><%= latest_festival.location %></span><br/>
     <ul>
       <% festival_group.each do |festival| %>
         <li>

@@ -4,8 +4,10 @@ describe "/films/show.html.erb" do
   include FilmsHelper
   
   before(:each) do
+    @festival = mock_model(Festival)
     @film = mock_model(Film)
 
+    assigns[:festival] = @festival
     assigns[:film] = @film
   end
 

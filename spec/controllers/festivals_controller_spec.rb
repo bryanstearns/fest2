@@ -6,13 +6,15 @@ describe FestivalsController do
   def make_festival
     venues = []
     @festival = mock_model(Festival, :venues => venues, :public => true,
+                           :location => "bogusville",
                            :screenings => [],
                            :updated_at => Time.zone.now - 1.day,
-                           :slug => 'slug')
+                           :starts => Date.today, :ends => Date.today,
+                           :slug => 'slug', :slug_group => 'slug_group')
     @festival.stub!(:to_ics).and_return("ICS")
     @festival.stub!(:to_xml).and_return("XML")
     @festivals = [@festival]
-    @festivals.stub!(:to_xml).and_return("XML")
+    @festivals_grouped = [@festivals]
     
     # For now, while we're auto-creating dummy venues
     venues.stub!(:create).and_return(nil)
@@ -24,12 +26,15 @@ describe FestivalsController do
   
   describe "in general," do
   
-    before { make_festival }    
+    before { make_festival }
     require_admin_rights_appropriately
   end
 
   describe "handling GET /festivals" do
-    before { make_festival }    
+    before do
+      make_festival
+      assigns[:festivals_grouped] = @festivals_grouped
+    end
     
     def do_get
       get :index
@@ -52,35 +57,7 @@ describe FestivalsController do
     
     it "should assign the found festivals for the view" do
       do_get
-      assigns[:festivals].should == [@festival]
-    end
-  end
-
-  describe "handling GET /festivals.xml" do
-    before do
-      make_festival
-      @festival.stub!(:to_xml).and_return("XML")
-    end
-    
-    def do_get
-      @request.env["HTTP_ACCEPT"] = "application/xml"
-      get :index
-    end
-    
-    it "should be successful" do
-      do_get
-      response.should be_success
-    end
-  
-    it "should find all festivals" do
-      Festival.should_receive(:published).and_return(@festivals)
-      do_get
-    end
-    
-    it "should render the found festivals as xml" do
-      @festivals.should_receive(:to_xml).and_return("XML")
-      do_get
-      response.body.should == "XML"
+      assigns[:festivals_grouped].should == @festivals_grouped
     end
   end
 

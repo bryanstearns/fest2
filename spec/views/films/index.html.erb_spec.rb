@@ -5,7 +5,8 @@ describe "/films/index.html.erb" do
   
   before(:each) do
     now = Time.now
-    festival = mock_model(Festival, :name => "name", :dates => "dates", 
+    festival = mock_model(Festival, :name => "name", :dates => "dates",
+                          :location => "bogusville",
                           :external_film_url => "http://foo/0")
     assigns[:festival] = festival
     
@@ -73,11 +74,6 @@ describe "/films/index.html.erb" do
     template.should_receive(:logged_in?).any_number_of_times.and_return(true)
     render "/films/index.html.erb"
     response.should have_tag("input#film_1_pick_0")
-  end
-  
-  it "should include the DVD icon for films with an ASIN" do
-    render "/films/index.html.erb"
-    response.should have_tag("#film_1 img")
   end
 end
 
