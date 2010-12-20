@@ -1,7 +1,7 @@
 require File.dirname(__FILE__) + '/../spec_helper'
 require 'set'
 
-context "A new Screening" do
+describe "A new Screening" do
   it "should require start and end times" do
     lambda { Screening.new(:starts => nil).should have(1).errors_on(:starts) }.
            should_not change(Screening, :count)
@@ -17,7 +17,7 @@ context "A new Screening" do
   end
 end
 
-context "Screening with fixtures loaded" do 
+describe "Screening with fixtures loaded" do 
   fixtures :users, :films, :venues, :screenings, :picks, :festivals
   
   it "should return properly formatted times" do

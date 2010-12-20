@@ -1,6 +1,6 @@
 require File.dirname(__FILE__) + '/../spec_helper'
 
-context "Pick with fixtures loaded" do
+describe "Pick with fixtures loaded" do
   fixtures :users, :festivals, :films, :screenings, :picks
   
   before(:each) do

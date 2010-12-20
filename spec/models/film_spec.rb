@@ -1,6 +1,6 @@
 require File.dirname(__FILE__) + '/../spec_helper'
 
-context "A new film" do
+describe "A new film" do
   fixtures :festivals
 
   it "should require name" do

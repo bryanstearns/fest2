@@ -1,6 +1,6 @@
 require File.dirname(__FILE__) + '/../spec_helper'
 
-context "Basic Subscription" do
+describe "Basic Subscription" do
 
   before(:each) do
     @subscription = Subscription.new
@@ -26,7 +26,7 @@ context "Basic Subscription" do
     @subscription.restriction_text.should == "1/3 10am-2pm, 1/5 6pm-"
   end
 
-  context "key handling" do
+  describe "key handling" do
     before(:each) do
       @subscription = Subscription.new(:festival_id => 999, :user_id => 999)
     end

@@ -1,0 +1,28 @@
+<p>
+  <b>Film:</b>
+  <%=h @buzz.film_id %>
+</p>
+
+<p>
+  <b>User:</b>
+  <%=h @buzz.user_id %>
+</p>
+
+<p>
+  <b>Content:</b>
+  <%=h @buzz.content %>
+</p>
+
+<p>
+  <b>Url:</b>
+  <%=h @buzz.url %>
+</p>
+
+<p>
+  <b>Published at:</b>
+  <%=h @buzz.published_at %>
+</p>
+
+
+<%= link_to 'Edit', edit_buzz_path(@buzz) %> |
+<%= link_to 'Back', film_buzz_path(@film, @buzz) %>

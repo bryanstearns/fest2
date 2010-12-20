@@ -4,7 +4,7 @@ require 'ruby-debug'
 include RandomSubsetHelper
 
 describe RandomSubsetHelper do
-  context "when picking from a collection" do
+  describe "when picking from a collection" do
     before do
       @collection = [0,1,2,3,4]
     end

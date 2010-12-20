@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20101214030828) do
+ActiveRecord::Schema.define(:version => 20101220023023) do
 
   create_table "announcements", :force => true do |t|
     t.string   "subject",                         :null => false
@@ -21,6 +21,18 @@ ActiveRecord::Schema.define(:version => 20101214030828) do
   end
 
   add_index "announcements", ["published", "published_at"], :name => "index_announcements_on_published_and_published_at"
+
+  create_table "buzz", :force => true do |t|
+    t.integer  "film_id",      :null => false
+    t.integer  "user_id",      :null => false
+    t.text     "content"
+    t.string   "url"
+    t.datetime "published_at"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "buzz", ["film_id", "published_at"], :name => "index_buzz_on_film_id_and_published_at"
 
   create_table "festivals", :force => true do |t|
     t.string   "name"

@@ -7,16 +7,18 @@ ActionController::Routing::Routes.draw do |map|
     :reset_rankings => :post,
     :reset_screenings => :post, 
   } do |festival|
-    festival.resources :films, :controller => 'films'
+    festival.resources :films
     festival.resources :venues
     festival.resource :assistant, :controller => 'subscriptions', 
       :only => [:show, :update]
     festival.user '/:other_user_id/:key.:format', :controller => 'festivals', :action => 'show', :method => :get
   end
   map.resources :films, :controller => 'films' do |film|
-    film.resources :screenings, :controller => 'screenings'
+    film.resources :screenings
     film.resources :picks
+    film.resources :buzz
   end
+  map.resources :buzz, :only => [:show, :edit, :update]
 
   # The welcome controller provides a few site-global static-like pages
   map.with_options :controller => 'welcome' do |m|

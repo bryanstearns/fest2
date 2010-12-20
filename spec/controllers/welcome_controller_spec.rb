@@ -1,6 +1,6 @@
 require File.dirname(__FILE__) + '/../spec_helper'
 
-context WelcomeController do
+describe WelcomeController do
   fixtures :festivals, :announcements
   
   def do_get

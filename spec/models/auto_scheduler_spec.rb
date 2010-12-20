@@ -1,8 +1,8 @@
 require File.dirname(__FILE__) + '/../spec_helper'
 
-context "Auto_scheduling setup" do
+describe "Auto_scheduling setup" do
   
-  fixtures :festivals, :picks, :screenings, :users
+  fixtures :festivals, :picks, :screenings, :users, :films
   before do
     quentin = users(:quentin)
     quentin.stub!(:can_see?).and_return(true)
@@ -40,7 +40,7 @@ context "Auto_scheduling setup" do
   end
 end
 
-#context "first pass" do
+#describe "first pass" do
 #  fixtures :festivals, :picks, :screenings, :users
 #  before do
 #    @sched = AutoScheduler.new(users(:quentin), festivals(:intramonth))
@@ -53,7 +53,7 @@ end
 #  end
 #end
 
-#context "second pass" do
+#describe "second pass" do
 #  fixtures :festivals, :picks, :screenings, :users
 #  before do
 #    @sched = AutoScheduler.new(users(:quentin), festivals(:intramonth))

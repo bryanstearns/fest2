@@ -1,6 +1,6 @@
 require File.dirname(__FILE__) + '/../spec_helper'
 
-context "A new Festival" do
+describe "A new Festival" do
   it "should require name" do
     Festival.new(:name => nil).should have(1).errors_on(:name)
   end
@@ -37,7 +37,7 @@ context "A new Festival" do
   end
 end
 
-context "Festival with fixtures loaded" do 
+describe "Festival with fixtures loaded" do 
   fixtures :festivals, :films, :venues
 
 # (no longer automatic)

@@ -1,6 +1,6 @@
 require File.dirname(__FILE__) + '/../spec_helper'
 
-context "A Restriction" do
+describe "A Restriction" do
   it "should detect conflicts" do
     a = Restriction.new(10.minutes.ago, 5.minutes.ago)
     b = Restriction.new(7.minutes.ago, 2.minutes.ago)
@@ -17,7 +17,7 @@ context "A Restriction" do
   end
 end
 
-context "A Restriction specification" do
+describe "A Restriction specification" do
   before(:each) do
     @now = Time.zone.local(2001, 1, 1)
   end
