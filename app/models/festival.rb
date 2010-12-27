@@ -11,12 +11,8 @@ class Festival < CachedModel
   has_many :subscriptions, :dependent => :destroy
   has_many :users, :through => :subscriptions
   
-  validates_presence_of :name
-  validates_uniqueness_of :name
-  validates_presence_of :slug
-  validates_uniqueness_of :slug
-  validates_presence_of :starts
-  validates_presence_of :ends
+  validates_presence_of :name, :slug, :slug_group, :starts, :ends
+  validates_uniqueness_of :name, :slug
   validates_each [:ends] do |record, attrib, value|
     if !value.nil? and !record.starts.nil? and value < record.starts
       record.errors.add(attrib, "isn't after Starts")
@@ -26,18 +22,20 @@ class Festival < CachedModel
     :unless => Proc.new {|festival| festival.film_url_format.blank? },
     :message => "must be blank, or a URL with a '*' where the film identifier should go"
 
-  before_save :save_slug_group
+  before_validation :save_slug_group
 
   named_scope :unlimited, :conditions => [], :order => "starts desc"
   named_scope :published, :conditions => ['public = ?', true], :order => "starts desc"
+  named_scope :published_and_scheduled, :conditions => ['public = ? and scheduled = ?', true, true], :order => "starts desc"
   named_scope :current, lambda { { :conditions => ['ends >= ?', 3.days.from_now] } }
+  named_scope :in_slug_group, lambda {|group| { :conditions => ['slug_group = ?', group] } }
 
   def self.best_default
     # For new users, the best festival to show is the next one that hasn't ended yet.
     # If there isn't one, just show the most-recent one
-    # (Note that published sorts newest-first!)
-    Festival.published.first(:conditions => ['ends >= ?', 3.days.from_now]) \
-      || Festival.published.first
+    # (Note that published_and_scheduled sorts newest-first!)
+    Festival.published_and_scheduled.first(:conditions => ['ends >= ?', 3.days.from_now]) \
+      || Festival.published_and_scheduled.first
   end
 
   def dates
@@ -129,6 +127,7 @@ class Festival < CachedModel
   end
 
   def save_slug_group
-    self.slug_group = self.slug.split('_').first
+    self.slug_group = self.slug.split('_').first \
+      if (slug_changed? or slug_group.nil?)
   end
 end

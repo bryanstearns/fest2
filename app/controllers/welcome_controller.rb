@@ -3,7 +3,8 @@ class WelcomeController < ApplicationController
     if logged_in? && request.path != '/home'
       # Send the user to a festival at the most appropriate phase
       user = current_user
-      festival = user.festivals.best_default(cookies[:festival])
+      last_festival = cookies[:festival]
+      festival = user.best_default_festival(cookies[:festival])
       redirect_to best_user_path_for(festival, user) and return
     end
 

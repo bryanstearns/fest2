@@ -2,18 +2,8 @@ require 'digest/sha1'
 class User < ActiveRecord::Base
   has_many :picks, :dependent => :destroy
   has_many :subscriptions, :dependent => :destroy
-  has_many :festivals, :through => :subscriptions do
-    def best_default(slug)
-      # which festival should we show this user by default?
-      # Use the newest instance of the last festival they used, or let
-      # Festival pick.
-      (slug && Festival.find_all_by_slug_group_and_public(\
-                 slug.split("_").first, true,
-                 :limit => 1, :order => "starts desc")) || \
-        Festival.best_default
-    end
-  end
-  
+  has_many :festivals, :through => :subscriptions
+
   # Virtual attribute for the unencrypted password
   attr_accessor :password
 
@@ -103,6 +93,22 @@ class User < ActiveRecord::Base
 
   def has_rankings_for(festival)
     (picks.count(:conditions => ["festival_id = ? and priority is not null", festival.id]) > 0)
+  end
+
+  def best_default_festival(slug)
+    # which festival should we show this user by default?
+    # Use the newest instance of the last festival they used, or let
+    # Festival pick.
+    if slug.nil? # no festivals cookie was found.
+      # Pick the "best" subscription to use
+      slug = subscriptions.last(:include => :festival, :order => "subscriptions.created_at")\
+                          .try(:festival).try(:slug)
+    end
+    if slug
+      festival = Festival.published_and_scheduled.in_slug_group(slug.split("_").first).first
+      return festival if festival
+    end
+    Festival.best_default
   end
 
 protected
