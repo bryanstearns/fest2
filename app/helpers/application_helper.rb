@@ -61,6 +61,7 @@ module ApplicationHelper
     end
     javascripts << "jquery-ui-#{jquery_ui_version}.custom.min" \
       if jquery_ui_version
+    javascripts << "jquery.qtip-1.0.0-rc3.min"
     javascripts << "jqtouch" if request.format == :mobile
     javascripts << "application"
     "#{script_includes.join("\n")}\n" + javascript_include_tag(javascripts)
