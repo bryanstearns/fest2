@@ -6,11 +6,11 @@
   day_time_label = false ? ": #{day.starts.to_time_label} - #{day.ends.to_time_label}" : ""
   page_break = day.page_break_before ? "style=\"page-break-before: always\"" : ""
 %>
-<h3 <%=page_break %>><%= day.date.strftime("%A, %B #{day.date.day}") %><%= day_time_label %></h3>
+<h3 <%=page_break %>><a name="<%= day.date.strftime("%y%m%d") %>"></a><%= day.date.strftime("%A, %B #{day.date.day}") %><%= day_time_label %></h3>
 <table class="daygrid" id="day<%= datecode %>">
   <tr>
     <% if show_times %>
-    <th width="30"/>
+    <th width="30"></th>
     <% end -%>
     <% day.venues.each do |v| %>
     <th class="venuename" width="<%= venueWidth %>%"><%= v[0].name %></th>
