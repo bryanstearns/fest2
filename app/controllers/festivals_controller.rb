@@ -185,36 +185,29 @@ private
     screening_by_screening_id = screenings.index_by(&:id)
     picks = Pick.find_all_by_user_id_and_festival_id(for_user, @festival)
     pick_by_film_id = picks.index_by(&:film_id)
-    you, youare, youhavenot = (for_user == current_user) \
-      ? ["You", "You're", "You haven't"] \
-      : [for_user.username, "#{for_user.username} is",
-         "#{for_user.username} hasn't"]
 
-    # Make the javascript to update the states and tooltips, and to insert
-    # the priority symbols
+    # Make the javascript to update the states and insert the priority symbols
     updated_screening_states = screening_by_screening_id.keys.group_by do |screening_id|
       s = screening_by_screening_id[screening_id]
       p = pick_by_film_id[s.film_id]
       if p
         if p.screening_id == screening_id
-          ["scheduled", "#{youare} scheduled to see this screening."]
+          "scheduled"
         elsif p.screening_id
-          ["otherscheduled", "#{youare} seeing this on #{screening_by_screening_id[p.screening_id].date_and_times}."]
+          "otherscheduled"
         elsif p.priority.nil?
-          ["unranked", "#{youhavenot} prioritized this film."]
+          "unranked"
         elsif p.priority > 0
-          ["unscheduled", "#{you} prioritized this, but no screening is selected."]
+          "unscheduled"
         else
-          ["lowprio", "#{you} gave this the lowest priority."]
+          "lowprio"
         end
       else
-        ["unranked", "#{youhavenot} prioritized this film."]
+        "unranked"
       end
     end
-    clickable = @read_only ? "" : " clickable"
-    js = updated_screening_states.map do |state_and_tip, screening_ids|
-      state, tooltip = state_and_tip
-      %Q[jQuery("#{screening_ids.map {|id| "#screening-" + id.to_s}.join(",")}").attr("class", "screening #{state}#{clickable}").attr("title", "#{tooltip}");]
+    js = updated_screening_states.map do |state, screening_ids|
+      %Q[jQuery("#{screening_ids.map {|id| "#screening-" + id.to_s}.join(",")}").attr("class", "screening #{state}");]
     end.join("\n")
 
     screenings_by_priority = screenings.group_by do |s|
@@ -223,10 +216,10 @@ private
     end
     js += screenings_by_priority.map do |priority, screenings|
       unless priority.nil?
-        priority_image_tag = view_helper.image_tag \
-          "priority/p#{priority}.png",
-          :height => 10, :width => 46
-        %Q[jQuery("#{screenings.map {|s| "#screening-" + s.id.to_s}.join(",")}").find('.priority').html('#{priority_image_tag}');]
+        priority_image_tag = view_helper.image_tag("priority/p#{priority}.png",
+                                                   :height => 10, :width => 46)
+        id_list = screenings.map {|s| "#screening-" + s.id.to_s}.join(",")
+        %Q[jQuery("#{id_list}").find('.priority').html('#{priority_image_tag}');]
       end
     end.join("\n")
     js
