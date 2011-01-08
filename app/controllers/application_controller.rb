@@ -12,7 +12,7 @@ end
 
 class ApplicationController < ActionController::Base
   helper :all # include all helpers, all the time
-  helper_method :current_user_is_admin?
+  helper_method :current_user_is_admin?, :client_is?
 
   # See ActionController::RequestForgeryProtection for details
   # Uncomment the :secret if you're not using the cookie session store
@@ -33,7 +33,7 @@ class ApplicationController < ActionController::Base
 
   # Do authentication stuff
   include AuthenticatedSystem
-  before_filter :set_mobile_format,
+  before_filter :client_type,
                 :login_from_cookie,
                 :admin_check
   
@@ -87,15 +87,24 @@ class ApplicationController < ActionController::Base
   end
 
 
-  # I can haz iPhone or Android?
-  def is_mobile_request?
-    false # for now; was: request.user_agent =~ /(Mobile.+Safari)/
-  end
-  def set_mobile_format
-    if is_mobile_request?
-      Rails.logger.info("Handling request as _mobile_!")
-      request.format = :mobile
+  # I can haz iPad, iPhone or Android?
+  def client_type
+    # :desktop, :tablet, or :mobile?
+    # TODO: add :mobile test, but might have to change caching since :mobile
+    # will include the jQTouch javascript...
+    @@client_type ||= begin
+      ua = request.user_agent
+      result = if ua =~ /iPad;/
+        :tablet
+      else
+        :desktop
+      end
+      Rails.logger.info("Handling request as '#{result}'")
+      result
     end
+  end
+  def client_is?(type)
+    client_type == type
   end
 
   # Give access to some view helpers from within controllers;

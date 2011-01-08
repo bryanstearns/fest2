@@ -19,6 +19,9 @@
         title="FestivalFanatic.com News" 
         href="<%= announcements_url(:format => :rss) %>" />
 
+  <%# add or remove the leading ERB equals sign to enable/disable Firebug Lite %>
+  <% '<script type="text/javascript" src="https://getfirebug.com/firebug-lite.js"></script>' if Rails.env.development? %>
+
   <%= stylesheet_includes(jquery_ui_version) %>
   <%= javascript_includes(jquery_version, jquery_ui_version) %>
   <script type="text/javascript">

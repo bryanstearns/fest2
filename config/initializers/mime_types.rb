@@ -5,6 +5,4 @@
 # Mime::Type.register_alias "text/html", :iphone
 
 # BJS: Added:
-Mime::Type.register_alias "text/html", :mobile
-
 Mime::Type.register "application/pdf", :pdf
