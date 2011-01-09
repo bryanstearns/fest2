@@ -139,7 +139,7 @@ jQuery(function() {
 
     <%# Grab more content? %>
     var screening = jQuery(this);
-    var target_width = 400;
+    var min_width = 400;
     var max_height = 250;
     jQuery.ajax({
       url: '/films/' + screening.attr('data-film_id')
@@ -157,9 +157,10 @@ jQuery(function() {
         });
 
         <%# Insert it in position, but transparent and at the target width %>
+        var target_width = Math.max(screening.width(), min_width)
         details.css({
-          left: screening.offset().left,
-          top: screening.offset().top,
+          left: screening.offset().left - 1,
+          top: screening.offset().top - 1,
           opacity: "40%",
           width: target_width,
         });
