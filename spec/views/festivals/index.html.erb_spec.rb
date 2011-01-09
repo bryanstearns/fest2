@@ -12,7 +12,7 @@ describe "/festivals/index.html.erb" do
       :public => true, :name => "Festival99", :slug => "MyString",
       :slug_group => "b", :location => "San Jose", :dates => "dates",
       :starts => Date.today, :ends => Date.today)
-    assigns[:festivals_grouped] = [[festival_98], [festival_99]]
+    assigns[:festival_groups] = [[festival_98], [festival_99]]
   end
 
   it "should render list of festivals" do

@@ -127,7 +127,7 @@ class Festival < CachedModel
   end
 
   def save_slug_group
-    self.slug_group = self.slug.split('_').first \
-      if (slug_changed? or slug_group.nil?)
+    self.slug_group = slug.split('_').first \
+      if slug && (slug_changed? or slug_group.nil?)
   end
 end
