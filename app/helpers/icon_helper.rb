@@ -5,8 +5,8 @@ module IconHelper
   def icon_tag(name, options={})
     name = name.to_s
     options.symbolize_keys!
-    options[:title] ||= name
-    options[:alt] ||= name
+    options[:title] ||= name unless options[:title] == false
+    options[:alt] ||= name unless options[:alt] == false
     path = "fam3silk/#{name}.png"
     raise(MissingIcon, "Not found: #{path}") \
       if RAILS_ENV != "production" and not File.exists?("#{RAILS_ROOT}/public/images/#{path}")

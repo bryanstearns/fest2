@@ -1,65 +1,119 @@
 <%# Display one festival schedule: /festivals/1 -%>
 <% content_for :title do %>Schedule for <%= @festival.name %><% end %>
 
-<%= render :partial => "festivals/header", :locals => { :festival => @festival, :hide_tabs => @read_only } %>
+<%= render :partial => "festivals/header",
+           :locals => { :festival => @festival, :hide_tabs => @read_only } %>
 
-<div class="instructions">
-<% if !logged_in? %>
-<p>Here's the festival schedule; if you log in, you'll be able to click on the grid to 
-schedule screenings.</p>
-<% else %>
-<% if @read_only %>
-<p>Here is <b><%=h @displaying_user.username %></b>'s current festival schedule. Here's what the colors mean:</p>
-<% else %>
-<p>Your festival schedule is below; you can click individual screenings to select or unselect them.
-When you select a screening, conflicting screenings and other screenings of that film will be unselected
-for you. Here's what the colors mean:</p>
-<% end %>
-<ul class="legend">
-<li><span class="scheduled example">a screening you've selected;</span> you're going to this screening.</li>
-<li><span class="otherscheduled example">a screening of a film you've selected to see at another time;</span> you're going to a different screening of this film.</li>
-<li><span class="unscheduled example">a screening of a film you've prioritized, but haven't scheduled;</span> you want to see this film, but haven't picked a screening yet.</li>
-<li><span class="unranked example">a screening of a film you've prioritized at the lowest setting, or haven't prioritized;</span> you're not planning on seeing this film.</li>
-<li>The priority you gave each film (on the Film Priorities page) is shown with little circles: 
-      <%= image_tag "priority/p3.png", :height => 10, :width => 46 %></li>
-</ul>
+<div id="instructions">
+  <% if !logged_in? %>
+    <p>
+      Here's the festival schedule; if you log in, you'll be able to click on
+      the grid to schedule screenings.
+    </p>
+  <% else %>
+    <ul id="legend">
+      <li class="scheduled">
+        This is a screening you're attending.
+      </li>
+      <li class="otherscheduled">
+        You're seeing a different screening of this film.
+      </li>
+      <li class="unscheduled">
+        You wanted to see this film (by prioritizing it), but aren't scheduled
+        to see it.
+      </li>
+      <li class="unranked">
+        You're not planning on seeing this film.
+      </li>
+      <li>
+        The priority you gave each film is shown
+        with little circles:
+        <%= image_tag "priority/p3.png", :height => 10, :width => 46 %>
+      </li>
+      <!--<li>
+        The rating that you and the community gave this film is shown with stars:
+        <%= image_tag "priority/p3.png", :height => 10, :width => 46 %>
+      </li>-->
+    </ul>
+    <% if @read_only %>
+      <p>
+        Here is <b><%=h @displaying_user.username %></b>'s current festival
+        schedule:
+      </p>
+    <% else %>
+      <p>
+        Your festival schedule is below;
 
-<p>Also:</p>
-<ul>
-<% unless @read_only %>
-<li>You can always go back to the "Your Film Priorities" tab and to adjust your priorities, then use the "Scheduling Assistant" to re-schedule the rest of the festival for you.</li>
-<li>You can click <%= link_to "here", 
-   reset_screenings_festival_url(@festival),
-   :method => :post,
-   :confirm => "Are you sure you want to unschedule all your screenings?" %> 
-to un-select all your selected screenings and start over.</li>
-<% end %>
-<% if logged_in? || @read_only %>
-<% pdf_url = @read_only \
-     ? festival_user_url(\
-         :festival_id => @festival.to_param, 
-         :other_user_id => @displaying_user.to_param,
-         :key => @displaying_user_subscription.key,
-         :format => :pdf) \
-     : festival_url(@festival, :format => :pdf) -%>
-<li>You can <%= link_to "download a printable PDF of this schedule", 
-                        pdf_url %>, 
-which you can print with <a href="http://get.adobe.com/reader/" target="_blank">Adobe Reader</a>. (This is a list format; other formats coming soon).</li>
-<% end %>
-<% if logged_in? && !@read_only %>
-<li>
-  You can <%= link_to 'download this schedule in iCalendar format', 
+        click a screening to see more information about the film,
+
+        add the screening to your schedule (we'll automatically unselect
+        conflicting screenings and other screenings of that film),
+
+        see more information about the film and its other screenings,
+
+        change your priority for this film or rate it once you've seen it,
+
+        or read buzz about the film & add your own. Also:
+      </p>
+    <% end %>
+    <ul>
+      <% unless @read_only %>
+        <li>
+          You can always go back to the "Your Film Priorities" tab to adjust
+          your priorities, then use the "Scheduling Assistant" to re-schedule
+          the rest of the festival for you.
+        </li>
+        <li>
+          You can click
+          <%= link_to "here", reset_screenings_festival_url(@festival),
+                :method => :post, :confirm =>
+                "Are you sure you want to unschedule all your screenings?" %>
+          to un-select all your selected screenings and start over.
+        </li>
+      <% end %>
+      <% if logged_in? || @read_only %>
+        <% pdf_url = @read_only \
+             ? festival_user_url(:festival_id => @festival.to_param,
+                                 :other_user_id => @displaying_user.to_param,
+                                 :key => @displaying_user_subscription.key,
+                                 :format => :pdf) \
+             : festival_url(@festival, :format => :pdf) -%>
+        <li>
+          You can
+          <%= link_to "download a printable PDF of this schedule",
+                      pdf_url %>,
+          which you can print with
+          <a href="http://get.adobe.com/reader/" target="_blank">Adobe Reader</a>.
+        </li>
+      <% end %>
+      <% if logged_in? && !@read_only %>
+        <li>
+          You can
+          <%= link_to 'download this schedule in iCalendar format',
                       icalendar_festival_url %>,
-  or add it to your <%= link_to 'Google calendar', google_festival_url,
-                                :target => "_blank" %>
-  or <%= link_to 'My Yahoo! calendar', yahoo_festival_url,
-                 :target => "_blank" %>.
-</li>
-<li>You can share your schedule with your friends by giving them this link:<br/><%= link_to h(readonly_festival_url), readonly_festival_url %></li>
-<% end %>
-</ul>
-<% end %>
+          or add it to your
+          <%= link_to 'Google calendar', google_festival_url,
+                      :target => "_blank" %>
+          or
+          <%= link_to 'My Yahoo! calendar', yahoo_festival_url,
+                      :target => "_blank" %>.
+        </li>
+        <li>
+          You can share your schedule with your friends by giving them this link:
+          <br/>
+          <%= link_to h(readonly_festival_url), readonly_festival_url %>
+        </li>
+      <% end %>
+    </ul>
+  <% end %>
 </div>
+
+<% if logged_in? %>
+<div id="showhide">
+  <a href="javascript:void();">Click here to <span>hide</span> the instructions</a>
+  <%= icon_tag :information, :alt => false, :title => false %>
+</div>
+<% end -%>
 
 <% cache @cache_key do %>
 <div id="days" class="days">
@@ -143,6 +197,20 @@ jQuery(function() {
     <%# Hide any open details when anything else is *left*-clicked %>
     if (e.which == 1) jQuery(".details").remove();
   });
+
+  <%# Toggle instructions based on cookie %>
+  if (get_cookie("instructions") == "hide") {
+    jQuery("#showhide span").html("show");
+    jQuery("#instructions").hide();
+  }
+  jQuery("#showhide").click(function() {
+    var instructions = jQuery("#instructions");
+    var verb = instructions.css("display") != "none" ? "show" : "hide";
+    jQuery("#showhide span").html(verb);
+    set_cookie("instructions", verb == "show" ? "hide" : null, "never")
+    instructions.toggle('fast');
+  });
+
 });
 <% end -%>
 
