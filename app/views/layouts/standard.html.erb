@@ -20,7 +20,8 @@
         href="<%= announcements_url(:format => :rss) %>" />
 
   <%# add or remove the leading ERB equals sign to enable/disable Firebug Lite %>
-  <% '<script type="text/javascript" src="https://getfirebug.com/firebug-lite.js"></script>' if Rails.env.development? %>
+  <% '<script type="text/javascript" src="https://getfirebug.com/firebug-lite.js"></script>' \
+     if Rails.env.development? && client_is?(:tablet) %>
 
   <%= stylesheet_includes(jquery_ui_version) %>
   <%= javascript_includes(jquery_version, jquery_ui_version) %>
