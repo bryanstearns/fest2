@@ -40,3 +40,30 @@ function client_type() {
 function client_is(type) {
   return client_type == type;
 }
+
+function set_cookie(name, value, expires, path, domain, secure) {
+  var cookie = name + "=" + escape(value);
+  if (!value) { // delete the cookie
+    expires = new Date();
+    expires.setTime(expires.getTime() - 1);
+  }
+  if (expires) {
+    if (expires == "never")
+      expires = new Date(2021, 12, 31);
+    cookie += "; expires=" + expires.toGMTString();
+  }
+  if (path)
+    cookie += "; path=" + escape(path);
+  if (domain)
+    cookie += "; domain=" + escape(domain);
+  if (secure)
+    cookie += "; secure";
+  document.cookie = cookie;
+}
+
+function get_cookie(name) {
+  var matches = document.cookie.match('(^|;) ?' + name + '=([^;]*)(;|$)');
+  if (!matches)
+    return null;
+  return unescape(matches[2]);
+}
