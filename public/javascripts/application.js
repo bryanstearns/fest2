@@ -15,4 +15,28 @@ jQuery(function() {
   if (jQuery.browser.msie && parseInt(jQuery.browser.version) < 7) {
     jQuery(".badbrowser.ie6").show();
   }
+  
+  // Fix for jQuery on older iPads, which had broken offset()
+  // from https://gist.github.com/661844
+  // and http://bugs.jquery.com/ticket/6446
+  if (parseFloat(((/CPU.+OS ([0-9_]{3}).*AppleWebkit.*Mobile/i.exec(navigator.userAgent)) || [0,'4_2'])[1].replace('_','.')) < 4.1) {
+    jQuery.fn.Oldoffset = jQuery.fn.offset;
+    jQuery.fn.offset = function() {
+       var result = jQuery(this).Oldoffset();
+       result.top -= window.scrollY;
+       result.left -= window.scrollX;
+
+       return result;
+    }
+  }
 });
+
+function client_type() {
+  var ua = navigator.userAgent;
+  if (ua.match(/iPad/)) return "tablet";
+  return "desktop";
+}
+
+function client_is(type) {
+  return client_type == type;
+}
