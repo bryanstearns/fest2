@@ -1,0 +1,21 @@
+<% film = @screening.film -%>
+<div class="details">
+  <span class="origin">
+    <%= film.country_names %><%= ", " unless film.country_names.blank? %>
+    <%= film.minutes %> minutes
+  </span>
+  <h3 class="name"><%= film.name %></h3>
+  <ul class="showtimes">
+    <% film.screenings.each do |s| -%>
+    <li>
+      <%= s.date_and_times %>, <%= s.venue.name %>
+    </li>
+    <% end %>
+  </ul>
+  <ul class="controls">
+    <li>Schedule</li>
+    <li>Prioritize</li>
+    <li>Rate</li>
+    <li>Buzz!</li>
+  </ul>
+</div>

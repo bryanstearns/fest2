@@ -20,10 +20,10 @@ class ScreeningsController < ApplicationController
   # GET /films/1/screenings/1.xml
   def show
     @screening = @film.screenings.find(params[:id], :include => [:venue, :film, :festival])
-
     respond_to do |format|
       format.html { raise NonAjaxEditsNotSupported }
-      format.xml  { render :xml => @screening }
+      format.js
+      format.xml { render :xml => @screening }
     end
   end
 

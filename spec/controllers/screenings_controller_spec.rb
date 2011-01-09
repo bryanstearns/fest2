@@ -29,7 +29,8 @@ describe ScreeningsController do
     it "should fail if ordinary html requested" do
       lambda {get :index, :film_id => "1"}.should raise_error(NonAjaxEditsNotSupported)
     end
-#    
+
+#
 #    it "should be successful" do
 #      do_get
 #      response.should be_success
@@ -87,32 +88,32 @@ describe ScreeningsController do
     end
   
     def do_get
-      get :show, :film_id => "1", :id => "1"
+      get :show, :film_id => "1", :id => "1", :format => "js"
     end
 
     it "should fail if ordinary html requested" do
       lambda {get :show, :film_id => "1", :id => "1"}.should raise_error(NonAjaxEditsNotSupported)
     end
 
-#    it "should be successful" do
-#      do_get
-#      response.should be_success
-#    end
-#  
-#    it "should render show template" do
-#      do_get
-#      response.should render_template('show')
-#    end
-#  
-#    it "should find the screening requested" do
-#      @screenings.should_receive(:find).with(any_args).and_return(@screening)
-#      do_get
-#    end
-#  
-#    it "should assign the found screening for the view" do
-#      do_get
-#      assigns[:screening].should equal(@screening)
-#    end
+    it "should be successful when javascript is requested" do
+      do_get
+      response.should be_success
+    end
+
+    it "should render show template" do
+      do_get
+      response.should render_template('show')
+    end
+
+    it "should find the screening requested" do
+      @screenings.should_receive(:find).with(any_args).and_return(@screening)
+      do_get
+    end
+
+    it "should assign the found screening for the view" do
+      do_get
+      assigns[:screening].should equal(@screening)
+    end
   end
 
   describe "handling GET /films/1/screenings/1.xml" do
