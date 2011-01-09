@@ -5,4 +5,5 @@
 # Mime::Type.register_alias "text/html", :iphone
 
 # BJS: Added:
-Mime::Type.register "application/pdf", :pdf
+# BJS: then removed: doesn't seem to be needed with current prawnto
+# Mime::Type.register "application/pdf", :pdf
