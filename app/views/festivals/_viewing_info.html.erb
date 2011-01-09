@@ -1,17 +1,15 @@
 <%# One viewing on the schedule grid, from /festivals/_day -%>
 <div id="screening-<%= viewing_info.screening.id %>"
      class="screening unranked"
-     style="height: <%= viewing_info.height %>px; margin-top: <%= viewing_info.space_before %>px">
-  <div class="priority"></div>
-  <%# flag_icon_tag viewing_info.film.countries, :class => "flag" %>
-  <span class="name"><%= viewing_info.film_name %></span>
-  
-  <div class="screeningtime">
+     style="height: <%= viewing_info.height %>px; margin-top: <%= viewing_info.space_before %>px"
+     data-film_id="<%= viewing_info.film.id %>">
+  <span class="priority"></span>
+  <h3><%= viewing_info.film_name %></h3>
+  <div class="showtimes">
     <span><%= viewing_info.screening_times %>,</span>
     <span>
       <%= viewing_info.ordinalize %>
       <%= " (press)" if viewing_info.screening.press %>
     </span>
   </div>
-
 </div>

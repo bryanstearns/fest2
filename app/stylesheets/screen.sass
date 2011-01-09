@@ -281,35 +281,37 @@ body.festivals_show
       font-weight: bold
       white-space: nowrap
 
-  .screening
-    cursor: pointer
+  .screening_details_base
     +border-radius(4px)
     // border: 1px solid black
     margin: 1px
     padding: 3px
+
+    h3
+      margin-bottom: 0px
+
+    .screeningtime
+      span
+        white-space: nowrap
+
+  .screening
+    @extend .screening_details_base
+    cursor: pointer
     overflow: hidden
-
-    .name
-      font-weight: bold
-
-    .tip
-      display: none
-      border: 1px solid black
-      background-color: LightSkyBlue
 
     .priority
       float: right
       margin-left: 4px
 
-  .screeningtime
-    font-size: 85%
-    span
-      white-space: nowrap
 
   .details
+    @extend .screening_details_base
     +box-shadow()
     position: absolute
     z-index: 100
+    .origin
+      float: right
+      margin-left: 4px
 
   .legend li
     padding: 3px

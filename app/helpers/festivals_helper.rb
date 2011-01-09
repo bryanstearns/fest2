@@ -68,7 +68,7 @@ module FestivalsHelper
       @minutes_long = (@ends - @starts).to_minutes
 
       # Figure out grid geometry
-      @hour_height = 40.0 # Height of one hour in the grid, in pixels
+      @hour_height = 50.0 # Height of one hour in the grid, in pixels
       @padding_height = 9.0 # Padding we add around the screening
       @minute_height = hour_height / 60.0
       @grid_height = @minutes_long * minute_height

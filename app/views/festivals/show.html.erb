@@ -78,16 +78,71 @@ jQuery(function() {
   <%# Apply picks for this user -%>
   <%= @screening_javascript %>
 
-  <% if logged_in? && !@read_only -%>
   <%# Register for clicks on all our screenings -%>
   jQuery(".screening").click(function(e) {
-    jQuery.post('<%= pick_screening_festival_path(@festival) %>',
-                { 'screening_id': this.id.split('-')[1],
-                  'state': jQuery(this).is('.scheduled') 
-                           ? 'unpicked' : 'picked' },
-                function (script) { eval(script); })
+    <%# Hide any other open details %>
+    jQuery(".details").remove();
+
+    <%# Grab more content? %>
+    var screening = jQuery(this);
+    var target_width = 400;
+    var max_height = 250;
+    jQuery.ajax({
+      url: '/films/' + screening.attr('data-film_id')
+            + '/screenings/' + screening.attr('id').split('-')[1] + '.js',
+      error: function(xhr, status) {
+        alert("A problem occurred trying to retrieve this screening's information. " +
+              "We'll look into it; please try again later.");
+      },
+      success: function(raw_details) {
+        var details = jQuery(raw_details);
+        <%# Copy classes and other characteristics from the original %>
+        jQuery.each(screening.attr('class').split(' '), function(i, name) {
+          if (name != 'screening')
+            details.addClass(name);
+        });
+
+        <%# Insert it in position, but transparent and at the target width %>
+        details.css({
+          left: screening.offset().left,
+          top: screening.offset().top,
+          opacity: "40%",
+          width: target_width,
+        });
+        screening.before(details);
+        console.info("screening at (" + screening.offset().left + ", " + screening.offset().top +
+                     "), details at (" + details.offset().left + ", " + details.offset().top + ")");
+
+        <%# Note its height at this width; this is how tall we'll make it %>
+        var target_height = Math.min(details.height(), max_height)
+        console.info("target height: " + target_height);
+
+        <%# Now shrink it to fit, hide its overflow, and make it opaque %>
+        details.css({
+          overflow: "hidden",
+          opacity: "100%",
+          width: screening.width(),
+          height: screening.height(),
+        });
+
+        <%# Zoom it open %>
+        var params = {
+          height: target_height,
+          width: target_width,
+        }
+        if (details.offset().left > (jQuery(document).width() / 2))
+          params["left"] = "-=" + (target_width - screening.width());
+        details.animate(params, {
+          duration: 'fast',
+          complete: function() { details.css("overflow", "auto"); },
+        });
+      }
+    });
   });
-  <% end -%>
+  jQuery(document).click(function(e) {
+    <%# Hide any open details when anything else is *left*-clicked %>
+    if (e.which == 1) jQuery(".details").remove();
+  });
 });
 <% end -%>
 
