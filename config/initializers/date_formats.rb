@@ -2,13 +2,13 @@
 
 date_formats = {
   :month_date_year =>
-    lambda {|d| d.strftime("%B #{d.day.ordinalize}, %Y") },
+    lambda {|d| d.strftime("%B #{d.day}, %Y") },
   :month_date =>
-    lambda {|d| d.strftime("%B #{d.day.ordinalize}") },
+    lambda {|d| d.strftime("%B #{d.day}") },
   :day_month_date_year =>
-    lambda {|d| d.strftime("%A, %B #{d.day.ordinalize}, %Y") },
+    lambda {|d| d.strftime("%A, %B #{d.day}, %Y") },
   :day_month_date =>
-    lambda {|d| d.strftime("%A, %B #{d.day.ordinalize}") },
+    lambda {|d| d.strftime("%A, %B #{d.day}") },
   :mdy_numbers_slashed =>
     lambda {|d| d.strftime("#{d.month}/#{d.day}/%Y") },
   :js => "%Y-%m-%d", # for passing dates to javascript
