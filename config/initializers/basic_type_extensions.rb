@@ -68,3 +68,16 @@ class String
     "&#8220;#{self}#{end_punctuation}&#8221;"
   end
 end
+
+class Numeric
+  WORDS = %w[no one two three four five six seven eight nine ten]
+  def in_words
+    # five, six, 11 (and uses "no" for the zero case)
+    WORDS.fetch(self, self.to_s)
+  end
+  def counted(name)
+    # five fish, no octopi, one weasel 
+    name = name.pluralize if self != 1
+    "#{self.in_words} #{name}"
+  end
+end
