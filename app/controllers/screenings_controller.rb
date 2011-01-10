@@ -20,6 +20,12 @@ class ScreeningsController < ApplicationController
   # GET /films/1/screenings/1.xml
   def show
     @screening = @film.screenings.find(params[:id], :include => [:venue, :film, :festival])
+    @other_screenings = @film.screenings.reject {|s| s == @screening }
+    @earlier_screenings, @later_screenings = @other_screenings.partition {|s| s.starts < @screening.starts }
+    
+    @pick = (@film.picks.find_by_user_id(current_user.id) \
+             || current_user.picks.new(:film_id => @film.id)) \
+            if logged_in?
     respond_to do |format|
       format.html { raise NonAjaxEditsNotSupported }
       format.js

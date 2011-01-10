@@ -5,17 +5,60 @@
     <%= film.minutes %> minutes
   </span>
   <h3 class="name"><%= film.name %></h3>
+
   <ul class="showtimes">
-    <% film.screenings.each do |s| -%>
     <li>
-      <%= s.date_and_times %>, <%= s.venue.name %>
+      <%= @screening.times %>
+      <% picked = @pick.screening_id == @screening.id %>
+      <button id="schedule-<%= @screening.id %>-<%= picked ? "off" : "on" %>" class="button scheduler">
+        <%= picked ? "Unschedule" : "Schedule" %>
+      </button>
     </li>
+  </ul>
+
+  <% buzz = [] #film.buzz -%>
+  <% if buzz.empty? %>
+    <h4>
+      No buzz about this film yet...
+      <%= button_to("Add Buzz", home_path, :class => "button") if logged_in? %>
+    </h4>
+  <% else -%>
+    <h4>
+      Buzz!
+    </h4>
+    <%= render :partial => "buzz", :collection => buzz %>
+    <%= button_to("Add Buzz", home_path, :class => "button") if logged_in? %>
+  <% end -%>
+
+  <% unless @other_screenings.empty? %>
+  <h4>
+    <% if @later_screenings.present? %>
+      <% if @earlier_screenings.present? %>
+        <%= @earlier_screenings.count.in_words.capitalize %> earlier and
+        <%= @later_screenings.count.counted("later screening") %>:
+      <% else %>
+        <%= @later_screenings.count.counted("later screening").capitalize %>:
+      <% end %>
+    <% else %>
+      <%= @earlier_screenings.count.counted("earlier screening").capitalize %>:
+    <% end %>
+  </h4>
+  <ul class="showtimes">
+    <% @other_screenings.sort_by {|s| s.starts}.each do |s| -%>
+      <li>
+        <%= screening_label(s, @pick) %>
+      </li>
     <% end %>
   </ul>
+  <% end %>
+
+  <% if logged_in? %>
   <ul class="controls">
-    <li>Schedule</li>
-    <li>Prioritize</li>
-    <li>Rate</li>
-    <li>Buzz!</li>
+    <li>Prioritize:
+      <%= render :partial => "picks/pick_form_in_film_list",
+                 :locals => { :film => @film, :pick => @pick } %>
+    </li>
+    <!-- TODO: <li>Rate: </li> -->
   </ul>
+  <% end -%>
 </div>

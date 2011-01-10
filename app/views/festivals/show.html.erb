@@ -116,7 +116,7 @@
 <% end -%>
 
 <% cache @cache_key do %>
-<div id="days" class="days">
+<div id="days" class="days" data-festival_slug="<%= @festival.slug %>">
   <%= render :partial => "day", 
              :collection => days(@festival, @show_press) %>
 </div>
@@ -161,12 +161,36 @@ jQuery(function() {
         details.css({
           left: screening.offset().left - 1,
           top: screening.offset().top - 1,
-          opacity: "40%",
+          opacity: "0%",
           width: target_width,
         });
         screening.before(details);
         console.info("screening at (" + screening.offset().left + ", " + screening.offset().top +
                      "), details at (" + details.offset().left + ", " + details.offset().top + ")");
+
+        <%# Wire up its events %>
+        details.find(".scheduler").click(function() {
+          var parts = this.id.split('-');
+          var screening_id = parts[1];
+          var state = parts[2] == "on" ? "picked" : "unpicked"; 
+          jQuery.ajax({
+            url: '/festivals/' + jQuery("#days").attr("data-festival_slug")
+                  + '/pick_screening',
+            type: 'POST',
+            data: {
+              screening_id: screening_id,
+              state: state,
+            },
+            dataType: 'script',
+            error: function(xhr, status) {
+              alert("A problem occurred trying to modify your schedule. " +
+                    "We'll look into it; please try again later.");
+            },
+            success: function(js) {
+              jQuery(".details").remove();
+            }
+          });
+        });
 
         <%# Note its height at this width; this is how tall we'll make it %>
         var target_height = Math.min(details.height(), max_height)
@@ -197,10 +221,11 @@ jQuery(function() {
       }
     });
   });
-  jQuery(document).click(function(e) {
-    <%# Hide any open details when anything else is *left*-clicked %>
-    if (e.which == 1) jQuery(".details").remove();
-  });
+  <!--jQuery(document).click(function(e) {-->
+    <!--<%# Hide any open details when anything else is *left*-clicked %>-->
+    <!--if (e.which == 1) jQuery(".details").remove();-->
+    <!--return true;-->
+  <!--});-->
 
   <%# Toggle instructions based on cookie %>
   if (get_cookie("instructions") == "hide") {
