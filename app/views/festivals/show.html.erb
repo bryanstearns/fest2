@@ -187,6 +187,9 @@ jQuery(function() {
         }
         if (details.offset().left > (jQuery(document).width() / 2))
           params["left"] = "-=" + (target_width - screening.width());
+        var details_bottom = details.offset().top + target_height;
+        if (jQuery(document).height() - details_bottom < 10)
+          params["top"] = "-=" + (target_height - screening.height());
         details.animate(params, {
           duration: 'fast',
           complete: function() { details.css("overflow", "auto"); },
