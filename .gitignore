@@ -5,7 +5,6 @@ doc/app
 doc/plugins
 log/*.log
 production.sql
-public/stylesheets/*.css
 public/stylesheets/compiled/*.css
 tmp/*
 tmp/**/*
