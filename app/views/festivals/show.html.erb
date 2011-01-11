@@ -191,6 +191,14 @@ jQuery(function() {
             }
           });
         });
+        details.find("form.priority input").change(function(e) {
+          <% if logged_in? -%>
+          jQuery(this.form).ajaxSubmit({dataType: 'script'});
+          <% else -%>
+          alert("Log in to prioritize your films, or click the Sign Up link in the upper right corner to get started.");
+          <% end -%>
+          return false;
+        });
 
         <%# Note its height at this width; this is how tall we'll make it %>
         var target_height = Math.min(details.height(), max_height)

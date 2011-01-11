@@ -5,11 +5,9 @@
      data-film_id="<%= viewing_info.film.id %>">
   <span class="priority"></span>
   <h3><%= viewing_info.film_name %></h3>
-  <div class="showtimes">
+  <div class="screeningtime">
     <span><%= viewing_info.screening_times %>,</span>
-    <span>
-      <%= viewing_info.ordinalize %>
-      <%= " (press)" if viewing_info.screening.press %>
-    </span>
+    <span><%= viewing_info.ordinalize %></span>
+    <%= "<span> (press)</span>" if viewing_info.screening.press %>
   </div>
 </div>

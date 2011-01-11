@@ -1,1 +1,0 @@
-page.visual_effect :highlight, "#{dom_id(@film)}_pick" if @updated
