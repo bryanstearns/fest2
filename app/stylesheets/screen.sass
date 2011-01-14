@@ -174,14 +174,54 @@ body
   a
     color: red
 
-#content
-  +border-radius(10px)
+.content
+  +border-radius(7px)
   +box-shadow()
-  margin-left: 20px
-  margin-right: 20px
+  margin: 10px 20px 10px 20px
   padding: 10px 20px 10px 20px
   background-color: white
   color: black
+  position: relative
+.content.hastabs
+  margin-top: 30px
+
+// we emit the nav links twice:
+// Once to get the right visual appearance:
+//   the clickable tabs have a negative z-order, and are shadowed
+// then again to get clickability
+//   the clickable tabs are transparent.
+ul.navlinks
+  position: absolute
+  top: -1.85em // -27px
+  margin: 0
+  font-size: 1.1em
+  padding-left: 0
+  padding-top: 6px
+  overflow: hidden
+  li
+    +border-top-radius(5px)
+    position: relative
+    margin: 5px
+    padding: 0.2em 10px 0.2em 10px
+    display: inline
+    background-color: white
+    a,span
+      white-space: nowrap
+      padding: 0.3em 3px 0.5em 3px
+      font-family: $control_family
+      color: $text_color
+      font-weight: bold
+  &.prefix
+    li
+      +box-shadow()
+      z-index: -1
+    li.current
+      z-index: 10
+
+  &.suffix
+    height: 1.3em
+    li.other
+      +linear-gradient(color_stops(white, #f0f0f0))
 
 #footer
   margin-top: 1em
@@ -208,7 +248,7 @@ form.button-to,form.priority
 // welcome/index
 
 body.welcome_index
-  #content
+  .content
     +centered()
     width: 700px
 

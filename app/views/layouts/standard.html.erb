@@ -55,12 +55,16 @@
     </div>
   </noscript>
 
-  <div id="content">
-    <% for name in [:notice, :warning, :message ] %>
-      <% if flash[name] %>
+  <% tab_prefix = yield :tab_prefix -%>
+  <div class="content<%= ' hastabs' if tab_prefix.present? %>">
+    <%= tab_prefix %>
+    <%= yield :tab_suffix -%>
+
+    <% for name in [:notice, :warning, :message ] -%>
+      <% if flash[name] -%>
         <div id="<%=name %>" class="flash <%= name %>"><%= flash[name] %></div>
-      <% end %>
-    <% end %>
+      <% end -%>
+    <% end -%>
 
     <%= yield %>
   </div>

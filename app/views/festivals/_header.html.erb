@@ -1,15 +1,35 @@
 <%# The header for publicly-visible Festival pages: 
     /festivals/x, /festivals/x/films/, etc. -%>
-<% content_for :tabs do %>
-  <ul class="navlinks">
-    <li><%= link_to_unless_current "Your Film Priorities",
-                    festival_films_path(@festival) %></li>
-    <li><%= link_to_unless_current "Scheduling Assistant",
-                    festival_assistant_path(@festival) %></li>
-    <li><%= link_to_unless_current "Your Festival Schedule",
-                    festival_path(@festival) %></li>
-  </ul>
-<% end unless hide_tabs -%>
+<%
+  tabs = [
+    ["1. Your Film Priorities", festival_films_path(@festival)],
+    ["2. Scheduling Assistant", festival_assistant_path(@festival)],
+    ["3. Your Festival Schedule", festival_path(@festival)]
+  ]
+-%>
+
+<% unless hide_tabs -%>
+  <% content_for :tab_items do -%>
+    <% tabs.each do |label, url| -%>
+      <% if current_page?(url) -%>
+        <li class="current"><span><%= label %></span></li>
+      <% else -%>
+        <li class="other"><%= link_to label, url %></li>
+      <% end -%>
+    <% end -%>
+  <% end -%>
+
+  <% content_for :tab_prefix do %>
+    <ul class="navlinks prefix">
+      <%= yield :tab_items %>
+    </ul>
+  <% end -%>
+  <% content_for :tab_suffix do %>
+    <ul class="navlinks suffix">
+      <%= yield :tab_items %>
+    </ul>
+  <% end -%>
+<% end -%>
 
 <h2>
   <div><%= @festival.name %></div>
