@@ -12,7 +12,7 @@
 <% form_for(@festival) do |f| %>
   <%= render :partial => "form", :locals => { :f => f } %>
   <p>
-    <%= f.submit "Update" %>
+    <%= f.submit "Update", :class => "button" %>
   </p>
 <% end %>
 
@@ -80,6 +80,7 @@ function autocomplete_country_for(textbox_id, menu_id) {
     :url => new_festival_film_url(@festival),
     :method => "get",
     :html => { :id => "new_festival_film",
+               :class => "button",
                :accesskey => "n" } %>
 
 <div id="festival_film_form"></div>
@@ -92,7 +93,9 @@ function autocomplete_country_for(textbox_id, menu_id) {
 <%= link_to_remote "New Venue",
     { :url => new_festival_venue_url(@festival),
       :method => "get" },
-    { :id => "new_festival_venue" } %>
+    { :id => "new_festival_venue",
+      :class => "button",
+    } %>
 		
 <div id="festival_venue_form"></div>
 

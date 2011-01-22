@@ -8,7 +8,7 @@
 <label>Acknowledged:</label><%= f.check_box :acknowledged %>
 <label>Done:</label><%= f.check_box :done %>
 <br/>
-<%= f.submit "Update" %>
+<%= f.submit "Update", :class => "button" %>
 <% end %>
 
 <%= link_to 'Show', @question %> |

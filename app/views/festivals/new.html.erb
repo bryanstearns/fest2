@@ -8,7 +8,7 @@
 <% form_for(@festival) do |f| %>
   <%= render :partial => "form", :locals => { :f => f } %>
   <p>
-    <%= f.submit "Create" %>
+    <%= f.submit "Create", :class => "button" %>
   </p>
 <% end %>
 

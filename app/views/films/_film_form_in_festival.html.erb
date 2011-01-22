@@ -23,14 +23,17 @@
 				<%= submit_to_remote "save", "Save",
               :url => film.new_record? ? festival_films_url(festival) \
                                        : festival_film_url(festival, film),
-              :html => { :accesskey => "s" } %>
+              :html => { :accesskey => "s", :class => "button" } %>
 				<%= link_to_function "Cancel" do |page| 
               page['new_festival_film'].show
               page['festival_film_form'].replace_html ''
             end %>
-        <%= link_to_remote "New Film",
+        <%= link_to_remote("New Film",
 							              :url => new_festival_film_url(festival), 
-                            :method => "get" unless film.new_record? %>
+                            :html => {
+                              :method => "get",
+                              :class => "button",
+                            }) unless film.new_record? %>
       </td>
 		</tr>
   </table>
