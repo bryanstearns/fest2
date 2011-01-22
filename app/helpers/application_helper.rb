@@ -52,6 +52,7 @@ module ApplicationHelper
   def javascript_includes(jquery_version, jquery_ui_version)
     javascripts = []
     script_includes = []
+    javascripts += %w[prototype effects dragdrop controls]
     if Rails.env.production?
       script_includes << "<script type=\"text/javascript\" " +
         "src=\"http://ajax.googleapis.com/ajax/libs/jquery/" +
