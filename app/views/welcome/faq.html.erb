@@ -1,11 +1,11 @@
 <% content_for :title do %>Frequently-Asked Questions<% end %>
 
 <h2>Frequently-Asked Questions</h2>
-<ul style="margin: 0px; padding-bottom: 10px;">
-  <li>Got a question that we missed? Ask us using the 
+<p>
+  Got a question that we missed? Ask us using the
       <%= link_to "Feedback Page", feedback_url %>, and we'll 
-      get you an answer; maybe we'll add it here!</li>
-</ul>
+      get you an answer; maybe we'll add it here!
+</p>
 
 <ul>
 <li>
@@ -90,10 +90,12 @@
 </li>
 
 <li>
-  <h4>Who created this, and why?</h4>
-  <%= image_tag "bryanstearns.png", :width => 100, :height => 100, :style => "float: left; padding-right: 10px;" %>
-  <p>"We" is really just me: I'm Bryan Stearns, a software developer based in Portland, Oregon.
-  I created this site because I want to get more out of the events that I attend, and to help my friends as well.</p>
+  <div id="me">
+    <h4>Who created this, and why?</h4>
+    <%= image_tag "bryanstearns.png", :width => 100, :height => 100, :style => "float: left; padding-right: 10px;" %>
+    <p>"We" is really just me: I'm Bryan Stearns, a software developer based in Portland, Oregon.
+    I created this site because I want to get more out of the events that I attend, and to help my friends as well.</p>
+  </div>
 </li>
 
 </ul>
