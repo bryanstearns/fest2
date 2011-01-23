@@ -9,10 +9,12 @@
   <ul class="showtimes">
     <li>
       <%= @screening.times %>, <%= @screening.venue.name %>
-      <% picked = @pick.screening_id == @screening.id %>
-      <button id="schedule-<%= @screening.id %>-<%= picked ? "off" : "on" %>" class="button scheduler">
-        <%= picked ? "Don't see this screening" : "See this screening" %>
-      </button>
+      <% if logged_in? -%>
+        <% picked = @pick && @pick.screening_id == @screening.id %>
+        <button id="schedule-<%= @screening.id %>-<%= picked ? "off" : "on" %>" class="button scheduler">
+          <%= picked ? "Don't see this screening" : "See this screening" %>
+        </button>
+      <% end -%>
     </li>
   </ul>
 
