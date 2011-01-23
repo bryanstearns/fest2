@@ -32,20 +32,19 @@ class UsersController < ApplicationController
   end
 
   def send_password_reset
-    if params[:username].blank?
+    if params[:email].blank?
       flash.now[:warning] = \
-        "Oops: You didn't enter your username or email address!"
+        "Oops: You didn't enter your email address!"
       render(:action => :forgot_password) and return
     end
 
-    user = User.find_by_username(params[:username])
-    user = User.find_by_email(params[:username]) unless user
+    user = User.find_by_email(params[:email])
     if user
       Mailer.deliver_reset_password(user)
     else
       Mailer.deliver_admin_message("Password reset, user not found",
         "Someone asked to reset their password using \n" +
-        "'#{params[:username]}', but no user with this username or email " +
+        "'#{params[:email]}', but no user with this username or email " +
         "was found.")
     end
     if current_user.try(:admin)
