@@ -8,10 +8,12 @@
   	  <th rowspan="2"><%= venue.new_record? ? "New" : "Edit" %> Venue:</th>
   		<th>Name</th>
   		<th>Abbrev</th>
+      <th>Group</th>
   	</tr>
 		<tr>
 		  <td><%= f.text_field :name, :size => 30 %></td>
 		  <td><%= f.text_field :abbrev, :size => 10 %></td>
+      <td><%= f.text_field :group, :size => 30 %></td>
 			<td>
 				<%= submit_to_remote "save", "Save",
             :url => venue.new_record? ? festival_venues_url(festival) : festival_venue_url(festival, venue) %>

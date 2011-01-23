@@ -14,12 +14,23 @@
   <fieldset id="customizations">
     <legend>Settings to guide the scheduling assistant</legend>
     <ul>
-    <li>Are there are times you can't attend this festival? Enter them here
+    <li>Are there times you can't attend this festival? Enter them here
     and we won't schedule any screenings for these times (though we'll still
     show them on the schedule, and you can still pick them manually).
     <p>This feature is brand new and kind of finicky: you should enter things 
     like <i>2/5, 2/6 -10am, 2/8 11:30am-2pm & 8pm-10pm</i></p>
     <p><%= f.text_field :restriction_text, :size => 80 %></p></li>
+
+    <% if @festival.venue_groups.any? %>
+      <li><p>Are there venues you don't want to attend? Uncheck them here and we
+      won't schedule any screenings at those venues (though we'll still show
+      them on the schedule, and you can still pick them manually).</p>
+      <p>
+      <% @festival.venue_groups_by_key.each do |key, name| -%>
+        <span><%= f.check_box "venues[]", :key => key %><%= name %></span>
+      <% end -%>
+      </p>
+    <% end -%>
 
     <% if @festival.has_press_screenings? %>
     <li><p><%= f.check_box :show_press %>Include the press screenings? (If this box isn't checked, we won't show them on your schedule.)</p></li>

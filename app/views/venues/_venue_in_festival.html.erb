@@ -3,6 +3,7 @@
   <% content_tag_for :tr, venue do %>
     <td><%= h venue.name %></td>
     <td><%= h venue.abbrev %></td>
+    <td><%= h venue.group %></td>
 		<td>
 				<%= link_to_remote "Edit",
 	          :url => edit_festival_venue_url(festival, venue),

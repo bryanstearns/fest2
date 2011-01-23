@@ -3,7 +3,7 @@ require 'restriction' # required due to http://rails.lighthouseapp.com/projects/
 class Subscription < ActiveRecord::Base
   belongs_to :festival
   belongs_to :user
-  serialize :restrictions
+  serialize :restrictions, :venues
   
   validates_presence_of :festival_id
   validates_presence_of :user_id

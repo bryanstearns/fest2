@@ -9,4 +9,12 @@ class Venue < CachedModel
   def no_screenings?
     screenings.count == 0
   end
+
+  def group
+    read_attribute(:group) || name
+  end
+
+  def group_key
+    group.downcase.underscore.gsub(' ','_').gsub(/[^a-z0-9_]/, '').to_sym
+  end
 end

@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20101220023023) do
+ActiveRecord::Schema.define(:version => 20110123030413) do
 
   create_table "announcements", :force => true do |t|
     t.string   "subject",                         :null => false
@@ -111,6 +111,7 @@ ActiveRecord::Schema.define(:version => 20101220023023) do
     t.string   "key",          :limit => 10
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.text     "venues"
   end
 
   add_index "subscriptions", ["festival_id", "user_id"], :name => "index_subscriptions_on_festival_id_and_user_id"
@@ -137,6 +138,7 @@ ActiveRecord::Schema.define(:version => 20101220023023) do
     t.string   "abbrev"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "group"
   end
 
   add_index "venues", ["festival_id"], :name => "index_venues_on_festival_id"

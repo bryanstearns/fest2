@@ -132,4 +132,15 @@ class Festival < CachedModel
     self.slug_group = slug.split('_').first \
       if slug && (slug_changed? or slug_group.nil?)
   end
+
+  def venue_groups
+    @venue_groups ||= venues.map {|v| v.group }.uniq.sort
+  end
+
+  def venue_groups_by_key
+    @@venue_groups_by_key ||= venues.inject(ActiveSupport::OrderedHash.new) do |h, venue|
+      h[venue.group_key] = venue.group
+      h
+    end
+  end
 end
