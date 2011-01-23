@@ -30,6 +30,8 @@ class Festival < CachedModel
   named_scope :current, lambda { { :conditions => ['ends >= ?', 3.days.from_now] } }
   named_scope :in_slug_group, lambda {|group| { :conditions => ['slug_group = ?', group] } }
 
+  cattr_accessor :show_buzz
+
   def self.best_default
     # For new users, the best festival to show is the next one that hasn't ended yet.
     # If there isn't one, just show the most-recent one

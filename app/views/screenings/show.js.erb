@@ -16,19 +16,21 @@
     </li>
   </ul>
 
-  <% buzz = [] #film.buzz -%>
-  <% if buzz.empty? %>
-    <h4>
-      No buzz about this film yet...
+  <% if Festival.show_buzz %>
+    <% buzz = [] #film.buzz -%>
+    <% if buzz.empty? %>
+      <h4>
+        No buzz about this film yet...
+        <%= button_to("Add Buzz", home_path, :class => "button") if logged_in? %>
+      </h4>
+    <% else -%>
+      <h4>
+        Buzz!
+      </h4>
+      <%= render :partial => "buzz", :collection => buzz %>
       <%= button_to("Add Buzz", home_path, :class => "button") if logged_in? %>
-    </h4>
-  <% else -%>
-    <h4>
-      Buzz!
-    </h4>
-    <%= render :partial => "buzz", :collection => buzz %>
-    <%= button_to("Add Buzz", home_path, :class => "button") if logged_in? %>
   <% end -%>
+<% end -%>
 
   <% unless @other_screenings.empty? %>
   <h4>

@@ -25,4 +25,4 @@ unless config.action_controller.consider_all_requests_local
 end
 
 FestivalsHelper::ViewingInfo.show_ids = true # Add IDs to grid cells?
-
+Festival.show_buzz = false # global control of buzz mechanisms
