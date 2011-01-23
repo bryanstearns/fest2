@@ -167,8 +167,8 @@ jQuery(function() {
           width: target_width,
         });
         screening.before(details);
-        console.info("screening at (" + screening.offset().left + ", " + screening.offset().top +
-                     "), details at (" + details.offset().left + ", " + details.offset().top + ")");
+        //console.info("screening at (" + screening.offset().left + ", " + screening.offset().top +
+        //             "), details at (" + details.offset().left + ", " + details.offset().top + ")");
 
         <%# Wire up its events %>
         details.find(".scheduler").click(function() {
@@ -204,7 +204,7 @@ jQuery(function() {
 
         <%# Note its height at this width; this is how tall we'll make it %>
         var target_height = Math.min(details.height(), max_height)
-        console.info("target height: " + target_height);
+        //console.info("target height: " + target_height);
 
         <%# Now shrink it to fit, hide its overflow, and make it opaque %>
         details.css({
