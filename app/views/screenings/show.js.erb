@@ -8,10 +8,10 @@
 
   <ul class="showtimes">
     <li>
-      <%= @screening.times %>
+      <%= @screening.times %>, <%= @screening.venue.name %>
       <% picked = @pick.screening_id == @screening.id %>
       <button id="schedule-<%= @screening.id %>-<%= picked ? "off" : "on" %>" class="button scheduler">
-        <%= picked ? "Unschedule" : "Schedule" %>
+        <%= picked ? "Don't see this screening" : "See this screening" %>
       </button>
     </li>
   </ul>
@@ -56,7 +56,7 @@
 
   <% if logged_in? %>
   <ul class="controls">
-    <li>Prioritize:
+    <li>Your priority:
       <%= render :partial => "picks/pick_form_in_film_list",
                  :locals => { :film => @film, :pick => @pick } %>
     </li>

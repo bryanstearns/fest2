@@ -140,6 +140,7 @@ jQuery(function() {
 
     <%# Grab more content? %>
     var screening = jQuery(this);
+    var content = jQuery(".content");
     var min_width = 400;
     var max_height = 250;
     jQuery.ajax({
@@ -160,8 +161,8 @@ jQuery(function() {
         <%# Insert it in position, but transparent and at the target width %>
         var target_width = Math.max(screening.width(), min_width)
         details.css({
-          left: screening.offset().left - 1,
-          top: screening.offset().top - 1,
+          left: screening.offset().left - (content.offset().left + 1),
+          top: screening.offset().top - (content.offset().top + 1),
           opacity: "0%",
           width: target_width,
         });
@@ -220,8 +221,8 @@ jQuery(function() {
         }
         if (details.offset().left > (jQuery(document).width() / 2))
           params["left"] = "-=" + (target_width - screening.width());
-        var details_bottom = details.offset().top + target_height;
-        if (jQuery(document).height() - details_bottom < 10)
+        var details_bottom = content.offset().top + details.offset().top + target_height;
+        if (details_bottom > jQuery(document).height() - 20)
           params["top"] = "-=" + (target_height - screening.height());
         details.animate(params, {
           duration: 'fast',
@@ -230,11 +231,11 @@ jQuery(function() {
       }
     });
   });
-  <!--jQuery(document).click(function(e) {-->
-    <!--<%# Hide any open details when anything else is *left*-clicked %>-->
-    <!--if (e.which == 1) jQuery(".details").remove();-->
-    <!--return true;-->
-  <!--});-->
+  jQuery(document).click(function(e) {
+    <%# Hide any open details when anything else is *left*-clicked -%>
+    if (e.which == 1) jQuery(".details").remove();
+    return true;
+  });
 
   <%# Toggle instructions based on cookie %>
   if (get_cookie("instructions") == "hide") {
