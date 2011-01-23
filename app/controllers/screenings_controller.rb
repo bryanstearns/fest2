@@ -20,7 +20,10 @@ class ScreeningsController < ApplicationController
   # GET /films/1/screenings/1.xml
   def show
     @screening = @film.screenings.find(params[:id], :include => [:venue, :film, :festival])
-    @other_screenings = @film.screenings.reject {|s| s == @screening }
+
+    @other_screenings = @film.screenings.reject do |s|
+      (s == @screening) || (current_user ? current_user.can_see?(s) : s.press)
+    end
     @earlier_screenings, @later_screenings = @other_screenings.partition {|s| s.starts < @screening.starts }
     
     @pick = (@film.picks.find_by_user_id(current_user.id) \
