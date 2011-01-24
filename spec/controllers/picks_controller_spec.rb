@@ -13,7 +13,7 @@ describe PicksController do
                        :film => @film, :user => @user)
     @picks = [@pick]
     @user.stub!(:picks).and_return(@picks)
-    @picks.stub!(:find_or_initialize_by_film_id).and_return(@pick)
+    @picks.stub!(:find_by_film_id).and_return(@pick)
   end
   
   describe "handling POST /picks" do
@@ -28,7 +28,7 @@ describe PicksController do
       end
   
       it "should find or create a new pick" do
-        @picks.should_receive(:find_or_initialize_by_film_id).and_return(@pick)
+        @picks.should_receive(:find_by_film_id).and_return(@pick)
         do_post
       end      
     end

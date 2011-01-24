@@ -2,8 +2,9 @@ class PicksController < ApplicationController
   # POST /films/1/picks
   # POST /films/1/picks.xml
   def create
-    @pick = current_user.picks.find_or_initialize_by_film_id(
-              params[:film_id], :include => { :film => :festival })
+    @pick = current_user.picks.find_by_film_id(params[:film_id],
+                                               :include => { :film => :festival }) ||
+            current_user.picks.build(:film_id => params[:film_id])
     @film = @pick.film
     @festival = @film.festival
     check_festival_access
