@@ -1,4 +1,4 @@
-class Restriction
+class TimeRestriction
   attr_accessor :starts, :ends
 
   def initialize(starts, ends=nil)
@@ -15,7 +15,7 @@ class Restriction
   end
 
   def inspect
-    "<Restriction #{starts}-#{ends}>"
+    "<TimeRestriction #{starts}-#{ends}>"
   end
 
   def to_text
@@ -54,7 +54,7 @@ class Restriction
       date -= 1.year
     end
     parse_time_ranges(times_text, date) do |starts, ends|
-      Restriction.new(starts, ends)
+      TimeRestriction.new(starts, ends)
     end
   end
 
@@ -86,9 +86,9 @@ class Restriction
     parsed
   end
 
-  def self.to_text(restrictions)
-    return "" unless restrictions
-    restrictions.map(&:to_text).join(", ")
+  def self.to_text(time_restrictions)
+    return "" unless time_restrictions
+    time_restrictions.map{|t| t.to_text }.join(", ")
   end
 
 private

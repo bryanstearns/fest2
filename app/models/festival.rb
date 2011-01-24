@@ -137,10 +137,7 @@ class Festival < CachedModel
     @venue_groups ||= venues.map {|v| v.group }.uniq.sort
   end
 
-  def venue_groups_by_key
-    @@venue_groups_by_key ||= venues.inject(ActiveSupport::OrderedHash.new) do |h, venue|
-      h[venue.group_key] = venue.group
-      h
-    end
+  def venues_grouped_by_key
+    @@venues_grouped_by_key ||= venues.all(:order => :name).group_by {|v| v.group_key}
   end
 end

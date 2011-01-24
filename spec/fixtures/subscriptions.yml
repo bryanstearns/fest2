@@ -3,8 +3,8 @@ no_early_one:
   user: quentin
   festival: intramonth
   show_press: false
-  restrictions: <%= [ 
-    Restriction.new(DateTime.new(1997, 5, 1, 9, 00),
+  time_restrictions: <%= [ 
+    TimeRestriction.new(DateTime.new(1997, 5, 1, 9, 00),
                     DateTime.new(1997, 5, 1, 10, 0))
   ].to_yaml.inspect %>
 

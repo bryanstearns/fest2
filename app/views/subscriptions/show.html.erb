@@ -1,5 +1,5 @@
 <%# User settings for a festival -%>
-<% content_for :title do %>Settings for <%= @festival.name %><% end %>
+<% content_for :title do %>Scheduling Assistant for <%= @festival.name %><% end %>
 
 <%= render :partial => "festivals/header",
       :locals => { :festival => @festival, :hide_tabs => false } %>
@@ -7,27 +7,44 @@
 <h3>Almost there: let's create a schedule for you</h3>
 
 <% form_for @subscription, :url => festival_assistant_path(@festival) do |f| %>
-  <p>This is the good part: we'll try to build you a schedule that includes as many of your higher-priority films as possible; click the "Schedule Films!" button below to make this happen.</p>
+  <p>
+    This is the good part: we'll try to build you a schedule that includes as
+    many of your higher-priority films as possible. You can customize this
+    process: if there are times you can't attend the festival, or venues you
+    don't want to travel to, enter them below. When you're done, click the
+    "Schedule Films!" button, and we'll create a schedule just for you.
+  </p>
   
   <%= f.error_messages :header_message => "Oops, something went wrong..." %>
 
   <fieldset id="customizations">
-    <legend>Settings to guide the scheduling assistant</legend>
     <ul>
     <li>Are there times you can't attend this festival? Enter them here
     and we won't schedule any screenings for these times (though we'll still
     show them on the schedule, and you can still pick them manually).
-    <p>This feature is brand new and kind of finicky: you should enter things 
-    like <i>2/5, 2/6 -10am, 2/8 11:30am-2pm & 8pm-10pm</i></p>
-    <p><%= f.text_field :restriction_text, :size => 80 %></p></li>
+    <p>
+      This feature is kind of finicky: use dates and time ranges with
+      punctuation like this:<br/>
+      <i>2/5, 2/6 -10am, 2/8 11:30am-2pm & 8pm-10pm</i>
+    </p>
+    <p><%= f.text_field :time_restriction_text, :size => 80 %></p></li>
 
     <% if @festival.venue_groups.any? %>
-      <li><p>Are there venues you don't want to attend? Uncheck them here and we
-      won't schedule any screenings at those venues (though we'll still show
-      them on the schedule, and you can still pick them manually).</p>
+      <li>
+        <p>
+          What venues should we include? As a Festival Fanatic, you'll
+          probably go to all of them, but if any are too inconvenient for you,
+          just uncheck them here: we won't schedule any screenings at those
+          theaters (though we'll still show them on the schedule, and you can
+          still pick them manually).</p>
       <p>
-      <% @festival.venue_groups_by_key.each do |key, name| -%>
-        <span><%= f.check_box "venues[]", :key => key %><%= name %></span>
+      <% @festival.venues_grouped_by_key.each do |key, venues| -%>
+        <span>
+          <%= check_box_tag "subscription[included_venue_groups][#{key}]", key,
+                            @subscription.included_venue_groups.include?(key),
+                            :name => "subscription[included_venue_groups][]" %>
+          <%= label_tag "subscription_included_venue_groups_#{key}", venues.first.group %>
+        </span>
       <% end -%>
       </p>
     <% end -%>
@@ -57,7 +74,7 @@
 </div>
 <% content_for :page_scripts do %>
 jQuery(function() {
-  jQuery("#subscription_restriction_text").keypress(function(e) {
+  jQuery("#subscription_time_restriction_text").keypress(function(e) {
     return (e.which != 13); // prevent enter from submitting
   });
   jQuery("#schedule_button").click(function() { 

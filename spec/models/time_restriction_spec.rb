@@ -1,10 +1,10 @@
 require File.dirname(__FILE__) + '/../spec_helper'
 
-describe "A Restriction" do
+describe "A TimeRestriction" do
   it "should detect conflicts" do
-    a = Restriction.new(10.minutes.ago, 5.minutes.ago)
-    b = Restriction.new(7.minutes.ago, 2.minutes.ago)
-    c = Restriction.new(4.minutes.ago, 2.minutes.ago)
+    a = TimeRestriction.new(10.minutes.ago, 5.minutes.ago)
+    b = TimeRestriction.new(7.minutes.ago, 2.minutes.ago)
+    c = TimeRestriction.new(4.minutes.ago, 2.minutes.ago)
     a.overlaps?(b).should == true
     a.overlaps?(c).should == false
     b.overlaps?(c).should == true
@@ -12,12 +12,12 @@ describe "A Restriction" do
 
   it "should convert itself to YAML" do
     t = Time.zone.local(2001, 1, 1, 12, 0)
-    Restriction.new(t, t + 10.minutes).to_yaml.should == \
-      "--- !ruby/object:Restriction \nends: 2001-01-01 12:10:00 Z\nstarts: 2001-01-01 12:00:00 Z\n"
+    TimeRestriction.new(t, t + 10.minutes).to_yaml.should == \
+      "--- !ruby/object:TimeRestriction \nends: 2001-01-01 12:10:00 Z\nstarts: 2001-01-01 12:00:00 Z\n"
   end
 end
 
-describe "A Restriction specification" do
+describe "A TimeRestriction specification" do
   before(:each) do
     @now = Time.zone.local(2001, 1, 1)
   end
@@ -40,20 +40,20 @@ describe "A Restriction specification" do
 
   it "should format itself as a string" do
     GOOD_CASES.each do |result, starts, ends|
-      Restriction.new(starts, ends).to_text.should == result
+      TimeRestriction.new(starts, ends).to_text.should == result
     end
   end
 
   it "should parse from string" do
     GOOD_CASES.each do |result, starts, ends|
-      Restriction.parse(result, @now).should == [Restriction.new(starts, ends)]
+      TimeRestriction.parse(result, @now).should == [TimeRestriction.new(starts, ends)]
     end
   end
 
   it "should raise the right exception when given something unparseable" do
     BAD_CASES.each do |s|
       assert_raise(ArgumentError) do
-        puts "shouldn't get #{Restriction.parse(s).inspect} from #{s.inspect}"
+        puts "shouldn't get #{TimeRestriction.parse(s).inspect} from #{s.inspect}"
       end
     end
   end
@@ -61,10 +61,10 @@ describe "A Restriction specification" do
   it "should parse whole dates and handle nearby year boundaries" do
     [0, 5.days].each do |adjustment|
       @now += adjustment
-      result = Restriction.parse("12/28, 1/6", @now)
+      result = TimeRestriction.parse("12/28, 1/6", @now)
       result.should == [
-        Restriction.new(Time.zone.local(2000, 12, 28)),
-        Restriction.new(Time.zone.local(2001, 1, 6))
+        TimeRestriction.new(Time.zone.local(2000, 12, 28)),
+        TimeRestriction.new(Time.zone.local(2001, 1, 6))
       ]
     end
   end
