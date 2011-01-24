@@ -23,15 +23,19 @@ jQuery(function() {
 <h3>The first step: setting your film priorities</h3>
 
 <p>
-  Before we can build a schedule just for you, you'll need to prioritize the 
+  Before we can build a schedule just for you, you'll need to prioritize the
   festival's films: indicate your preference for seeing each film by clicking
   one of the little circles next to each film &mdash; the scheduling assistant
   will use these priorities to build a custom schedule for you.
 </p>
 
-<p>The rightmost choice means "<%= ranking_hints[4] %>," 
-and the leftmost means "<%= ranking_hints[0] %>." Each choice is saved as soon as you click, and you can come back later if you don't finish now, or if you want to change a choice. 
+<p>
+  The rightmost choice means "<%= ranking_hints[4] %>," and the leftmost means
+  "<%= ranking_hints[0] %>." Each choice is saved as soon as you click, and
+  you can come back later if you don't finish now, or if you want to change a
+  choice.
 <% if logged_in? %>
+When you're done, click the "I'm done" button at the bottom.
 You can reset all your priorities and start over
 by clicking this button: <%= link_to "Start Over",
                       reset_rankings_festival_url(@festival),
@@ -70,4 +74,7 @@ if sorted_films.empty? -%>
 <%= render :partial => "film", :collection => sorted_films, 
            :locals => { :picks => @picks, :show_press => @show_press } %>
 </table>
+
+<%= link_to "I'm done!", festival_assistant_path(@festival), :class => "button" %>
+
 <% end %>
