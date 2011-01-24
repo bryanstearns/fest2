@@ -25,7 +25,3 @@ config.action_controller.asset_host                  = "http://assets%d.festival
 
 # Disable delivery errors, bad email addresses will be ignored
 # config.action_mailer.raise_delivery_errors = false
-
-# BJS: Configure exception_notification
-ExceptionNotifier.exception_recipients = %w(festfan@festivalfanatic.com)
-ExceptionNotifier.sender_address = %("FestivalFanatic" <festfan@festivalfanatic.com>)

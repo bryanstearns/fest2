@@ -133,40 +133,6 @@ class ApplicationController < ActionController::Base
 #    puts "Checking request format: '#{request.format.inspect}'"
 #    raise(NonAjaxEditsNotSupported) if request.format == Mime::HTML
 #  end
-  
-=begin
-  def rescue_action_in_public(exception)
-    # We override ExceptionNotifiable's version of this, to force redirection
-    # in all cases to our oops page (after sending mail just the way it does,
-    # if the error isn't 404-equivalent)
-    four_oh_four_like = self.class.exceptions_to_treat_as_404.any? do 
-      |e| e === exception
-    end
-    # Google's crawler does GETs - don't send mail for those.
-    four_oh_four_like ||= (exception.is_a?(ActionController::MethodNotAllowed) \
-      && (ENV["HTTP_FROM"] == "googlebot(at)googlebot.com"))
-
-    unless four_oh_four_like
-      deliverer = self.class.exception_data
-      data = case deliverer
-        when nil then {}
-        when Symbol then send(deliverer)
-        when Proc then deliverer.call(self)
-      end
-
-      ExceptionNotifier.deliver_exception_notification(exception, self,
-        request, data)
-    end
-    
-    if request.xhr?
-      render :update do |page|
-        page.redirect_to oops_url
-      end
-    else
-      redirect_to oops_url
-    end
-  end
-=end
 
   # Override local_request? to always return false, per
   # http://www.semergence.com/2006/12/01/when-local-is-remote-in-rails-and-other-tales-of-eccentric-error-enforcement/

@@ -17,12 +17,5 @@ config.action_controller.perform_caching             = false
 # BJS: I care: was false
 config.action_mailer.raise_delivery_errors = true
 
-# BJS: Configure exception_notification
-# (Normally off, unless we're debugging exceptions)
-unless config.action_controller.consider_all_requests_local
-  ExceptionNotifier.exception_recipients = %w(festfan@festivalfanatic.com)
-  ExceptionNotifier.sender_address = %("FestivalFanatic" <festfan@festivalfanatic.com>)
-end
-
 FestivalsHelper::ViewingInfo.show_ids = true # Add IDs to grid cells?
 Festival.show_buzz = false # global control of buzz mechanisms
