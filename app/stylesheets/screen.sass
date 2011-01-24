@@ -98,6 +98,22 @@ body
 
   .flash
     +border-radius(5px)
+    padding: 2px 4px
+    &.notice
+      border: 2px solid $notice_color
+      background: hsl(hue($notice_color), saturation($notice_color), 90)
+    &.success
+      border: 2px solid $success_color
+      background: hsl(hue($success_color), saturation($success_color), 90)
+    &.warning
+      border: 2px solid $warning_color
+      background: hsl(hue($warning_color), saturation($warning_color), 90)
+    &.error
+      border: 2px solid $error_color
+      background: hsl(hue($error_color), saturation($error_color), 90)
+    &.urgent
+      border: 2px solid $urgent_color
+      background: hsl(hue($urgent_color), saturation($urgent_color), 90)
 
 =stars
   font-size: 130%
