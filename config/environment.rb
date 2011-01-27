@@ -33,7 +33,7 @@ Rails::Initializer.run do |config|
   config.gem 'prawn', :version => "0.8.4"
   config.gem 'prawnto', :version => "0.0.4"
   config.gem 'icalendar', :version => "1.1.0"
-  config.gem 'hoptoad_notifier', :version => "2.3.12"
+  config.gem 'hoptoad_notifier', :version => "2.4.2"
   config.gem 'haml', :version => "3.0.24"
   config.gem "fancy-buttons", :version => "0.5.5"
   config.gem "compass", :version => "0.10.5"
@@ -41,6 +41,7 @@ Rails::Initializer.run do |config|
   # Test stuff: here so that "rake gems:install" will install them
   config.gem 'rspec', :version => '1.3.1', :lib => false
   config.gem 'rspec-rails', :version => '1.3.3', :lib => false
+  config.gem 'gherkin', :version => "2.3.2", :lib => false # cucumber wants this
   config.gem 'cucumber', :version => "0.10.0", :lib => false
   config.gem 'factory_girl', :version => "1.2.3", :lib => false
 
