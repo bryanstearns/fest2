@@ -27,7 +27,7 @@
       punctuation like this:<br/>
       <i>2/5, 2/6 -10am, 2/8 11:30am-2pm & 8pm-10pm</i>
     </p>
-    <p><%= f.text_field :time_restriction_text, :size => 80 %></p></li>
+    <p><%= f.text_field :restriction_text, :size => 80 %></p></li>
 
     <% if @festival.venue_groups.any? %>
       <li>
@@ -74,7 +74,7 @@
 </div>
 <% content_for :page_scripts do %>
 jQuery(function() {
-  jQuery("#subscription_time_restriction_text").keypress(function(e) {
+  jQuery("#subscription_restriction_text").keypress(function(e) {
     return (e.which != 13); // prevent enter from submitting
   });
   jQuery("#schedule_button").click(function() { 

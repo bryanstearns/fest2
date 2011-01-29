@@ -16,14 +16,14 @@ describe "Basic Subscription" do
   it "should handle time restrictions" do
     now = Time.zone.local(2000, 1, 1)
     @subscription.festival = mock_model(Festival, :starts => now)
-    @subscription.time_restriction_text = "1/3 10am-2pm, 1/5 6pm-"
-    @subscription.time_restrictions.should == [
-      TimeRestriction.new(Time.zone.local(2000, 1, 3, 10, 0),
+    @subscription.restriction_text = "1/3 10am-2pm, 1/5 6pm-"
+    @subscription.restrictions.should == [
+      Restriction.new(Time.zone.local(2000, 1, 3, 10, 0),
                       Time.zone.local(2000, 1, 3, 14, 0)), 
-      TimeRestriction.new(Time.zone.local(2000, 1, 5, 18, 0),
+      Restriction.new(Time.zone.local(2000, 1, 5, 18, 0),
                       Time.zone.local(2000, 1, 5, 23, 59, 59)), 
     ]
-    @subscription.time_restriction_text.should == "1/3 10am-2pm, 1/5 6pm-"
+    @subscription.restriction_text.should == "1/3 10am-2pm, 1/5 6pm-"
   end
 
   describe "key handling" do

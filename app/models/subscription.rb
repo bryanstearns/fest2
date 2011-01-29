@@ -1,43 +1,43 @@
-require 'time_restriction' # required due to http://rails.lighthouseapp.com/projects/8994/tickets/647-serialize-d-array-not-unserializing-properly
+require 'restriction' # required due to http://rails.lighthouseapp.com/projects/8994/tickets/647-serialize-d-array-not-unserializing-properly
 
 class Subscription < ActiveRecord::Base
   belongs_to :festival
   belongs_to :user
-  serialize :time_restrictions
+  serialize :restrictions
   serialize :excluded_venues
   
   validates_presence_of :festival_id
   validates_presence_of :user_id
-  validate :check_time_restrictions
+  validate :check_restrictions
   validate :check_venue_exclusions
 
   before_save :make_sharable_key
 
   def can_see?(screening)
     return false if screening.press and not show_press
-    return false if time_restrictions && time_restrictions.any? { |r| r.overlaps? screening }
+    return false if restrictions && restrictions.any? { |r| r.overlaps? screening }
     return false if excluded_venues && excluded_venues.include?(screening.venue.group_key)
     return true
   end
 
-  def time_restriction_text
-    @raw_time_restriction_text || TimeRestriction.to_text(time_restrictions)
+  def restriction_text
+    @raw_restriction_text || Restriction.to_text(restrictions)
   end
 
-  def time_restriction_text=(s)
+  def restriction_text=(s)
     begin
-      @time_restrictions_error = @raw_time_restriction_text = nil
-      self.time_restrictions = TimeRestriction.parse(s, festival.starts)
+      @restrictions_error = @raw_restriction_text = nil
+      self.restrictions = Restriction.parse(s, festival.starts)
     rescue ArgumentError => e
-      @raw_time_restriction_text = s
-      @time_restrictions_error = e.message
+      @raw_restriction_text = s
+      @restrictions_error = e.message
     end
   end
 
-  def check_time_restrictions
-    if @time_restrictions_error
-      errors.add("time_restriction_text", "is invalid (#{@time_restrictions_error})")
-      @time_restrictions_error = nil
+  def check_restrictions
+    if @restrictions_error
+      errors.add("restriction_text", "is invalid (#{@restrictions_error})")
+      @restrictions_error = nil
     end
   end
 

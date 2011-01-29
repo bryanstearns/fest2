@@ -31,7 +31,7 @@ class ChangesFor2011 < ActiveRecord::Migration
     end
 
     # Add venue groups (and the means to exclude them from scheduling)
-    rename_column :subscriptions, :restrictions, :time_restrictions
+    rename_column :subscriptions, :restrictions, :restrictions
     add_column :venues, :group, :string
     add_column :subscriptions, :excluded_venues, :text
 
