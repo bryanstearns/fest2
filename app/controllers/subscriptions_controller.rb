@@ -8,7 +8,7 @@ class SubscriptionsController < ApplicationController
       @subscription = current_user.subscription_for(@festival, :create => true)
       @ask_about_unselection = current_user.has_screenings_for(@festival)
     else
-      @subscription = Subscription.new
+      @subscription = @festival.subscriptions.build
       @ask_about_unselection = false
     end
   end
