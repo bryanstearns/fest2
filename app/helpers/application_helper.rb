@@ -53,10 +53,12 @@ module ApplicationHelper
     javascripts = []
     script_includes = []
     javascripts += %w[prototype effects dragdrop controls]
-    if Rails.env.production?
-      script_includes << "<script type=\"text/javascript\" " +
-        "src=\"http://ajax.googleapis.com/ajax/libs/jquery/" +
-        jquery_version + "/jquery.min.js\"></script>"
+    # For some reason, this include was causing javascript errors in production
+    # (somewhere in the middle of prototype). So, don't use Google for now.
+    if false #Rails.env.production?
+      script_includes << \
+        "<script src=\"http://ajax.googleapis.com/ajax/libs/jquery/" +
+        jquery_version + "/jquery.min.js\" type=\"text/javascript\"></script>"
     else
       javascripts << "jquery-1.4.4"
     end
