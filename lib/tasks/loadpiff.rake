@@ -20,7 +20,7 @@ class PIFFCSV
     end
 
     # Add the press screenings, too
-    whitsell = @festival.venues.find_by_abbrev("WA")
+    whitsell = @festival.venues.find_by_abbrev!("WH")
     [
         ["2011-01-31 11:00", "Silent Souls"],
         ["2011-01-31 14:00", "Kawasaki's Rose"],
@@ -59,6 +59,145 @@ class PIFFCSV
         :venue => whitsell, :starts => starts,
         :ends => starts + film.duration, :press => true)
     end
+
+    # Make other fixes
+    film("His &amp; Hers") {|f| f.name = "His & Hers" }
+    film("Revoluci&oacute;n") {|f| f.name = "Revolución" }
+    # 2/13
+    screening("Kawasaki's Rose", "2011-02-13 14:45") \
+      {|s| s.starts = Time.zone.parse("2011-02-13 15:30"); s.venue = venue("B2") }
+    screening("Human Resources Manager", "2011-02-13 15:30") \
+      {|s| s.starts = Time.zone.parse("2011-02-13 14:45") }
+    screening("Incendies", "2011-02-13 16:15") \
+      {|s| s.venue = venue("B1") }
+    screening("Silent Souls", "2011-02-14 18:00") \
+      {|s| s.starts = Time.zone.parse("2011-02-13 16:45") }
+    screening("Aftershock", "2011-02-13 19:30") \
+      {|s| s.starts = Time.zone.parse("2011-02-13 19:00") }
+    screening("Behind Blue Skies", "2011-02-13 20:00") \
+      {|s| s.starts = Time.zone.parse("2011-02-13 20:30") }
+
+    # 2/14
+    screening("The First Grader", "2011-02-13 16:45") \
+      {|s| s.starts = Time.zone.parse("2011-02-14 18:00") }
+    screening("Certified Copy", "2011-02-14 20:15") \
+      {|s| s.starts = Time.zone.parse("2011-02-14 20:45") }
+
+    # 2/15
+    screening("The Arbor", "2011-02-15 14:15")  \
+      {|s| s.starts = Time.zone.parse("2011-02-19 14:15") }
+    screening("Young Goethe!", "2011-02-15 20:15") \
+      {|s| s.starts = Time.zone.parse("2011-02-19 16:00"); s.venue = venue("CM") }
+    @festival.screenings.create!(:film => film("Budrus"),
+                                 :venue => venue("B1"),
+                                 :starts => Time.zone.parse("2011-02-15 20:15"),
+                                 :ends => Time.zone.parse("2011-02-15 20:15") + film("Budrus").duration,
+                                 :press => false)
+
+    # 2/17
+    screening("The Robber", "2011-02-17 19:00") \
+      {|s| s.starts = Time.zone.parse("2011-02-18 19:00") }
+    screening("The Robber", "2011-02-17 21:00") \
+      {|s| s.starts = Time.zone.parse("2011-02-18 21:30") }
+
+    # 2/19
+    screening("7 Days in Slow Motion", "2011-02-19 14:00")\
+      {|s| s.starts = Time.zone.parse("2011-02-19 13:45") }
+
+    # 2/20
+    screening("Flamenco, Flamenco", "2011-02-23 14:30")\
+      {|s| s.starts = Time.zone.parse("2011-02-20 14:30") }
+
+    # 2/21
+    screening("My Joy", "2011-02-21 14:30")\
+      {|s| s.starts = Time.zone.parse("2011-02-21 14:00") }
+    screening("A Somewhat Gentle Man", "2011-02-21 14:45")\
+      {|s| s.starts = Time.zone.parse("2011-02-21 14:15") }
+    screening("In a Better World", "2011-02-21 19:30")\
+      {|s| s.starts = Time.zone.parse("2011-02-21 19:15") }
+
+    # 2/22
+    screening("Cameraman: the Life and Work of Jack Cardiff", "2011-02-22 20:00")\
+      {|s| s.starts = Time.zone.parse("2011-02-22 20:30") }
+
+    # 2/23
+    f = @festival.films.create!(:name => "Short Cuts V: Made in Portland",
+                                :duration => 90 * 60)
+    @festival.screenings.create!(:film => f,
+                                 :venue => venue("WH"),
+                                 :starts => Time.zone.parse("2011-02-23 18:00"),
+                                 :ends => Time.zone.parse("2011-02-23 18:00") + f.duration,
+                                 :press => false)
+    # 2/24
+    screening("Martha", "2011-02-24 20:15") \
+      {|s| s.starts = Time.zone.parse("2011-02-24 21:15"); s.venue = venue("B4") }
+    screening("Black Bread", "2011-02-24 21:15") \
+      {|s| s.starts = Time.zone.parse("2011-02-24 20:30"); s.venue = venue("B2") }
+
+    # 2/25
+    screening("A War in Hollywood", "2011-02-25 15:30") \
+      {|s| s.starts = Time.zone.parse("2011-02-25 15:45") }
+    screening("Black Bread", "2011-02-25 15:45") \
+      {|s| s.starts = Time.zone.parse("2011-02-25 15:15"); s.venue = venue("WH") }
+    screening("Cold Weather", "2011-02-25 18:45") \
+      {|s| s.starts = Time.zone.parse("2011-02-25 18:30") }
+    f = @festival.films.create!(:name => "Mutant Girls Squad",
+                                :duration => 85 * 60,
+                                :countries => "jp")
+    @festival.screenings.create!(:film => f, :venue => venue("C21"),
+                                 :starts => Time.zone.parse("2011-02-25 23:30"),
+                                 :ends => Time.zone.parse("2011-02-25 23:30") + f.duration,
+                                 :press => false)
+
+    v = @festival.venues.create!(:name => "Newmark Theatre",
+                                 :group => "Newmark Theatre",
+                                 :abbrev => "NT")
+    f = @festival.films.create!(:name => "Potiche",
+                                :duration => 103 * 60,
+                                :countries => "fr")
+    @festival.screenings.create!(:film => f, :venue => v,
+                                 :starts => Time.zone.parse("2011-02-10 19:30"),
+                                 :ends => Time.zone.parse("2011-02-10 19:30") + f.duration,
+                                 :press => false)
+
+    v = @festival.venues.create!(:name => "Fields Ballroom",
+                                 :group => "Fields Ballroom",
+                                 :abbrev => "FB")
+    f = @festival.films.create!(:name => "Closing Party",
+                                :duration => 120 * 60)
+    @festival.screenings.create!(:film => f, :venue => v,
+                                 :starts => Time.zone.parse("2011-02-26 21:30"),
+                                 :ends => Time.zone.parse("2011-02-26 21:30") + f.duration,
+                                 :press => false)
+    @festival.revised_at = Time.zone.parse("2011-01-29 00:00")
+    @festival.save!
+  end
+
+  def venue(abbrev)
+    result = @festival.venues.find_by_abbrev!(abbrev)
+    if block_given?
+      yield result
+      result.save!
+    end
+    result
+  end
+
+  def film(film_name)
+    result = @festival.films.find_by_name!(film_name)
+    if block_given?
+      yield result
+      result.save!
+    end
+    result
+  end
+
+  def screening(film_name, screening_time)
+    result = film(film_name).screenings.find_by_starts!(Time.zone.parse(screening_time))
+    if block_given?
+      yield result
+      result.save!
+    end
+    result
   end
   
   def process_row
@@ -94,14 +233,19 @@ class PIFFCSV
         "CM"
       when "Hollywood Theatre"
         "HW"
+      when "Whitsell Auditorium"
+        "WH"
       else
         initial = name[0..0]
         number = /(\d+)/.match(name)[1] rescue name.split(' ')[1][0..0].upcase
         number.strip!
         "#{initial}#{number}"
-      end
-      puts "making venue #{name}, #{abbrev}"
-      v = @festival.venues.create!(:name => name, :abbrev => abbrev)
+               end
+      group = (name =~ /Broadway/) ? "Broadway" : name
+
+      puts "making venue #{name}, #{abbrev}, #{group}"
+      v = @festival.venues.create!(:name => name, :abbrev => abbrev,
+                                   :group => group)
       # puts "Made venue #{v.inspect}"
       v
     end
