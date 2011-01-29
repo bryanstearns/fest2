@@ -28,15 +28,27 @@ class ApplicationController < ActionController::Base
   # from your application log (in this case, all fields with names like "password"). 
   filter_parameter_logging :password
 
-  # Make sure we flush CachedModel's cache
-  after_filter { CachedModel.cache_reset }
+  before_filter :log_session_state
+
+  after_filter :reset_cached_model_cache
 
   # Do authentication stuff
   include AuthenticatedSystem
   before_filter :client_type,
                 :login_from_cookie,
                 :admin_check
-  
+
+  def log_session_state
+    session_key = ActionController::Base.session_options[:key]
+    size = (cookies[session_key] || "").size
+    Rails.logger.info("  Session, #{size} bytes: #{request.session.inspect}")
+    true
+  end
+
+  def reset_cached_model_cache
+    CachedModel.cache_reset
+  end
+
   def admin_check
     # Is the user required to be an admin for this page?
     admin_required = self.class.controller_path.starts_with?("admin/")
