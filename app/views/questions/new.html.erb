@@ -11,7 +11,7 @@
 
 <% form_for @question do |f| %>
 <p>Your email address: <%= f.text_field :email, :size => 40 %></p>
-<p>Your comments, suggestions, complaints:</p>
+<p>Your comments, suggestions, requests, or complaints:</p>
 <%= f.text_area :question, :size => "70x20" %><br/>
 <%= f.submit "Send", :class => "button" %>
 <% end %>
