@@ -30,23 +30,22 @@
     <p><%= f.text_field :restriction_text, :size => 80 %></p></li>
 
     <% if @festival.venue_groups.any? %>
-      <li>
+      <li class="venue_groups">
         <p>
           What venues should we include? As a Festival Fanatic, you'll
           probably go to all of them, but if any are too inconvenient for you,
           just uncheck them here: we won't schedule any screenings at those
           theaters (though we'll still show them on the schedule, and you can
           still pick them manually).</p>
-      <p>
       <% @festival.venues_grouped_by_key.each do |key, venues| -%>
-        <span>
+        <div>
           <%= check_box_tag "subscription[included_venue_groups][#{key}]", key,
                             @subscription.included_venue_groups.include?(key),
                             :name => "subscription[included_venue_groups][]" %>
           <%= label_tag "subscription_included_venue_groups_#{key}", venues.first.group %>
-        </span>
+        </div>
       <% end -%>
-      </p>
+      </li>
     <% end -%>
 
     <% if @festival.has_press_screenings? %>
