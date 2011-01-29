@@ -13,13 +13,13 @@ def determine_revision
       number = File.read(revision_path).strip[0...digits]
       extra = mod_date.strftime("%H:%M %a, %b %d %Y").gsub(" 0"," ")
     else
-      if File.exist?(".git")
-        number = `git log -1`.split(" ")[1][0...digits]
-        extra = `git branch`.split("\n")[0].split(' ')[-1]
-      else
+      if File.exist?(".svn")
         # We don't use --xml anymore, because CentOS's svn doesn't have it.
         number = `svn info`.grep(%r"^Revision: ")[0].split(" ")[1]
         extra = ''
+      else
+        number = `git log -1`.split(" ")[1][0...digits]
+        extra = `git branch`.split("\n")[0].split(' ')[-1]
       end
     end
   rescue
