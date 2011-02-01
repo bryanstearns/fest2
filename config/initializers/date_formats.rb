@@ -23,7 +23,7 @@ time_formats = {
     lambda {|d| d.strftime("#{d.month}/#{d.day}/%Y %l:%M %p") },
   :day_date_time_zone =>
     lambda {|d| "#{Date::ABBR_DAYNAMES[d.wday]} #{d.to_s}" },
-  :full => lambda {|d| d.strftime("%l:%M%p, %B #{d.day.to_i}, %Y") },
+  :full => lambda {|d| d.strftime("%l:%M%p %A, %B #{d.day.to_i}, %Y") },
   :csv => lambda {|d| d.strftime("%m/%d/%y %l:%M %p") }
 }
 

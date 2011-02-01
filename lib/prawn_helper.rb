@@ -140,15 +140,16 @@ module PrawnHelper
         end
         hr("aaaaaa")
 
+      # TODO: fix when we do timezone work
       as_of = (picks.map(&:updated_at) + [festival.revised_at])\
-              .compact.max.to_s(:full)
+              .compact.max.in_time_zone('Pacific Time (US & Canada)').to_s(:full)
 
       font(:small) do
         pdf.move_down(2)
         pdf.text "http://festivalfanatic.com/", :align => :left
         pdf.move_up(pdf.font.height)
         # pdf.text "festival as of #{fest_date}", # choices as of #{user_date}"
-        pdf.text "as of #{as_of}", :align => :right
+        pdf.text "as of #{as_of.strip}", :align => :right
       end
       # end
     end
