@@ -81,3 +81,10 @@ class Numeric
     "#{self.in_words} #{name}"
   end
 end
+
+class Hash
+  def without(*excludees)
+    # Return a copy of this hash with these keys removed
+    reject {|k, v| excludees.include?(k) }
+  end
+end

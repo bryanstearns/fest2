@@ -18,11 +18,16 @@ class FestivalsController < ApplicationController
   def show
     if params.delete(:landing)
       if logged_in?
-        redirect_to festival_url(@festival) and return \
-          if current_user.has_screenings_for(@festival)
-        redirect_to festival_assistant_url(@festival) and return \
-          if current_user.has_rankings_for(@festival)
+        if current_user.has_screenings_for(@festival)
+          Journal.landing_on_schedule(:festival => @festival)
+          redirect_to festival_url(@festival) and return
+        end
+        if current_user.has_rankings_for(@festival)
+          Journal.landing_on_assistant(:festival => @festival)
+          redirect_to festival_assistant_url(@festival) and return
+        end
       end
+      Journal.landing_on_films(:festival => @festival)
       redirect_to festival_films_url(@festival) and return
     end
 
@@ -35,8 +40,12 @@ class FestivalsController < ApplicationController
       @displaying_user_subscription = @displaying_user.subscription_for(@festival, :create => true)
       raise ActiveRecord::RecordNotFound unless @displaying_user_subscription \
         and @displaying_user_subscription.key == params[:key]
+      Journal.viewing_user_schedule(:festival => @festival,
+                                    :format => request.format,
+                                    :subject => @displaying_user)
       @read_only = true
     else
+      Journal.viewing_schedule(:festival => @festival, :format => request.format)
       @read_only, @displaying_user, @displaying_user_subscription = \
         [false, current_user, current_user.subscription_for(@festival, :create => true)] \
         if logged_in?
@@ -88,6 +97,9 @@ class FestivalsController < ApplicationController
     if logged_in?
       screening = Screening.find(params[:screening_id])
       state = (params[:state] || "picked").to_sym
+      Journal.screening_picked(:festival => @festival,
+                               :subject => screening,
+                               :state => state)
       changed = screening.set_state(current_user, state)
       js = screening_settings_to_js(current_user, changed)
     else
@@ -98,13 +110,19 @@ class FestivalsController < ApplicationController
   
   # POST /festivals/1/reset_rankings
   def reset_rankings
-    @festival.reset_rankings(current_user) if logged_in?
+    if logged_in?
+      Journal.reset_rankings(:festival => @festival)
+      @festival.reset_rankings(current_user)
+    end
     redirect_to festival_films_url(@festival)
   end
     
   # POST /festivals/1/reset_screenings
   def reset_screenings
-    @festival.reset_screenings(current_user) if logged_in?
+    if logged_in?
+      Journal.reset_screenings(:festival => @festival)
+      @festival.reset_screenings(current_user)
+    end
     redirect_to festival_url(@festival)
   end
     

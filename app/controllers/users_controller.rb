@@ -7,6 +7,7 @@ class UsersController < ApplicationController
 
   # render new.rhtml
   def new
+    Journal.signup_page_viewed
     @user = User.new
   end
 
@@ -19,6 +20,7 @@ class UsersController < ApplicationController
     @user = User.new(params[:user])
     @user.save
     if @user.errors.empty?
+      Journal.user_signed_up(@user)
       self.current_user = @user
       Mailer.deliver_new_user(@user)
       flash[:notice] = "Thanks for signing up! To help you get started, have a look at the 'frequently-asked-questions' page: click where it says 'FAQ' at the top."
@@ -39,8 +41,10 @@ class UsersController < ApplicationController
 
     user = User.find_by_email(params[:email])
     if user
+      Journal.known_user_got_password_reset_email(user)
       Mailer.deliver_reset_password(user)
     else
+      Journal.unknown_user_forgot_password(params[:email])
       Mailer.deliver_admin_message("Password reset, user not found",
         "Someone asked to reset their password using \n" +
         "'#{params[:email]}', but no user with this username or email " +
@@ -62,7 +66,15 @@ class UsersController < ApplicationController
   def reset_password
     username = params[:id].gsub('_', ' ')
     @user = User.find_by_username(username)
-    redirect_to home_path unless params[:secret] == @user.crypted_password
+    unless @user
+      Journal.bad_reset_password_user(username)
+      redirect_to(home_path) and return
+    end
+    unless params[:secret] == @user.crypted_password
+      Journal.bad_reset_password_secret(@user)
+      redirect_to(home_path) and return
+    end
+    Journal.good_reset_password_request(@user)
   end
 
   # PUT /users/1/xyzzy
@@ -75,14 +87,23 @@ class UsersController < ApplicationController
     # reset_session
     username = params[:id].gsub('_', ' ')
     @user = User.find_by_username(username)
-    redirect_to(home_url) and return if @user.crypted_password != params[:secret]
+    unless @user
+      Journal.bad_user_update_user(username)
+      redirect_to(home_path) and return
+    end
+    unless params[:secret] == @user.crypted_password
+      Journal.bad_user_update_secret(@user)
+      redirect_to(home_path) and return
+    end
 
     respond_to do |format|
       if @user.update_attributes(params[:user])
+        Journal.password_changed(@user)
         flash[:notice] = 'User information was successfully updated.'
         format.html { redirect_to login_url }
         format.xml  { head :ok }
       else
+        Journal.password_change_failed(@user)
         format.html { render :action => "reset_password" }
         format.xml  { render :xml => @user.errors, :status => :unprocessable_entity }
       end

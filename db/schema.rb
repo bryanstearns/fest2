@@ -9,7 +9,22 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110129202827) do
+ActiveRecord::Schema.define(:version => 20110129213126) do
+
+  create_table "activity", :force => true do |t|
+    t.string   "name"
+    t.integer  "user_id"
+    t.integer  "festival_id"
+    t.integer  "subject_id"
+    t.string   "subject_type"
+    t.integer  "object_id"
+    t.string   "object_type"
+    t.text     "details"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "activity", ["user_id", "name"], :name => "index_activity_on_user_id_and_name"
 
   create_table "announcements", :force => true do |t|
     t.string   "subject",                         :null => false

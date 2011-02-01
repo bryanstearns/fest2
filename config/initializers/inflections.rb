@@ -9,5 +9,5 @@
 #   inflect.uncountable %w( fish sheep )
 # end
 ActiveSupport::Inflector.inflections do |inflect|
-  inflect.uncountable %w( buzz )
+  inflect.uncountable %w[buzz activity]
 end

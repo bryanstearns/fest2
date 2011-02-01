@@ -7,12 +7,23 @@ require 'spec/rails'
 require 'factory_girl'
 require 'ruby-debug'
 
+# Reduce noise from test backtraces:
+# # sudo gem install quietbacktrace
+begin; require 'quietbacktrace'; rescue MissingSourceFile; end
+
 # Uncomment the next line to use webrat's matchers
 #require 'webrat/integrations/rspec-rails'
 
 # Requires supporting files with custom matchers and macros, etc,
 # in ./support/ and its subdirectories.
 Dir[File.expand_path(File.join(File.dirname(__FILE__),'support','**','*.rb'))].each {|f| require f}
+
+# Don't record activity while we're testing
+class Journal
+  def self.method_missing(*args)
+    nil
+  end
+end
 
 Spec::Runner.configure do |config|
   # If you're not using ActiveRecord you should remove these
@@ -149,3 +160,4 @@ module AdminUserSpecHelper
     end
   end
 end
+
