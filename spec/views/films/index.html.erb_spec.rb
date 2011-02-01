@@ -7,7 +7,8 @@ describe "/films/index.html.erb" do
     now = Time.now
     festival = mock_model(Festival, :name => "name", :dates => "dates",
                           :location => "bogusville",
-                          :external_film_url => "http://foo/0")
+                          :external_film_url => "http://foo/0",
+                          :slug_group => "sluggo")
     assigns[:festival] = festival
     
     venue = mock_model(Venue, :name => "Venue Name")
