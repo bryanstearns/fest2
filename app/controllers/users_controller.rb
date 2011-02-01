@@ -21,8 +21,8 @@ class UsersController < ApplicationController
     if @user.errors.empty?
       self.current_user = @user
       Mailer.deliver_new_user(@user)
-      redirect_back_or_default('/')
       flash[:notice] = "Thanks for signing up! To help you get started, have a look at the 'frequently-asked-questions' page: click where it says 'FAQ' at the top."
+      redirect_back_or_default('/')
     else
       render :action => 'new'
     end
@@ -33,8 +33,7 @@ class UsersController < ApplicationController
 
   def send_password_reset
     if params[:email].blank?
-      flash.now[:warning] = \
-        "Oops: You didn't enter your email address!"
+      flash.now[:warning] = "Oops: You didn't enter your email address!"
       render(:action => :forgot_password) and return
     end
 

@@ -17,7 +17,7 @@ class SessionController < ApplicationController
       redirect_back_or_default('/')
       # flash[:notice] = "Logged in successfully"
     else
-      flash[:warning] = "Oops, that's not a recognized email address and password."
+      flash.now[:warning] = "Oops, that's not a recognized email address and password."
       @attempt_failed = true
       render :action => 'new'
     end
