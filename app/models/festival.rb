@@ -138,6 +138,6 @@ class Festival < CachedModel
   end
 
   def venues_grouped_by_key
-    @@venues_grouped_by_key ||= venues.all(:order => :name).group_by {|v| v.group_key}
+    @venues_grouped_by_key ||= venues.all(:order => :name).group_by {|v| v.group_key}
   end
 end
