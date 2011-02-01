@@ -235,7 +235,7 @@ module Countries
     "ug" => "Uganda", 
     "ua" => "Ukraine", 
     "ae" => "United Arab Emirates", 
-    "gb" => "United Kingdom", 
+    "gb" => "Great Britain", # was United Kingdom
     "us" => "United States", 
     "um" => "United States Minor Outlying Islands", 
     "uy" => "Uruguay", 

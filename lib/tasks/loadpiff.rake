@@ -336,7 +336,7 @@ class PIFFCSV
     country_names = /^([^\<]+)/.match(@values[:description])[1].split('/')
     country_codes = country_names.map do |name|
       name = name.downcase.split(' ').map(&:camelize).join(' ')
-      name = "United Kingdom" if ["Great Britain", "Great Britan"].include?(name)
+      name = "Great Britain" if ["United Kingdom", "Great Britan"].include?(name)
       name = "Colombia" if name == "Columbia"
       code = Countries.name_to_code(name)
       debugger if code.blank? and \
