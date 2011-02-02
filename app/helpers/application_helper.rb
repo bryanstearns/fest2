@@ -80,4 +80,12 @@ module ApplicationHelper
       festival_films_path(festival)
     end
   end
+
+  def festival_revision_info(festival, picks=nil)
+    # TODO: fix when we do timezone work
+    result = "Festival as of #{festival.revision_time.to_s(:full)}"
+    last_pick = picks.map {|p| p.updated_at }.compact.max if picks
+    result += "; choices as of #{last_pick.in_time_zone('Pacific Time (US & Canada)').to_s(:full)}" if last_pick
+    result
+  end
 end

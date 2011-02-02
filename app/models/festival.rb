@@ -57,6 +57,10 @@ class Festival < CachedModel
     slug
   end
 
+  def revision_time
+    revised_at || created_at
+  end
+
   def to_xml_with_options(options={})
     options[:only] ||= [:name, :location, :starts, :ends, :revised_at]
     options[:include] ||= [:films]

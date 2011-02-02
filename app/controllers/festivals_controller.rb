@@ -222,6 +222,8 @@ private
         %Q[jQuery("#{id_list}").find('.priority').html('#{priority_image_tag}');]
       end
     end.join("\n")
+
+    js += %Q[jQuery(".revised span").html("#{view_helper.festival_revision_info(@festival, picks)}");]
     js
   end
 

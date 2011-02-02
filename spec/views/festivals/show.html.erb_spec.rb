@@ -13,6 +13,7 @@ describe "/festivals/show.html.erb" do
                            :starts => Date.today,
                            :ends => Date.today,
                            :revised_at => DateTime.now,
+                           :revision_time => DateTime.now,
                            :films => [])
     screenings = []
     screenings.stub!(:with_press).and_return([])

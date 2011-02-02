@@ -126,6 +126,7 @@ class ApplicationController < ActionController::Base
     ViewHelper.instance
   end
   class ViewHelper
+    include ApplicationHelper
     include Singleton
     include ActionView::Helpers::TextHelper
     include ActionView::Helpers::TagHelper

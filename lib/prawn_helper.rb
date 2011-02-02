@@ -2,6 +2,7 @@
 module PrawnHelper
   class Presenter
     include FestivalsHelper
+    include ApplicationHelper
     attr_accessor :pdf, :festival, :user, :picks, :orientation
     attr_accessor :header_height, :footer_height, :column_count,
       :column_gutter, :column_width, :column_height, :column_index, :y
@@ -140,16 +141,11 @@ module PrawnHelper
         end
         hr("aaaaaa")
 
-      # TODO: fix when we do timezone work
-      as_of = (picks.map(&:updated_at) + [festival.revised_at])\
-              .compact.max.in_time_zone('Pacific Time (US & Canada)').to_s(:full)
-
       font(:small) do
         pdf.move_down(2)
         pdf.text "http://festivalfanatic.com/", :align => :left
         pdf.move_up(pdf.font.height)
-        # pdf.text "festival as of #{fest_date}", # choices as of #{user_date}"
-        pdf.text "as of #{as_of.strip}", :align => :right
+        pdf.text festival_revision_info(@festival, picks), :align => :right
       end
       # end
     end

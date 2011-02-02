@@ -121,12 +121,9 @@
   <%= render :partial => "day", 
              :collection => days(@festival, @show_press) %>
 </div>
-<%= content_tag(:div,
-                content_tag(:span,
-                            "Revised at #{@festival.revised_at.strftime("%H:%M %a, %b %d")}"),
-                :class => "revised") \
-    if @festival.revised_at %>
-<% end # caching -%>
+<%= content_tag(:div, content_tag(:span, festival_revision_info(@festival)),
+                :class => "revised") %>
+<% end -%><%# caching -%>
 
 <% content_for :page_scripts do %>
 jQuery(function() {
