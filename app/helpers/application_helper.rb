@@ -40,7 +40,7 @@ module ApplicationHelper
                "href=\"http://fonts.googleapis.com/css?family=#{families.join('|').gsub(' ', '+')}\">"]
 
     results += [
-      stylesheet_link_tag('compiled/screen', :media => 'screen, projection'),
+      stylesheet_link_tag('compiled/screen', :media => 'screen, projection, print'),
       stylesheet_link_tag('compiled/print', :media => 'print'),
       "<!--[if IE 6]>",
       stylesheet_link_tag('compiled/ie', :media => 'screen, projection'),

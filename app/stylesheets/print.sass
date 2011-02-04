@@ -1,8 +1,20 @@
-@import blueprint
+//@import blueprint
 
 // To generate css equivalent to the blueprint css but with your configuration applied, uncomment:
-// @include blueprint-print
+//@include blueprint-print
 
 //Recommended Blueprint configuration with scoping and semantic layout:
-body.bp
-  +blueprint-print(true)
+//body.bp
+//  +blueprint-print(true)
+
+@media print
+  body
+    background-color: white !important
+
+  #navigation, ul.navlinks, .button, .flash, #instructions, #showhide
+    display: none
+
+  .content
+    border: none !important
+    margin: 0px !important
+
