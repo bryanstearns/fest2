@@ -79,8 +79,7 @@ class Activity < ActiveRecord::Base
       # it'll be in 'details'
       params[:details] = { :value => options }
     end
-    cu = ActiveRecord::Base.current_user
-    id = cu.id if cu
+    id = ActiveRecord::Base.current_user.id rescue nil
     params[:user_id] ||= id if id # ActiveRecord::Base.current_user.try(:id)
     params
   end
