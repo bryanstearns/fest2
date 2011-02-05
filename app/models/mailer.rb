@@ -36,6 +36,15 @@ class Mailer < ActionMailer::Base
     body :details => details
   end
 
+  def schedule_changed(screening, users)
+    festival = screening.festival
+    common_setup("Schedule change for #{festival.name}, " +
+                 Date.today.to_s(:mdy_numbers_slashed))
+    recipients "Festival Fanatic <festfan@festivalfanatic.com>"
+    body :festival => festival, :screening => screening,
+         :users => users
+  end
+
 private
   def common_setup(subj)
     from "Festival Fanatic <festfan@festivalfanatic.com>"
