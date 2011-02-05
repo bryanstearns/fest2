@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110129213126) do
+ActiveRecord::Schema.define(:version => 20110205013125) do
 
   create_table "activity", :force => true do |t|
     t.string   "name"
@@ -28,7 +28,7 @@ ActiveRecord::Schema.define(:version => 20110129213126) do
 
   create_table "announcements", :force => true do |t|
     t.string   "subject",                         :null => false
-    t.text     "contents"
+    t.text     "contents",                        :null => false
     t.boolean  "published",    :default => false
     t.datetime "published_at"
     t.datetime "created_at"
@@ -63,6 +63,7 @@ ActiveRecord::Schema.define(:version => 20110129213126) do
     t.datetime "updated_at"
     t.datetime "revised_at"
     t.string   "slug_group"
+    t.string   "updates_url"
   end
 
   add_index "festivals", ["ends", "public"], :name => "index_festivals_on_ends_and_public"
@@ -105,14 +106,14 @@ ActiveRecord::Schema.define(:version => 20110129213126) do
   end
 
   create_table "screenings", :force => true do |t|
-    t.integer  "festival_id", :null => false
-    t.integer  "film_id",     :null => false
-    t.integer  "venue_id",    :null => false
-    t.datetime "starts",      :null => false
-    t.datetime "ends",        :null => false
+    t.integer  "festival_id",                    :null => false
+    t.integer  "film_id",                        :null => false
+    t.integer  "venue_id",                       :null => false
+    t.datetime "starts",                         :null => false
+    t.datetime "ends",                           :null => false
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.boolean  "press"
+    t.boolean  "press",       :default => false
   end
 
   add_index "screenings", ["festival_id"], :name => "index_screenings_on_festival_id"
@@ -121,7 +122,7 @@ ActiveRecord::Schema.define(:version => 20110129213126) do
     t.integer  "festival_id",                                      :null => false
     t.integer  "user_id",                                          :null => false
     t.boolean  "admin",                         :default => false
-    t.boolean  "show_press"
+    t.boolean  "show_press",                    :default => false
     t.text     "restrictions"
     t.string   "key",             :limit => 10
     t.datetime "created_at"
@@ -142,6 +143,7 @@ ActiveRecord::Schema.define(:version => 20110129213126) do
     t.boolean  "admin",                                   :default => false
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.boolean  "mail_opt_out"
   end
 
   add_index "users", ["email"], :name => "index_users_on_email", :unique => true

@@ -42,6 +42,7 @@ task :fakefest => :environment do
                                 :location => "Portland, OR",
                                 :starts => starts,
                                 :ends => starts + days,
+                                :updates_url => "http://sequelfest.s15k.com/updates",
                                 :public => true, :scheduled => true)
   puts sequelFest.inspect
 
@@ -90,6 +91,7 @@ task :fakefest => :environment do
                               :slug_group => "lebowski",
                               :location => "Encino, CA",
                               :film_url_format => "http://imdb.com/title/*/",
+                              :updates_url => "http://lebowskifest.s15k.com/updates",
                               :public => true, :scheduled => true)
   solo = tinyFest.venues.create!(:name => "Solo Theatre", :abbrev => "Solo")
   tbl = tinyFest.films.create!(:name => "The Big Lebowski",
@@ -124,6 +126,7 @@ task :fakefest => :environment do
     user = User.create!(:username => username,
                         :password => password,
                         :password_confirmation => password,
+                        :mail_opt_out => (username == 'siskel'),
                         :email => "stearns@example.com")
     #puts "User #{user.username} created (#{user.id})"
     users[username.to_sym] = user
