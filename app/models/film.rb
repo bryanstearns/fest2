@@ -5,7 +5,9 @@ class Film < CachedModel
   has_many :public_screenings, :class_name => 'Screening',
            :conditions => ['press = ?', false]
   has_many :picks, :dependent => :destroy
-  
+
+  after_save :propagate_duration_change
+
   validates_presence_of :name
   validates_presence_of :duration
   validates_presence_of :festival_id
@@ -54,4 +56,11 @@ class Film < CachedModel
   end
   alias_method_chain :to_xml, :options
 
+  def propagate_duration_change
+    # TODO: Rails3 - don't do this unless duration changed
+    screenings.each do |screening|
+      screening.ends = screening.starts + duration
+      screening.save!
+    end
+  end
 end
