@@ -93,7 +93,8 @@ class Festival < CachedModel
       e.location = s.venue.name
       e.summary = s.film.name
       e.klass = "PUBLIC"
-      e.uid = yield s if block_given?
+      url = yield s if block_given?
+      e.url = e.uid = url
       cal.add_event e
     end
     cal.to_ical

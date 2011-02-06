@@ -30,7 +30,11 @@ class ScreeningsController < ApplicationController
              || current_user.picks.new(:film_id => @film.id)) \
             if logged_in?
     respond_to do |format|
-      format.html { raise NonAjaxEditsNotSupported }
+      format.html {
+        # We tag screenings in exported iCal calendars with a URL that points
+        # here; just redirect to the festival schedule for now.
+        redirect_to festival_path(@festival) and return
+      }
       format.js
       format.xml { render :xml => @screening }
     end

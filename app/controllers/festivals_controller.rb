@@ -79,9 +79,9 @@ class FestivalsController < ApplicationController
       format.ics do
         redirect_to login_url and return unless @displaying_user
         ics_schedule = @festival.to_ics(@displaying_user.id) do |screening|
-          @festival.external_film_url(screening.film) || festival_url(@festival)
-#          film_screening_url(screening.film, screening, 
-#                             :host => request.host_with_port)  
+          (@festival.external_film_url(screening.film) ||
+           film_screening_url(screening.film, screening,
+                              :host => request.host_with_port))
         end
         send_data(ics_schedule, :filename => filename, :type => :ics)
       end

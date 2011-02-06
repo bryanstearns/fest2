@@ -91,8 +91,9 @@ describe ScreeningsController do
       get :show, :film_id => "1", :id => "1", :format => "js"
     end
 
-    it "should fail if ordinary html requested" do
-      lambda {get :show, :film_id => "1", :id => "1"}.should raise_error(NonAjaxEditsNotSupported)
+    it "should redirect to the festival schedule if ordinary html requested" do
+      get :show, :film_id => "1", :id => "1"
+      response.should redirect_to(festival_url(@festival.id))
     end
 
     it "should be successful when javascript is requested" do
