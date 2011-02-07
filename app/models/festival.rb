@@ -85,11 +85,15 @@ class Festival < CachedModel
 
   def to_ics(user_id)
     cal = Calendar.new
+    # TODO: Fix when we do timezones
+    tzid = "America/Los_Angeles"
     screenings = picks.find_all_by_user_id(user_id).map(&:screening).compact.sort_by(&:starts)
     screenings.each do |s|
       e = Event.new
       e.start = s.starts.to_datetime
       e.end = s.ends.to_datetime
+      e.start.ical_params = { "TZID" => tzid }
+      e.end.ical_params = { "TZID" => tzid }
       e.location = s.venue.name
       e.summary = s.film.name
       e.klass = "PUBLIC"
