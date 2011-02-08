@@ -64,10 +64,9 @@ class UsersController < ApplicationController
   end
   
   def reset_password
-    username = params[:id].gsub('_', ' ')
-    @user = User.find_by_username(username)
+    @user = User.find_by_id(params[:number])
     unless @user
-      Journal.bad_reset_password_user(username)
+      Journal.bad_reset_password_user(params[:number])
       redirect_to(home_path) and return
     end
     unless params[:secret] == @user.crypted_password
