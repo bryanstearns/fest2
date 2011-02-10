@@ -39,11 +39,11 @@ class FestivalsController < ApplicationController
       raise ActiveRecord::RecordNotFound unless @displaying_user_subscription \
         and @displaying_user_subscription.key == params[:key]
       Journal.viewing_user_schedule(:festival => @festival,
-                                    :format => request.format,
+                                    :format => request.format.try(:to_sym),
                                     :subject => @displaying_user)
       @read_only = true
     else
-      Journal.viewing_schedule(:festival => @festival, :format => request.format)
+      Journal.viewing_schedule(:festival => @festival, :format => request.format.try(:to_sym))
       @read_only, @displaying_user, @displaying_user_subscription = \
         [false, current_user, current_user.subscription_for(@festival, :create => true)] \
         if logged_in?
