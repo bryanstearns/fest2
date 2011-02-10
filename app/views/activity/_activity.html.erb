@@ -1,0 +1,18 @@
+<% @show_user ||= true -%>
+<li>
+  <%= activity.created_at.to_s(:mdy_numbers_slashed_with_time) %>:
+  <%= activity.user.username if @show_user %>
+  <b><%= activity.name.gsub('_', ' ') %></b>
+  <%
+    subdetails = []
+    subdetails << h(activity.subject.inspect) if activity.subject_id
+    subdetails << "&rarr;" if (activity.subject_id or activity.object_id)
+    subdetails << h(activity.object.inspect) if activity.object_id
+
+    details = []
+    details << activity.festival.slug if activity.festival_id
+    details << subdetails.join(' ') unless subdetails.empty?
+    details << h(activity.details.inspect) if activity.details
+  %>
+  <%= details.join(', ') %>
+</li>

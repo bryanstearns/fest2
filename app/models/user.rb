@@ -3,6 +3,7 @@ class User < ActiveRecord::Base
   has_many :picks, :dependent => :destroy
   has_many :subscriptions, :dependent => :destroy
   has_many :festivals, :through => :subscriptions
+  has_many :activity
 
   # Virtual attribute for the unencrypted password
   attr_accessor :password

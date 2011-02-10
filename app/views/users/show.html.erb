@@ -1,0 +1,39 @@
+<%# admin show page for user %>
+<% content_for :title do %>User: <%= @user.username %> / <%= @user.email %><% end %>
+
+<h3>User Information</h3>
+
+<ul>
+  <li>
+    Username: <b><%= @user.username %></b>
+  </li>
+  <li>
+    Email: <b><%= @user.email %></b>
+  </li>
+  <li>
+    Mail opt out: <b><%= @user.mail_opt_out ? "yes" : "no" %></b>
+  </li>
+  <li>
+    Admin: <b><%= @user.admin ? "yes" : "no" %></b>
+  </li>
+  <li>
+    Email: <b><%= @user.email %></b>
+  </li>
+</ul>
+
+<h4>Festivals &amp; Picks</h4>
+<ul>
+  <% @picked_festivals.each do |festival| %>
+  <li>
+    <b><%= festival.name %>:</b> <%= @festivals_and_picks[festival].count %>
+  </li>
+  <% end %>
+</ul>
+
+<h4>Activity</h4>
+<ul>
+<% @user.activity(:order => "updated_at desc").each do |activity| %>
+  <%= render :partial => "activity/activity", :object => activity,
+             :locals => { :show_user => false } %>
+<% end %>
+</ul>

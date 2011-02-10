@@ -1,5 +1,5 @@
 class UsersController < ApplicationController
-  before_filter :require_admin, :only => [:index]
+  before_filter :require_admin, :only => [:index, :show]
 
   def index
     @users = User.all(:order => "email")
@@ -28,6 +28,14 @@ class UsersController < ApplicationController
     else
       render :action => 'new'
     end
+  end
+
+  def show
+    username = User.from_param(params[:id])
+    @user = User.find_by_username!(username)
+    @activity = @user.activity(:order => "created_at desc")
+    @festivals_and_picks = @user.picks.group_by{|p|p.festival }
+    @picked_festivals = @festivals_and_picks.keys.sort_by {|f| f.ends }.reverse
   end
 
   def forgot_password
