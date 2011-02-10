@@ -1,8 +1,8 @@
 <% @show_user ||= true -%>
 <li>
   <%= activity.created_at.to_s(:mdy_numbers_slashed_with_time) %>:
-  <%= activity.user.username if @show_user %>
-  <b><%= activity.name.gsub('_', ' ') %></b>
+  <%= link_to(activity.user.username, user_path(activity.user)) if @show_user && activity.user %>
+  <i><%= activity.name.gsub('_', ' ') %></i>
   <%
     subdetails = []
     subdetails << h(activity.subject.inspect) if activity.subject_id

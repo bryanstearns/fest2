@@ -30,6 +30,8 @@ ActionController::Routing::Routes.draw do |map|
   end
   map.root :controller => 'welcome', :action => 'index'
 
+  map.resources :activity
+  
   # Questions does feedback editing, but we also alias /feedback to its 'new'
   map.resources :questions
   map.feedback '/feedback', :controller => 'questions', :action => 'new'
