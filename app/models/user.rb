@@ -45,8 +45,16 @@ class User < ActiveRecord::Base
     remember_token_expires_at && Time.now.utc < remember_token_expires_at 
   end
 
+  def self.from_param(username_param)
+    # Some older URLs might contain _ for space
+    username_param.gsub!('_', ' ')
+    CGI::unescape(username_param)
+  end
+  def self.to_param(username)
+    CGI::escape(username).gsub('.', '%2E').gsub('_', '%5F')
+  end
   def to_param
-    username.gsub(' ', '_')
+    User.to_param(username)
   end
 
   # These create and unset the fields required for remembering users between browser closes

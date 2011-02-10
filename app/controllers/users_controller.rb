@@ -84,7 +84,7 @@ class UsersController < ApplicationController
     # request forgery protection.
     # uncomment at your own risk
     # reset_session
-    username = params[:id].gsub('_', ' ')
+    username = User.from_param(params[:id])
     @user = User.find_by_username(username)
     unless @user
       Journal.bad_user_update_user(username)
