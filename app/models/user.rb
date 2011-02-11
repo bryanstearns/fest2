@@ -93,7 +93,7 @@ class User < ActiveRecord::Base
 
   def can_see?(screening)
     subscription = subscription_for(screening.festival_id)
-    return subscription.nil? || subscription.can_see?(screening)
+    return subscription ? subscription.can_see?(screening) : !screening.press 
   end
 
   def has_screenings_for(festival)

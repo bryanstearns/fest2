@@ -21,8 +21,11 @@ class ScreeningsController < ApplicationController
   def show
     @screening = @film.screenings.find(params[:id], :include => [:venue, :film, :festival])
 
+    show_press = (current_user && current_user\
+                                  .subscription_for(@festival)\
+                                  .try(:show_press)) || false
     @other_screenings = @film.screenings.reject do |s|
-      (s == @screening) || (current_user ? !current_user.can_see?(s) : s.press)
+      (s == @screening) || (s.press && !show_press)
     end
     @earlier_screenings, @later_screenings = @other_screenings.partition {|s| s.starts < @screening.starts }
     
