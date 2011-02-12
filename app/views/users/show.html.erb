@@ -22,7 +22,11 @@
 <ul>
   <% @picked_festivals.each do |festival| %>
   <li>
-    <b><%= festival.name %>:</b> <%= @festivals_and_picks[festival].count %>
+    <%= festival.name %>:
+    <%= link_to "#{@festivals_and_picks[festival].count} picks",
+                festival_user_url(festival.to_param,
+                :other_user_id => @user.to_param,
+                :key => @user.subscription_for(festival).key) %>
   </li>
   <% end %>
 </ul>
