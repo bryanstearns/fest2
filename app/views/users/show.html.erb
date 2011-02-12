@@ -1,7 +1,7 @@
 <%# admin show page for user %>
 <% content_for :title do %>User: <%= @user.username %> / <%= @user.email %><% end %>
 
-<h3>User Information</h3>
+<h3>User <%= @user.id %> Information</h3>
 
 <ul>
   <li>
@@ -15,9 +15,6 @@
   </li>
   <li>
     Admin: <b><%= @user.admin ? "yes" : "no" %></b>
-  </li>
-  <li>
-    Email: <b><%= @user.email %></b>
   </li>
 </ul>
 
