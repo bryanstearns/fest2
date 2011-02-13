@@ -4,7 +4,7 @@ describe "/films/index.html.erb" do
   include FilmsHelper
   
   before(:each) do
-    now = Time.now
+    now = Time.zone.now
     festival = mock_model(Festival, :name => "name", :dates => "dates",
                           :location => "bogusville",
                           :external_film_url => "http://foo/0",

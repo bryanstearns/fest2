@@ -7,7 +7,7 @@ class Mailer < ActionMailer::Base
     # $ script/console
     # >> Mailer.deliver_mail_test
     common_admin_setup "mailer test"
-    body "This message generated at #{Time.now}."
+    body "This message generated at #{Time.zone.now}."
   end
   
   def got_feedback(question)

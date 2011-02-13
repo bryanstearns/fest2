@@ -7,7 +7,7 @@ describe Buzz do
       :user_id => 1,
       :content => "value for content",
       :url => "value for url",
-      :published_at => Time.now
+      :published_at => Time.zone.now
     }
   end
 

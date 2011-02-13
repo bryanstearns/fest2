@@ -5,7 +5,7 @@ describe "/announcements/new.html.erb" do
   
   before(:each) do
     @announcement = mock_model(Announcement, :subject=>"subject", :contents=> "contents",
-                               :published => true, :published_at => DateTime.now)
+                               :published => true, :published_at => Time.zone.now)
     @announcement.stub!(:new_record?).and_return(true)
     assigns[:announcement] = @announcement
   end

@@ -13,7 +13,7 @@ describe "A Restriction" do
   it "should convert itself to YAML" do
     t = Time.zone.local(2001, 1, 1, 12, 0)
     Restriction.new(t, t + 10.minutes).to_yaml.should == \
-      "--- !ruby/object:Restriction \nends: 2001-01-01 12:10:00 Z\nstarts: 2001-01-01 12:00:00 Z\n"
+      "--- !ruby/object:Restriction \nends: 2001-01-01 20:10:00 Z\nstarts: 2001-01-01 20:00:00 Z\n"
   end
 end
 

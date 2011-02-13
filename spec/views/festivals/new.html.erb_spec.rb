@@ -14,7 +14,7 @@ describe "/festivals/new.html.erb" do
 #      { |f| @festival.stub!(f).and_return(true); fields << f }    
     @festival_fields = fields    
     @festival.stub!(:films).and_return([])
-    @festival.stub!(:revised_at).and_return(DateTime.now)    
+    @festival.stub!(:revised_at).and_return(Time.zone.now)
     @festival.stub!(:new_record?).and_return(true)    
     assigns[:festival] = @festival
   end

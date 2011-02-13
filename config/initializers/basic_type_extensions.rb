@@ -1,4 +1,4 @@
-class Time
+module TimeExtensions
   # Add step() to times, too
   def step(limit, step)
     v = self
@@ -55,6 +55,14 @@ class Time
     # Return the number of minutes since the start of today
     (self.hour * 60) + self.min
   end
+end
+
+class Time
+  include TimeExtensions
+end
+
+class ActiveSupport::TimeWithZone
+  include TimeExtensions
 end
 
 class Float

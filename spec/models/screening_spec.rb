@@ -10,8 +10,8 @@ describe "A new Screening" do
   end
 
   it "should require sequential start and end times" do
-    lambda { Screening.new(:starts => DateTime.civil(1998, 5, 1, 15, 00), 
-                           :ends => DateTime.civil(1998, 5, 1, 12, 30)).
+    lambda { Screening.new(:starts => Time.zone.parse("1998-05-01 15:00"),
+                           :ends => Time.zone.parse("1998-05-01 12:30")).\
              should have(1).errors_on(:ends) }.
            should_not change(Screening, :count)
   end

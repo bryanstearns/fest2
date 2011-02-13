@@ -85,8 +85,7 @@ class Festival < CachedModel
 
   def to_ics(user_id)
     cal = Calendar.new
-    # TODO: Fix when we do timezones
-    tzid = "America/Los_Angeles"
+    tzid = Time.zone.tzinfo.name # eg "America/Los_Angeles"
     screenings = picks.find_all_by_user_id(user_id).map(&:screening).compact.sort_by(&:starts)
     screenings.each do |s|
       e = Event.new
@@ -123,7 +122,7 @@ class Festival < CachedModel
   end
   
   def reset_screenings(user, future_only=false)
-    now = Time.now
+    now = Time.zone.now
     picks.find_all_by_user_id(user.id, :conditions => "screening_id is not null").each do |p|
       if (not future_only) or p.screening.starts > now
         Rails.logger.info "Resetting: #{p.screening.inspect}"

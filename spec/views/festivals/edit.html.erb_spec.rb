@@ -15,7 +15,7 @@ describe "/festivals/edit.html.erb" do
     @festival_fields = fields    
     @festival.stub!(:films).and_return([])
     @festival.stub!(:venues).and_return([])
-    @festival.stub!(:revised_at).and_return(DateTime.now)
+    @festival.stub!(:revised_at).and_return(Time.zone.now)
     assigns[:festival] = @festival
     
     @controller.template.stub!(:button_to_remote).and_return('')

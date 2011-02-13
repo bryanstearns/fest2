@@ -1,61 +1,63 @@
 # Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
 #
 # Here's the schedule represented:
-#          primero         segundo       tercero
-# 9:45am:  one_flew
-# 10:00am:    |            two_moon
-# 11:40am:    |                |         third_man
-# 11:45am:   ---               |             |
-# 12:00n:                     ---            |
-# 12:10pm:                                  ---
-# 13:30pm:                               third_man
-# 15:00pm:                                  ---
-# 21:15:   one_flew
-# 21:45:      |            two_moon
-# 23:00:      |                |         third_man
-# 23:15:     ---               |             |
-# 23:30:                      ---            |
-# 01:00:                                    ---
+# (The times in the fixtures are in UTC; note that the late screenings
+#  are "the next day")
+# utc     local    primero         segundo       tercero
+# 16:45   9:45am:  one_flew
+# 17:00   10:00am:    |            two_moon
+# 18:40   11:40am:    |                |         third_man
+# 18:45   11:45am:   ---               |             |
+# 19:00   12:00n:                     ---            |
+# 19:10   12:10pm:                                  ---
+# 20:30   13:30pm:                               third_man
+# 22:00   15:00pm:                                  ---
+# 04:15   21:15:   one_flew
+# 04:45   21:45:      |            two_moon
+# 06:00   23:00:      |                |         third_man
+# 06:15   23:15:     ---               |             |
+# 06:30   23:30:                      ---            |
+# 08:00   01:00:                                    ---
 early_one:
   film: one_flew
   festival: intramonth
-  starts: 1997-05-01 9:45
-  ends: 1997-05-01 11:45
+  starts: 1997-05-01 16:45
+  ends: 1997-05-01 18:45
   venue: primero
 early_two:
   film: two_moon
   festival: intramonth
-  starts: 1997-05-01 10:00
-  ends: 1997-05-01 12:00
+  starts: 1997-05-01 17:00
+  ends: 1997-05-01 19:00
   venue: segundo
 early_three:
   film: third_man
   festival: intramonth
-  starts: 1997-05-01 11:40
-  ends: 1997-05-01 12:10
+  starts: 1997-05-01 18:40
+  ends: 1997-05-01 19:10
   venue: tercero
 mid_three:
   film: third_man
   festival: intramonth
-  starts: 1997-05-01 13:30
-  ends: 1997-05-01 15:00
+  starts: 1997-05-01 20:30
+  ends: 1997-05-01 22:00
   venue: tercero
 late_one:
   film: one_flew
   festival: intramonth
-  starts: 1997-05-01 21:15
-  ends: 1997-05-01 23:15
+  starts: 1997-05-02 04:15
+  ends: 1997-05-02 06:15
   venue: primero
   press: true
 late_two:
   film: two_moon
   festival: intramonth
-  starts: 1997-05-01 21:45
-  ends: 1997-05-01 23:30
+  starts: 1997-05-02 04:45
+  ends: 1997-05-02 06:30
   venue: segundo
 late_three:
   film: third_man
   festival: intramonth
-  starts: 1997-05-01 23:00
-  ends: 1997-05-02 01:00
+  starts: 1997-05-02 06:00
+  ends: 1997-05-02 08:00
   venue: tercero

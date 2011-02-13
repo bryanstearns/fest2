@@ -34,7 +34,7 @@ class AutoScheduler
     
   def initialize(user, festival, unselect)
     # Pretend it's before the sample festival
-    @now = Time.now # - (Time.now.year - 1996).years
+    @now = Time.zone.now # - (Time.zone.now.year - 1996).years
 
     # Unselect any screenings that need unselecting
     festival.reset_screenings(user, unselect == "future") \

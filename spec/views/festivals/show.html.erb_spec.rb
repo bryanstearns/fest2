@@ -4,16 +4,18 @@ describe "/festivals/show.html.erb" do
   include FestivalsHelper
 
   before do
+    now = Time.zone.now
+    today = now.to_date
     @festival = mock_model(Festival,
                            :name => "Festival Name",
                            :dates => "festival dates",
                            :location => "bogusville",
                            :slug => "slug",
                            :slug_group => "slug group",
-                           :starts => Date.today,
-                           :ends => Date.today,
-                           :revised_at => DateTime.now,
-                           :revision_time => DateTime.now,
+                           :starts => today,
+                           :ends => today,
+                           :revised_at => now,
+                           :revision_time => now,
                            :films => [])
     screenings = []
     screenings.stub!(:with_press).and_return([])

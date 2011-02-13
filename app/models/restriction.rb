@@ -2,8 +2,16 @@ class Restriction
   attr_accessor :starts, :ends
 
   def initialize(starts, ends=nil)
-    @starts = starts
-    @ends = ends || rounded_end_of_day(starts)
+    @starts = starts.in_time_zone
+    @ends = (ends || rounded_end_of_day(starts)).in_time_zone
+  end
+
+  def starts
+    @starts.try(:in_time_zone)
+  end
+
+  def ends
+    @ends.try(:in_time_zone)
   end
 
   def overlaps?(other)
@@ -95,6 +103,6 @@ private
   def rounded_end_of_day(time)
     # #end_of_day includes .999999 usec, which throws off our other
     # calculations.
-    time.beginning_of_day + 86399
+    time.in_time_zone.beginning_of_day + 86399
   end
 end

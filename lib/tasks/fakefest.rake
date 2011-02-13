@@ -148,7 +148,7 @@ task :fakefest => :environment do
   end
 
   # Add three recent announcements
-  now = Time.now
+  now = Time.zone.now
   Announcement.create!(:subject => "Oldest",
                        :contents => "The oldest announcement.",
                        :published_at => now - 5.days,
