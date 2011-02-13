@@ -38,15 +38,15 @@ class Time
     return parts(include_zero_minutes).join("")
   end
 
-  def roundDown
+  def round_down
     # Return ourself, rounded down to next hour
     return self if min % 60 == 0 # already at an hour boundary
     self - ((60 * min) + sec)
   end
   
-  def roundUp
+  def round_up
     # Return ourself, rounded up to next hour
-    down = roundDown
+    down = round_down
     return self if self == down # already at an hour boundary
     down + (60 * 60)
   end

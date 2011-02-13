@@ -62,8 +62,8 @@ module FestivalsHelper
       @screenings = screenings.sort_by(&:starts)
 
       # Figure out the start and end times for the day
-      @starts = @screenings.min {|s1, s2| s1.starts <=> s2.starts }.starts.roundDown
-      @ends = @screenings.max {|s1, s2| s1.ends <=> s2.ends }.ends.roundUp
+      @starts = @screenings.min {|s1, s2| s1.starts <=> s2.starts }.starts.round_down
+      @ends = @screenings.max {|s1, s2| s1.ends <=> s2.ends }.ends.round_up
       @start_minute = @starts.to_minutes
       @minutes_long = (@ends - @starts).to_minutes
 
