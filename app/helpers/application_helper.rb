@@ -1,7 +1,7 @@
 # Methods added to this helper will be available to all templates in the application.
 module ApplicationHelper
   def navigation
-    linknames = ["Home", "News", "Festivals", "FAQ", "Feedback"]
+    linknames = ["Home", "Festivals", "FAQ", "Feedback"]
     if logged_in?
       linknames << "Log out"
     else

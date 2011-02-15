@@ -1,14 +1,12 @@
-<% if announcement_limit.nil? or announcement_counter <= announcement_limit %>
 <% content_tag_for :li, announcement do %>
-    <div class="subject">
-      <%= announcement.subject %>
-      <%= link_to "(edit)", edit_announcement_path(announcement) if current_user_is_admin? %>
-    </div>
-    <div class="date">
-	  <%= announcement.published ? announcement.published_at.to_date.to_s(:long) : 'unpublished' %>
-    </div>
-    <%= announcement.contents %>
-<% end %>
-<% else %>
-<%= link_to "more...", announcements_url %>
+  <h4 class="subject">
+    <%= announcement.subject %>
+    <%= link_to "(edit)", edit_announcement_path(announcement) if current_user_is_admin? %>
+  </h4>
+  <div class="date">
+ <%= announcement.published ? announcement.published_at.to_date.to_s(:long) : 'unpublished' %>
+  </div>
+  <div class="contents">
+  <%= announcement.contents %>
+  </div>
 <% end %>
