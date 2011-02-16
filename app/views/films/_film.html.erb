@@ -5,6 +5,10 @@
                :locals => { :film => film, :pick => picks[film.id] } %>
     </td>
     <td>
+      <%= render :partial => "picks/rating_form_in_film_list",
+                 :locals => { :film => film, :pick => picks[film.id] } %>
+    </td>
+    <td>
   	  <%= link_to_film film, :target => "_blank", :class => "name" %>
   	  <span class="duration">(<%= film.minutes %> minutes<%= ", #{film.country_names('/')}" unless film.countries.blank? %>)</span>
   	  <%= content_tag(:div, h(film.description), :class => "description") if film.description -%>

@@ -29,6 +29,19 @@ jQuery(function() {
        return result;
     }
   }
+
+  // Toggle instructions based on cookie
+  if (get_cookie("instructions") == "hide") {
+    jQuery("#showhide span").html("show");
+    jQuery("#instructions").hide();
+  }
+  jQuery("#showhide").click(function() {
+    var instructions = jQuery("#instructions");
+    var verb = instructions.css("display") != "none" ? "show" : "hide";
+    jQuery("#showhide span").html(verb);
+    set_cookie("instructions", verb == "show" ? "hide" : null, "never")
+    instructions.toggle('fast');
+  });
 });
 
 function client_type() {

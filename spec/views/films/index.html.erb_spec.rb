@@ -44,8 +44,8 @@ describe "/films/index.html.erb" do
     assigns[:films] = films
     
     assigns[:picks] = { 
-      films[0].id => mock_model(Pick, :film => films[0], :priority => 1, :screening => nil),
-      films[1].id => mock_model(Pick, :film => films[1], :priority => 2, :screening => nil),
+      films[0].id => mock_model(Pick, :film => films[0], :priority => 1, :rating => nil, :screening => nil),
+      films[1].id => mock_model(Pick, :film => films[1], :priority => 2, :rating => nil, :screening => nil),
     }
   end
 

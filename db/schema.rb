@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110205013125) do
+ActiveRecord::Schema.define(:version => 20110216091233) do
 
   create_table "activity", :force => true do |t|
     t.string   "name"
@@ -92,6 +92,7 @@ ActiveRecord::Schema.define(:version => 20110205013125) do
     t.integer  "priority"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "rating"
   end
 
   add_index "picks", ["user_id", "festival_id"], :name => "index_picks_on_user_id_and_festival_id"

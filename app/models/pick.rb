@@ -22,24 +22,12 @@ class Pick < ActiveRecord::Base
     festival_name = festival.slug rescue "nil"
     film_name = film.name rescue "nil"
     screening_times = screening.times rescue "nil"
-    "#<Pick id:#{id} festival:#{festival_name} film:#{film_name} priority:#{priority} screening:#{screening_times}>"
+    "#<Pick id:#{id} festival:#{festival_name} film:#{film_name} priority:#{priority} rating:#{rating} screening:#{screening_times}>"
   end
-
-#  def conflicts
-#    # Find picks for screenings that conflict with this one, but 
-#    # exclude this one.
-#    result = Pick.find_all_by_festival_id_and_user_id(festival_id, user_id, 
-#        :include => [:screening, :film], :conditions => [
-#           "starts <= :ends", # AND ends >= :starts",
-#           { :starts => screening.starts, :ends => screening.ends }]
-#    ).reject {|p| p.id == id }
-#    result
-#  end
 
 protected
   def check_foreign_keys
     self.film = screening.film if film.nil? and not screening.nil?
     self.festival_id = film.festival_id if festival_id.nil? and not film.nil?
   end
-
 end

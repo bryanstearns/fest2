@@ -413,10 +413,6 @@ body.festivals_show
         @extend .screening_details_base
         margin: 3px
 
-  #showhide
-    cursor: pointer
-    float: right  
-
   .lowprio
     background-color: $lowpriority_color
     border: 3px solid $lowpriority_color
@@ -492,8 +488,12 @@ body.welcome_faq
     overflow: auto
     width: 100%
 
-// Announcements, on the front page or /announcements
+// The showhide goodie for toggling instructions
+#showhide
+  cursor: pointer
+  float: right
 
+// Announcements, on the front page or /announcements
 li.announcement
   margin-bottom: 20px
   list-style: none
