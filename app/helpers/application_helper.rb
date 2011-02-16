@@ -65,6 +65,7 @@ module ApplicationHelper
     javascripts << "jquery-ui-#{jquery_ui_version}.custom.min" \
       if jquery_ui_version
     # javascripts << "jquery.qtip-1.0.0-rc3.min"
+    javascripts << "jquery.ui.stars-3.0"
     javascripts << "jquery.form"
     javascripts << "jqtouch" if client_is?(:mobile)
     javascripts << "application"

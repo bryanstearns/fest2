@@ -8,7 +8,8 @@ class PicksController < ApplicationController
     @film = @pick.film
     @festival = @film.festival
     check_festival_access
-    
+
+    params[:pick] = { :priority => nil } if params[:pick].nil?
     @updated = @pick.update_attributes(params[:pick])
 
     respond_to do |format|

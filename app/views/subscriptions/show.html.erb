@@ -4,7 +4,7 @@
 <%= render :partial => "festivals/header",
       :locals => { :festival => @festival, :hide_tabs => false } %>
 
-<h3>Almost there: let's create a schedule for you</h3>
+<h3>Almost there: we'll create a schedule for you</h3>
 
 <% form_for @subscription, :url => festival_assistant_path(@festival) do |f| %>
   <p>

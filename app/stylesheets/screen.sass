@@ -115,54 +115,80 @@ body
       border: 2px solid $urgent_color
       background: hsl(hue($urgent_color), saturation($urgent_color), 90)
 
-=stars
-  font-size: 130%
-  line-height: 60%
-  letter-spacing: -0.1em
-  color: $star_color
+div.large_pick.stars
+  .ui-stars-star a, .ui-stars-cancel a
+    background: url(/images/stars/stars-large.png) no-repeat 0 0
 
-.stars0:after
-  +stars
-  content: "\2606\2606\2606\2606\2606"
-.stars1:before
-  +stars
-  content: "\2605\2606\2606\2606\2606"
-.stars2:before
-  +stars
-  content: "\2605\2605\2606\2606\2606"
-.stars3:before
-  +stars
-  content: "\2605\2605\2605\2606\2606"
-.stars4:before
-  +stars
-  content: "\2605\2605\2605\2605\2606"
-.stars5:before
-  +stars
-  content: "\2605\2605\2605\2605\2605"
+div.large_pick.dots
+  .ui-stars-star a, .ui-stars-cancel a
+    background: url(/images/stars/dots-large.png) no-repeat 0 0
 
-=ranking()
-  font-size: 130%
-  line-height: 60%
-  letter-spacing: -0.2em
+div.small_pick.stars
+  .ui-stars-star a, .ui-stars-cancel a
+    background: url(/images/stars/stars-small.gif) no-repeat 0 0
 
-.ranking0:before
-  +ranking()
-  content: "\26AA\26AA\26AA\26AA\26AA"
-.ranking1:before
-  +ranking()
-  content: "\26AB\26AA\26AA\26AA\26AA"
-.ranking2:before
-  +ranking()
-  content: "\26AA\26AB\26AA\26AA\26AA"
-.ranking3:before
-  +ranking()
-  content: "\26AA\26AA\26AB\26AA\26AA"
-.ranking4:before
-  +ranking()
-  content: "\26AA\26AA\26AA\26AB\26AA"
-.ranking5:before
-  +ranking()
-  content: "\26AA\26AA\26AA\26AA\26AB"
+div.small_pick.dots
+  .ui-stars-star a, .ui-stars-cancel a
+    background: url(/images/stars/dots-small.gif) no-repeat 0 0
+
+div.large_pick
+  width: 13em
+  .ui-stars-star,.ui-stars-cancel
+    float: left
+    display: block
+    overflow: hidden
+    text-indent: -999em
+    cursor: pointer
+
+  .ui-stars-star a, .ui-stars-cancel a
+    width: 28px
+    height: 26px
+    display: block
+    position: relative
+
+  .ui-stars-star a
+    background-position: 0 -56px !important
+
+  .ui-stars-star-on a
+    background-position: 0 -84px !important
+
+  .ui-stars-star-hover a
+    background-position: 0 -112px !important
+
+  .ui-stars-cancel-hover a
+    background-position: 0 -28px !important
+
+  .ui-stars-star-disabled, .ui-stars-star-disabled a, .ui-stars-cancel-disabled a
+    cursor: default !important
+
+div.small_pick
+  width: 9em
+  .ui-stars-star,.ui-stars-cancel
+    float: left
+    display: block
+    overflow: hidden
+    text-indent: -999em
+    cursor: pointer
+
+  .ui-stars-star a, .ui-stars-cancel a
+    width: 16px
+    height: 15px
+    display: block
+
+  .ui-stars-star a
+    background-position: 0 -32px
+
+  .ui-stars-star-on a
+    background-position: 0 -48px
+
+  .ui-stars-star-hover a
+    background-position: 0 -64px
+
+  .ui-stars-cancel-hover a
+    background-position: 0 -16px
+
+  .ui-stars-star-disabled, .ui-stars-star-disabled a, .ui-stars-cancel-disabled a
+    cursor: default !important
 
 #navigation
   float: right
@@ -469,12 +495,13 @@ body.welcome_faq
 // Announcements, on the front page or /announcements
 
 li.announcement
+  margin-bottom: 20px
   list-style: none
   .subject
     margin-bottom: 0
   .date
     margin-top: 0 !important
     margin-bottom: 3px
-    font-size: 90%
+    font-size: 80%
   .contents
     margin: 0px 15px 0px 15px  !important

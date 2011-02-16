@@ -1,5 +1,3 @@
-require 'ruby-debug'
-
 module FestivalsHelper
   class ViewingInfo
     # Info about one viewing cell - not just the screening, but
