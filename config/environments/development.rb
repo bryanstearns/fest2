@@ -16,6 +16,3 @@ config.action_controller.perform_caching             = false
 # Don't care if the mailer can't send
 # BJS: I care: was false
 config.action_mailer.raise_delivery_errors = true
-
-FestivalsHelper::ViewingInfo.show_ids = true # Add IDs to grid cells?
-Festival.show_buzz = false # global control of buzz mechanisms

@@ -31,6 +31,7 @@ class Festival < CachedModel
   named_scope :in_slug_group, lambda {|group| { :conditions => ['slug_group = ?', group] } }
 
   cattr_accessor :show_buzz
+  self.show_buzz = Rails.env.development?
 
   def self.best_default
     # For new users, the best festival to show is the next one that hasn't ended yet.

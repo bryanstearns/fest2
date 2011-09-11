@@ -27,16 +27,17 @@ Rails::Initializer.run do |config|
   # config.gem "hpricot", :version => '0.6', :source => "http://code.whytheluckystiff.net"
   # config.gem "sqlite3-ruby", :lib => "sqlite3"
   # config.gem "aws-s3", :lib => "aws/s3"
-  config.gem 'system_timer'
-  config.gem 'memcache-client', :lib => 'memcache'
-  config.gem 'cached_model'
+  config.gem 'system_timer', :version => "1.0"
+  config.gem 'memcache-client', :version => "1.7.7", :lib => 'memcache'
+  config.gem 'ZenTest', :version => "4.2.1", :lib => false # cached_model wants this !?
+  config.gem 'cached_model', :version => "1.3.1"
   config.gem 'prawn', :version => "0.8.4"
   config.gem 'prawnto', :version => "0.0.4"
   config.gem 'icalendar', :version => "1.1.0"
   config.gem 'hoptoad_notifier', :version => "2.4.2"
   config.gem 'haml', :version => "3.0.24"
-  config.gem "fancy-buttons", :version => "0.5.5"
   config.gem "compass", :version => "0.10.5"
+  config.gem "fancy-buttons", :version => "0.5.5"
 
   # Test stuff: here so that "rake gems:install" will install them
   config.gem 'rspec', :version => '1.3.1', :lib => false
