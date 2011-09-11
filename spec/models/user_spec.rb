@@ -45,6 +45,15 @@ describe User do
     end.should_not change(User, :count)
   end
 
+  it 'disallows blocked email domains' do
+    ["tom.com", "foo.tom.com"].each do |domain|
+      lambda do
+        u = create_user(:email => "foo@#{domain}")
+        u.errors.on(:email).should_not be_nil
+      end.should_not change(User, :count)
+    end
+  end
+
   it 'resets password' do
     users(:quentin).update_attributes(:password => 'new password', :password_confirmation => 'new password')
     User.authenticate('quentin@example.com', 'new password').should == users(:quentin)
@@ -57,6 +66,11 @@ describe User do
 
   it 'authenticates user' do
     User.authenticate('quentin@example.com', 'test').should == users(:quentin)
+  end
+
+  it 'rejects user with blocked email' do
+    User.stub!(:email_blocked?).and_return(true)
+    User.authenticate('quentin@example.com', 'test').should be_nil
   end
 
   it 'sets remember token' do

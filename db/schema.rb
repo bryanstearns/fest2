@@ -28,7 +28,7 @@ ActiveRecord::Schema.define(:version => 20110216091233) do
 
   create_table "announcements", :force => true do |t|
     t.string   "subject",                         :null => false
-    t.text     "contents"
+    t.text     "contents",                        :null => false
     t.boolean  "published",    :default => false
     t.datetime "published_at"
     t.datetime "created_at"
@@ -107,14 +107,14 @@ ActiveRecord::Schema.define(:version => 20110216091233) do
   end
 
   create_table "screenings", :force => true do |t|
-    t.integer  "festival_id", :null => false
-    t.integer  "film_id",     :null => false
-    t.integer  "venue_id",    :null => false
-    t.datetime "starts",      :null => false
-    t.datetime "ends",        :null => false
+    t.integer  "festival_id",                    :null => false
+    t.integer  "film_id",                        :null => false
+    t.integer  "venue_id",                       :null => false
+    t.datetime "starts",                         :null => false
+    t.datetime "ends",                           :null => false
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.boolean  "press"
+    t.boolean  "press",       :default => false
   end
 
   add_index "screenings", ["festival_id"], :name => "index_screenings_on_festival_id"
@@ -123,7 +123,7 @@ ActiveRecord::Schema.define(:version => 20110216091233) do
     t.integer  "festival_id",                                      :null => false
     t.integer  "user_id",                                          :null => false
     t.boolean  "admin",                         :default => false
-    t.boolean  "show_press"
+    t.boolean  "show_press",                    :default => false
     t.text     "restrictions"
     t.string   "key",             :limit => 10
     t.datetime "created_at"

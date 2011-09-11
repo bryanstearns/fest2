@@ -5,6 +5,8 @@ class User < ActiveRecord::Base
   has_many :festivals, :through => :subscriptions
   has_many :activity
 
+  BLOCKED_EMAIL_PATTERN = /\@.*(tom.com)$/
+
   # Virtual attribute for the unencrypted password
   attr_accessor :password
 
@@ -16,6 +18,7 @@ class User < ActiveRecord::Base
   validates_length_of       :username, :within => 3..40, :if => :username?
   validates_length_of       :email,    :within => 3..100, :if => :email?
   validates_uniqueness_of   :username, :email, :case_sensitive => false
+  validate :email_not_blocked
   before_save :encrypt_password
   
   # prevents a user from submitting a crafted form that bypasses activation
@@ -24,6 +27,7 @@ class User < ActiveRecord::Base
 
   # Authenticates a user by their email and unencrypted password.  Returns the user or nil.
   def self.authenticate(email, password)
+    return nil if email_blocked?(email)
     u = find_by_email(email, :include => :subscriptions) # need the salt
     u && u.authenticated?(password) ? u : nil
   end
@@ -56,6 +60,13 @@ class User < ActiveRecord::Base
   end
   def to_param
     User.to_param(username)
+  end
+
+  def self.email_blocked?(email)
+    BLOCKED_EMAIL_PATTERN =~ email
+  end
+  def email_blocked?
+    User::email_blocked?(email)
   end
 
   # These create and unset the fields required for remembering users between browser closes
@@ -130,5 +141,11 @@ protected
       
   def password_required?
     crypted_password.blank? || !password.blank?
+  end
+
+  def email_not_blocked
+    errors.add(:email,
+      "cannot be used because of spam complaints; pick another.")\
+      if email_blocked?
   end
 end
