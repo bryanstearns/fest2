@@ -10,6 +10,15 @@ RAILS_GEM_VERSION = '2.3.9' unless defined? RAILS_GEM_VERSION
 # Bootstrap the Rails environment, frameworks, and default configuration
 require File.join(File.dirname(__FILE__), 'boot')
 
+if $gems_rake_task # If we're in a rake gems:install or similar task (this is set by Rails, the $-sign makes it a global variable)
+  # We stop the initializer to load the files from the /config/initializers dir. This is to disable the usage of plugins or gems in that code.
+  puts 'Disabling the application initializers and plugins (rails_gem_base == true)'
+  class Rails::Initializer
+    def load_application_initializers; end
+    def load_plugins; end
+ end
+end
+
 Rails::Initializer.run do |config|
   # Settings in config/environments/* take precedence over those specified here.
   # Application configuration should go into files in config/initializers
@@ -27,9 +36,11 @@ Rails::Initializer.run do |config|
   # config.gem "hpricot", :version => '0.6', :source => "http://code.whytheluckystiff.net"
   # config.gem "sqlite3-ruby", :lib => "sqlite3"
   # config.gem "aws-s3", :lib => "aws/s3"
+  config.gem 'mysql', :version => "=2.8.1"
   config.gem 'system_timer', :version => "1.0"
   config.gem 'memcache-client', :version => "1.7.7", :lib => 'memcache'
   config.gem 'ZenTest', :version => "4.2.1", :lib => false # cached_model wants this !?
+  config.gem 'hoe', :version => "2.4.0" # cached_model wants this
   config.gem 'cached_model', :version => "1.3.1"
   config.gem 'prawn', :version => "0.8.4"
   config.gem 'prawnto', :version => "0.0.4"
@@ -42,7 +53,7 @@ Rails::Initializer.run do |config|
   # Test stuff: here so that "rake gems:install" will install them
   config.gem 'rspec', :version => '1.3.1', :lib => false
   config.gem 'rspec-rails', :version => '1.3.3', :lib => false
-  config.gem 'gherkin', :version => "2.3.2", :lib => false # cucumber wants this
+  config.gem 'gherkin', :version => "2.3.7", :lib => false # cucumber wants this
   config.gem 'cucumber', :version => "0.10.0", :lib => false
   config.gem 'factory_girl', :version => "1.2.3", :lib => false
 
