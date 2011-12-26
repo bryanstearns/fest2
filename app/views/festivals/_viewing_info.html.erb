@@ -6,7 +6,9 @@
   <span class="priority"></span>
   <h3><%= viewing_info.film_name %></h3>
   <div class="screeningtime">
-    <span><%= viewing_info.screening_times %>,</span>
+    <%= t = viewing_info.screening_times.split(' - ')
+        t[1] += ","
+        t.map {|t| '<span>' + t + '</span>' }.join(' &ndash; ') %>
     <span><%= viewing_info.ordinalize %></span>
     <%= "<span> (press)</span>" if viewing_info.screening.press %>
   </div>

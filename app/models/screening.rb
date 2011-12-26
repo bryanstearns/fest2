@@ -34,11 +34,16 @@ class Screening < CachedModel
     "#<Screening id: #{id}, festival: #{festival_name}, film: #{film_name}, times: #{starts.to_date} #{times}, venue: #{venue_name}, press: #{press.inspect}>"
   end
   
-  def times
+  def times(in_parts=false)
     startHour, startMin, startSuffix = starts.parts
     endHour, endMin, endSuffix = ends.parts
     startSuffix = "" if startSuffix == endSuffix
-    [startHour,startMin,startSuffix,' - ',endHour,endMin,endSuffix].join("")
+    if in_parts
+      [[startHour,startMin,startSuffix].join(''),
+       [endHour,endMin,endSuffix].join('')]
+    else
+      [startHour,startMin,startSuffix,' - ',endHour,endMin,endSuffix].join("")
+    end
   end  
 
   def date_and_times
