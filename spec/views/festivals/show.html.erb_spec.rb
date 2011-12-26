@@ -18,7 +18,7 @@ describe "/festivals/show.html.erb" do
                            :revision_time => now,
                            :films => [])
     screenings = []
-    screenings.stub!(:with_press).and_return([])
+    screenings.stub!(:with_press).and_return(stub(:all => []))
     @festival.stub!(:screenings).and_return(screenings)
     
     assigns[:festival] = @festival

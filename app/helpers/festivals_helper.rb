@@ -49,7 +49,7 @@ module FestivalsHelper
     
     def self.collect(festival, show_press)
       # Collect & return info about each day's screenings      
-      screenings = festival.screenings.with_press(show_press)
+      screenings = festival.screenings.with_press(show_press).all(:include => :venue)
       screenings_by_date = screenings.group_by { |s| s.starts.date }
       screenings_by_date.map do |date, screenings| 
         DayInfo.new(date, screenings, show_press)
