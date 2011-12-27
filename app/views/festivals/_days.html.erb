@@ -1,0 +1,6 @@
+<div id="days" class="days" data-festival_slug="<%= @festival.slug %>">
+  <%= render :partial => "day",
+             :collection => days(@festival, @show_press) %>
+</div>
+<%= content_tag(:div, content_tag(:span, festival_revision_info(@festival)),
+                :class => "revised") %>
