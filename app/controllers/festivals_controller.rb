@@ -92,18 +92,25 @@ class FestivalsController < ApplicationController
   
   # POST /festivals/1/pick_screening
   def pick_screening
-    if logged_in?
+    js = if logged_in?
       screening = Screening.find(params[:screening_id])
       state = (params[:state] || "picked").to_sym
       Journal.screening_picked(:festival => @festival,
                                :subject => screening,
                                :state => state)
       changed = screening.set_state(current_user, state)
-      js = screening_settings_to_js(current_user, changed)
+      screening_settings_to_js(current_user, changed)
     else
-      js = ""
+      ""
     end
-    render :update do |page| page << js end
+    respond_to do |format|
+      format.html do
+        redirect_to festival_url(@festival, :debug => params[:debug]) and return
+      end
+      format.js do
+        render :update do |page| page << js end
+      end
+    end
   end
   
   # POST /festivals/1/reset_rankings

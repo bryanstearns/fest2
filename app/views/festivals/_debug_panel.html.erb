@@ -1,0 +1,28 @@
+<h3>Next screening to pick:</h3>
+<% sched = AutoScheduler.new(current_user, @festival)
+   sched.resort %>
+
+<div id="debugpanel">
+  <% if sched.prioritized_available_screenings.empty? %>
+    Nothing to pick.
+  <% else %>
+    <% sched.prioritized_available_screenings[0..2].each_with_index do |(cost, screening, pick, conflicts), i| %>
+      <div>
+      <% if screening %>
+      <%= screening_label(screening, nil, :with_film) %>, cost <%= cost %>, versus:<ul>
+        <% conflicts.each do |conflict_screening| -%>
+        <li>
+          <%= screening_label(conflict_screening, nil, :with_film) %>,
+            cost <%= sched.screening_costs[conflict_screening].inspect %>
+        </li>
+        <% end -%>
+      </ul>
+      <%= button_to("Pick and continue",
+                    pick_screening_festival_path(@festival, :screening_id => screening.id,
+                                                 :state => 'picked', :debug => "1"),
+                    :method => :post) if i == 0 %>
+      <% end %>
+      </div>
+    <% end %>
+  <% end %>
+</div>

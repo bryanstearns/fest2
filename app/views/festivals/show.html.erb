@@ -10,21 +10,27 @@
       Here's the festival schedule; if you log in, you'll be able to click on
       the grid to schedule screenings.
     </p>
+  <% elsif params[:debug] %>
+    <%= render :partial => "debug_panel" %>
   <% else %>
     <%= render :partial => "instructions" %>
   <% end %>
 </div>
 
-<% if logged_in? %>
+<% if logged_in? and !params[:debug] %>
 <div id="showhide">
   <a href="javascript:void();">Click here to <span>hide</span> the instructions</a>
   <%= icon_tag :information, :alt => false, :title => false %>
 </div>
 <% end -%>
 
+<% if params[:debug] %>
+  <%= render :partial => "days" %>
+<% else %>
   <% cache @cache_key do %>
     <%= render :partial => "days" %>
   <% end -%>
+<% end -%>
 
 <% content_for :page_scripts do %>
 jQuery(function() {

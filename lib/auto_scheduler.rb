@@ -3,9 +3,11 @@ require 'ruby-debug'
 # Schedule prioritized but unscheduled films for this user
 class AutoScheduler
   attr_accessor :all_screenings, :all_picks, :screenings_by_id,
-                :screening_to_pick, :film_to_priority, :prioritized_unselected_picks,
-                :pick_to_screenings, :pick_to_remaining_screenings,
+                :screening_to_pick, :film_to_priority, :prioritized_available_screenings,
+                :prioritized_unselected_picks, :pick_to_screenings,
+                :pick_to_remaining_screenings, :scheduled_count,
                 :screening_costs, :screening_conflicts
+
     
   def logit msg
     puts msg
@@ -32,7 +34,7 @@ class AutoScheduler
     end
   end
     
-  def initialize(user, festival, unselect)
+  def initialize(user, festival, unselect = "none")
     # Pretend it's before the sample festival
     @now = Time.zone.now # - (Time.zone.now.year - 1996).years
 
@@ -84,6 +86,9 @@ class AutoScheduler
     @prioritized_unselected_picks = @all_picks.select do |p| 
       p.screening.nil? and (p.priority || 0) > 0 and @film_to_remaining_screenings[p.film]
     end
+
+    # Haven't done anything yet.
+    @scheduled_count = 0
   end
   
   def screening_cost(screening, verbose=false)
@@ -160,27 +165,18 @@ class AutoScheduler
       end
     end.compact.sort_by {|x| x[0] }
   end
-  
-=begin
-  # not used
-  def resort_prioritized_unselected_picks
-    # Sort the picks by priority, then by the number of remaining screenings.
-    @prioritized_unselected_picks = @prioritized_unselected_picks.sort_by \
-      { |p| ((p.priority||0) * 10) - @film_to_remaining_screenings[p.film].size }
-  end
-=end
 
   def go
-    scheduled_count = 0
     while true do
       resort
       cost, screening, pick = @prioritized_available_screenings.shift || break
-      logit "pass #{scheduled_count}: scheduling #{screening.inspect} at #{cost} for #{pick.priority rescue 'nil'}"
+
+      logit "pass #{@scheduled_count}: scheduling #{screening.inspect} at #{cost} for #{pick.priority rescue 'nil'}"
       #debugger
       schedule(pick, screening)
-      scheduled_count += 1
+      @scheduled_count += 1
     end
-    if scheduled_count == 0
+    if @scheduled_count == 0
       # Try to figure out what went wrong
       pick_count = 0 # has the user picked anything?
       unscheduled_pick_count = 0 # are any of the picks still unscheduled?
@@ -198,17 +194,17 @@ class AutoScheduler
         if unscheduled_pick_count == 0
       @all_screenings.each do |s|
         if s.starts > @now
-          future_screening_count += 1 
+          future_screening_count += 1
           pick = @film_to_pick[s.film]
           future_picked_screening_count +=1 if pick and (pick.priority||0) > 0
         end
       end
       raise(AutoSchedulingError, "This festival already concluded, so no screenings can be picked.") \
-        if future_screening_count == 0                
+        if future_screening_count == 0
       raise(AutoSchedulingError, "All of the screenings of your prioritized films have already happened.") \
         if future_picked_screening_count == 0
       raise(AutoSchedulingError, "No prioritized unscheduled films have upcoming screenings")
     end
-    return (scheduled_count + @old_picked_screening_count), @prioritized_count
+    return (@scheduled_count + @old_picked_screening_count), @prioritized_count
   end
 end
