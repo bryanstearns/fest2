@@ -32,8 +32,8 @@ module FilmsHelper
       0 => "I don't want to see this: never schedule it for me",
       1 => "I'd see this if nothing higher-priority was showing",
       2 => "I'd like to see this",
-      3 => "I'd very much like to see this",
-      4 => "I *really* want to see this!"
+      4 => "I'd very much like to see this",
+      8 => "I *really* want to see this!"
     }
   end
 

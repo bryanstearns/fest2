@@ -137,9 +137,10 @@ task :fakefest => :environment do
   users[:siskel].subscriptions.create!(:festival => tinyFest, :admin => true)
 
   # Prioritize most films
+  priorities = [0,1,2,4,8]
   sequelFest.films.all(:order => :name).each do |film|
     if rand < 0.9
-      priority = rand(5)
+      priority = priorities[rand(5)]
       puts "Prioritizing #{film.id}: #{film.name} at #{priority}"
       users[:stearns].picks.create!(:film => film, :priority => priority)
     else

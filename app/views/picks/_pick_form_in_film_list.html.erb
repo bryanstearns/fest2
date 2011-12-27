@@ -6,7 +6,7 @@
                           :id => form_id } do |f| %>
         <%= hidden_field_tag 'attribute', "priority" %>
         <div class="large_pick dots">
-        <% ['cancel', 0, 1, 2, 3, 4].each do |p| %>
+        <% ['cancel', 0, 1, 2, 4, 8].each do |p| %>
           <%= f.radio_button :priority, p, :title => ranking_hints[p], :id => "#{form_id}_#{p}" %>
         <% end %>
         </div>
