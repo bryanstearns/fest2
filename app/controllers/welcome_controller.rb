@@ -1,4 +1,6 @@
 class WelcomeController < ApplicationController
+  before_filter :require_admin, :only => :admin
+
   def index
     if logged_in? && request.path != '/home'
       # Send the user to a festival at the most appropriate phase
@@ -22,6 +24,9 @@ class WelcomeController < ApplicationController
         announcement if i == 0 || announcement.published_at > 2.weeks.ago
       end.compact
     end
+  end
+
+  def admin
   end
 
   def faq

@@ -3,6 +3,7 @@ module ApplicationHelper
   def navigation
     linknames = ["Home", "Festivals", "FAQ", "Feedback"]
     if logged_in?
+      linknames << "Admin" if current_user_is_admin?
       linknames << "Log out"
     else
       linknames << "Sign up"
