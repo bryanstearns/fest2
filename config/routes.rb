@@ -1,11 +1,16 @@
 ActionController::Routing::Routes.draw do |map|
-  map.resources :announcements
+  # The home page
+  map.root :controller => 'welcome', :action => 'index'
+
+  # Public announcements
+  map.resources :announcements, :only => [:index, :show]
   map.news '/news', :controller => 'announcements', :action => 'index'
 
-  map.resources :festivals, :controller => 'festivals', :member => { 
+  # Public festivals, films, & buzz
+  map.resources :festivals, :controller => 'festivals', :only => [:index, :show], :member => {
     :pick_screening => :post, 
     :reset_rankings => :post,
-    :reset_screenings => :post, 
+    :reset_screenings => :post
   } do |festival|
     festival.resources :films
     festival.resources :venues
@@ -28,16 +33,13 @@ ActionController::Routing::Routes.draw do |map|
     m.faq '/faq', :action => "faq"
     m.oops '/oops', :action => "oops"
   end
-  map.root :controller => 'welcome', :action => 'index'
 
-  map.resources :activity
-  
   # Questions does feedback editing, but we also alias /feedback to its 'new'
   map.resources :questions
   map.feedback '/feedback', :controller => 'questions', :action => 'new'
 
   # Restful_Authentication
-  map.resources :users
+  map.resources :users, :except => [:index, :show]
   map.resource :session, :controller => 'session'
   map.signup '/signup', :controller => 'users', :action => 'new'
   map.login  '/login', :controller => 'session', :action => 'new'
@@ -45,4 +47,19 @@ ActionController::Routing::Routes.draw do |map|
   map.forgot_password '/forgot_password', :controller => 'users', :action => 'forgot_password'
   map.send_password_reset '/send_password_reset', :controller => 'users', :action => 'send_password_reset', :method => :post
   map.reset_password '/users/:number/reset_password/:secret', :controller => 'users', :action => 'reset_password', :method => :post
+
+  # Admin stuff
+  map.with_options(:path_prefix => "admin") do |a|
+    # Activity logging
+    a.resources :activity
+
+    # Announcement editing
+    a.resources :announcements, :except => [:index, :show]
+
+    # Festival/film/venue editing
+    a.resources :festivals
+
+    # Users
+    a.resources :users, :only => [:index, :show]
+  end
 end
