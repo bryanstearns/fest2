@@ -12,13 +12,12 @@ ActionController::Routing::Routes.draw do |map|
     :reset_rankings => :post,
     :reset_screenings => :post
   } do |festival|
-    festival.resources :films
-    festival.resources :venues
-    festival.resource :assistant, :controller => 'subscriptions', 
+    festival.priorities '/priorities', :controller => :picks, :action => :index
+    festival.resource :assistant, :controller => 'subscriptions',
       :only => [:show, :update]
     festival.user '/:other_user_id/:key.:format', :controller => 'festivals', :action => 'show', :method => :get
   end
-  map.resources :films, :controller => 'films' do |film|
+  map.resources :films, :controller => 'films', :only => [] do |film|
     film.resources :screenings
     film.resources :picks
     film.resources :buzz
@@ -57,7 +56,10 @@ ActionController::Routing::Routes.draw do |map|
     a.resources :announcements, :except => [:index, :show]
 
     # Festival/film/venue editing
-    a.resources :festivals
+    a.resources :festivals, :except => [:index] do |f|
+      f.resources :films
+      f.resources :venues
+    end
 
     # Users
     a.resources :users, :only => [:index, :show]

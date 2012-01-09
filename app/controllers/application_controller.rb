@@ -92,7 +92,7 @@ class ApplicationController < ActionController::Base
     elsif user.has_rankings_for(festival)
       festival_assistant_path(festival)
     else
-      festival_films_path(festival)
+      festival_priorities_path(festival)
     end
   end
 

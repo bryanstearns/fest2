@@ -1,100 +1,19 @@
 require File.dirname(__FILE__) + '/../spec_helper'
+require File.dirname(__FILE__) + '/../helpers/festival_film_spec_helper'
 
 describe FilmsController do
   include AdminUserSpecHelper
-  
-  def make_festival_and_film
-    @festival = mock_model(Festival, :public => true, :to_param => "1")
-    @film = mock_model(Film, :to_param => "1")
-    @films = [@film]
-    @films.stub!(:find).and_return(@film)
-    Festival.stub!(:find_by_slug!).and_return(@festival)
-    @festival.stub!(:films).and_return(@films)
-  end
-  
+  include FestivalFilmSpecHelper
+
   describe "in general," do
     before { make_festival_and_film }    
     require_admin_rights_appropriately :festival_id => "1"
   end
 
-  describe "handling GET /festivals/1/films" do
-    
-    before(:each) do
-      login_as ordinary_user
-      make_festival_and_film
-    end
-  
-    def do_get
-      get :index, :festival_id => 1
-    end
-  
-    it "should be successful" do
-      do_get
-      response.should be_success
-    end
-
-    it "should render index template" do
-      do_get
-      response.should render_template('index')
-    end
-  
-    it "should find all films" do
-      @festival.should_receive(:films).and_return([@film])
-      do_get
-    end
-  
-    it "should assign the found films for the view" do
-      do_get
-      assigns[:films].should == [@film]
-    end
-    
-    it "should not find picks if not logged in" do
-      logout
-      do_get
-      assigns[:picks].should == {}
-    end
-    
-    it "should find picks if logged in" do
-      login_as ordinary_user
-      @pick = mock_model(Pick, :film_id => 2)
-      Pick.stub!(:find_all_by_festival_id_and_user_id).and_return([@pick])
-      do_get
-      assigns[:picks].should == { 2 => @pick }
-    end
-  end
-
-  describe "handling GET /festivals/1/films.xml" do
-
-    before(:each) do
-      make_festival_and_film
-      @film.stub!(:to_xml).and_return("XML")
-      @films.stub!(:to_xml).and_return("XML")
-    end
-  
-    def do_get
-      @request.env["HTTP_ACCEPT"] = "application/xml"
-      get :index, :festival_id => 1
-   end
-  
-    it "should be successful" do
-      do_get
-      response.should be_success
-    end
-
-    it "should find all films" do
-      @festival.should_receive(:films).and_return([@film])
-      do_get
-    end
-  
-    it "should render the found films as xml" do
-      do_get
-      response.body.should == "XML"
-    end
-  end
-
   describe "handling GET /festivals/1/films/1" do
 
     before(:each) do
+      login_as admin_user
       make_festival_and_film
     end
   
@@ -126,6 +45,7 @@ describe FilmsController do
   describe "handling GET /festivals/1/films/1.xml" do
 
     before(:each) do
+      login_as admin_user
       make_festival_and_film
       @film.stub!(:to_xml).and_return("XML")
     end

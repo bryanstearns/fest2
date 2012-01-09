@@ -1,7 +1,7 @@
 <%# A film in the public festival list %>
 	<% content_tag_for :tr, film do %>
     <td>
-    <%= render :partial => "picks/pick_form_in_film_list", 
+    <%= render :partial => "picks/pick_form_in_film_list",
                :locals => { :film => film, :pick => picks[film.id] } %>
     </td>
     <td>
@@ -9,21 +9,21 @@
                  :locals => { :film => film, :pick => picks[film.id] } %>
     </td>
     <td>
-  	  <%= link_to_film film, :target => "_blank", :class => "name" %>
-  	  <span class="duration">(<%= film.minutes %> minutes<%= ", #{film.country_names('/')}" unless film.countries.blank? %>)</span>
-  	  <%= content_tag(:div, h(film.description), :class => "description") if film.description -%>
-  	  <% 
+	  <%= link_to_film film, :target => "_blank", :class => "name" %>
+	  <span class="duration">(<%= film.minutes %> minutes<%= ", #{film.country_names('/')}" unless film.countries.blank? %>)</span>
+	  <%= content_tag(:div, h(film.description), :class => "description") if film.description -%>
+	  <%
         screenings = show_press ? film.screenings : film.public_screenings
-  	    unless screenings.empty?
+	    unless screenings.empty?
           screenings = screenings.sort_by(&:starts)
-  	  -%>
-    	  <div class="screenings">
-    	    <label><%= pluralize(screenings.size, "screening") %>:</label>
+	  -%>
+	  <div class="screenings">
+	    <label><%= pluralize(screenings.size, "screening") %>:</label>
           <ul>
               <%= render :partial => "screenings/screening", :collection => screenings,
                          :locals => { :pick => (logged_in? ? picks[film.id] : nil) } %>
-    	    </ul>
-    	  </div>
+	    </ul>
+	  </div>
       <% end -%>
     </td>
 	<% end %>

@@ -1,4 +1,27 @@
 class PicksController < ApplicationController
+  # GET /festivals/1/priorities
+  # GET /festivals/1/priorities.xml
+  def index
+    @festival = Festival.find_by_slug!(params[:festival_id], :include => :films)
+    @films = @festival.films
+    user_id = logged_in? ? current_user.id : 0
+    @picks = Hash.new {|h, film_id| h[film_id] = Pick.new(:user_id => user_id,
+                                                          :film_id => film_id) }
+    Pick.find_all_by_festival_id_and_user_id(@festival.id, current_user.id)\
+        .inject(@picks) {|h, p| h[p.film_id] = p; h} \
+        if logged_in?
+    @show_press = if logged_in?
+                    sub = current_user.subscription_for(@festival)
+                    sub && sub.show_press
+                  end
+
+    respond_to do |format|
+      format.html # index.html.erb
+      format.xml  { render :xml => @films }
+    end
+  end
+
+
   # POST /films/1/picks
   # POST /films/1/picks.xml
   def create

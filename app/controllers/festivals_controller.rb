@@ -27,8 +27,8 @@ class FestivalsController < ApplicationController
           redirect_to festival_assistant_url(@festival) and return
         end
       end
-      Journal.landing_on_films(:festival => @festival)
-      redirect_to festival_films_url(@festival) and return
+      Journal.landing_on_priorities(:festival => @festival)
+      redirect_to festival_priorities_url(@festival) and return
     end
 
     if params[:other_user_id]
@@ -119,7 +119,7 @@ class FestivalsController < ApplicationController
       Journal.reset_rankings(:festival => @festival)
       @festival.reset_rankings(current_user)
     end
-    redirect_to festival_films_url(@festival)
+    redirect_to festival_priorities_url(@festival)
   end
     
   # POST /festivals/1/reset_screenings

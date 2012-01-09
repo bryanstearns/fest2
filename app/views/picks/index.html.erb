@@ -1,4 +1,4 @@
-<%# The public list of all films in a festival -%>
+<%# The public list of all picks for films in a festival -%>
 <% content_for :title do %>Films at <%= @festival.name %><% end -%>
 
 <% content_for :page_scripts do %>
@@ -70,7 +70,7 @@ jQuery(function() {
 </div>
 <% end -%>
 
-<% 
+<%
 sort_order = params[:order]
 sorted_films = case sort_order
 when "Country"
@@ -96,7 +96,7 @@ if sorted_films.empty? -%>
     <th class="priorityguide">Choose priority:<br/>(lower ... higher)</th>
     <th class="priorityguide">or rate the films<br/>you've seen:</th>
     <th class="sortguide">
-      Sort by: <% form_tag festival_films_path(@festival), :method => :get, :id => "sortform" do %>
+      Sort by: <% form_tag festival_priorities_path(@festival), :method => :get, :id => "sortform" do %>
         <%= select_tag "order", sort_options %>
       <% end %><br/>
       <% if sort_order == "Country" %>
@@ -106,7 +106,7 @@ if sorted_films.empty? -%>
       <% end %>
     </th>
   </tr>
-<%= render :partial => "film", :collection => sorted_films, 
+<%= render :partial => "film", :collection => sorted_films,
            :locals => { :picks => @picks, :show_press => @show_press } %>
 </table>
 
