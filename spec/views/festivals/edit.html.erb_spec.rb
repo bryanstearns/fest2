@@ -6,7 +6,7 @@ describe "/festivals/edit.html.erb" do
   before do
     @festival = mock_model(Festival)
     fields = []
-    [:name, :location, :url, :film_url_format, :slug].each \
+    [:name, :location, :url, :film_url_format, :slug, :dates].each \
       { |f| @festival.stub!(f).and_return("MyString"); fields << f }
     [:starts, :ends].each \
       { |f| @festival.stub!(f).and_return(Date.today) }

@@ -1,0 +1,17 @@
+<%# The header for publicly-visible Festival pages:
+    /festivals/x, /festivals/x/films/, etc. -%>
+<% hide_tabs ||= nil %>
+<%= render :partial => "application/tabs",
+           :locals => {
+             :tabs => [
+               ["Festival", edit_festival_path(@festival)],
+               ["Venues", festival_locations_path(@festival)],
+               ["Films", festival_films_path(@festival)],
+             ],
+             :hide_tabs => hide_tabs
+           } %>
+
+<h2>
+  <div><%= @festival.name %></div>
+  <span><%= @festival.location %> &mdash; <%= @festival.dates %></span>
+</h2>

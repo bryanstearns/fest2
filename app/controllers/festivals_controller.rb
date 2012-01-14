@@ -144,7 +144,7 @@ class FestivalsController < ApplicationController
 
   # GET /festivals/1/edit
   def edit
-    @festival = Festival.find_by_slug!(params[:id], :include => [:venues, { :films => :screenings }])
+    @festival = Festival.find_by_slug!(params[:id])
   end
 
   # POST /festivals
