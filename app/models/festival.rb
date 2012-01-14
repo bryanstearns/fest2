@@ -5,7 +5,8 @@ class Festival < CachedModel
   include ActionController::UrlWriter
 
   has_many :films, :dependent => :destroy
-  has_many :venues, :dependent => :destroy
+  has_many :venue_groups, :dependent => :destroy
+  has_many :venues # destroyed with venue group
   has_many :screenings # destroyed with film
   has_many :picks # destroyed with film
   has_many :subscriptions, :dependent => :destroy
@@ -142,11 +143,12 @@ class Festival < CachedModel
       if slug && (slug_changed? or slug_group.nil?)
   end
 
-  def venue_groups
-    @venue_groups ||= venues.map {|v| v.group }.uniq.sort
-  end
-
-  def venues_grouped_by_key
-    @venues_grouped_by_key ||= venues.all(:order => :name).group_by {|v| v.group_key}
-  end
+  # TODO: replace
+  #def venue_groups
+  #  @venue_groups ||= venues.map {|v| v.group }.uniq.sort
+  #end
+  #
+  #def venues_grouped_by_key
+  #  @venues_grouped_by_key ||= venues.all(:order => :name).group_by {|v| v.group_key}
+  #end
 end

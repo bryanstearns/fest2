@@ -16,7 +16,7 @@ class Subscription < ActiveRecord::Base
   def can_see?(screening)
     return false if screening.press and not show_press
     return false if restrictions && restrictions.any? { |r| r.overlaps? screening }
-    return false if excluded_venues && excluded_venues.include?(screening.venue.group_key)
+    # TODO: replace: return false if excluded_venues && excluded_venues.include?(screening.venue.group_key)
     return true
   end
 
@@ -55,8 +55,10 @@ class Subscription < ActiveRecord::Base
   end
 
   def check_venue_exclusions
-    errors.add_to_base("You can't exclude all venues")\
-      if festival && festival_venue_group_keys.map {|k| k.to_s } == self.excluded_venues
+    # TODO: replace
+    #errors.add_to_base("You can't exclude all venues")\
+    #  if festival && excluded_venues && \
+    #     (festival_venue_group_keys.map {|k| k.to_s } == excluded_venues)
   end
 
 

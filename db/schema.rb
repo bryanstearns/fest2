@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110509024924) do
+ActiveRecord::Schema.define(:version => 20120113031549) do
 
   create_table "activity", :force => true do |t|
     t.string   "name"
@@ -28,7 +28,7 @@ ActiveRecord::Schema.define(:version => 20110509024924) do
 
   create_table "announcements", :force => true do |t|
     t.string   "subject",                         :null => false
-    t.text     "contents",                        :null => false
+    t.text     "contents"
     t.boolean  "published",    :default => false
     t.datetime "published_at"
     t.datetime "created_at"
@@ -107,14 +107,14 @@ ActiveRecord::Schema.define(:version => 20110509024924) do
   end
 
   create_table "screenings", :force => true do |t|
-    t.integer  "festival_id",                    :null => false
-    t.integer  "film_id",                        :null => false
-    t.integer  "venue_id",                       :null => false
-    t.datetime "starts",                         :null => false
-    t.datetime "ends",                           :null => false
+    t.integer  "festival_id", :null => false
+    t.integer  "film_id",     :null => false
+    t.integer  "venue_id",    :null => false
+    t.datetime "starts",      :null => false
+    t.datetime "ends",        :null => false
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.boolean  "press",       :default => false
+    t.boolean  "press"
   end
 
   add_index "screenings", ["festival_id"], :name => "index_screenings_on_festival_id"
@@ -124,7 +124,7 @@ ActiveRecord::Schema.define(:version => 20110509024924) do
     t.integer  "festival_id",                                      :null => false
     t.integer  "user_id",                                          :null => false
     t.boolean  "admin",                         :default => false
-    t.boolean  "show_press",                    :default => false
+    t.boolean  "show_press"
     t.text     "restrictions"
     t.string   "key",             :limit => 10
     t.datetime "created_at"
@@ -151,13 +151,20 @@ ActiveRecord::Schema.define(:version => 20110509024924) do
   add_index "users", ["email"], :name => "index_users_on_email", :unique => true
   add_index "users", ["username"], :name => "index_users_on_username"
 
+  create_table "venue_groups", :force => true do |t|
+    t.string   "name"
+    t.integer  "festival_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "venues", :force => true do |t|
     t.integer  "festival_id", :null => false
     t.string   "name"
     t.string   "abbrev"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "group"
+    t.integer  "group_id"
   end
 
   add_index "venues", ["festival_id"], :name => "index_venues_on_festival_id"
