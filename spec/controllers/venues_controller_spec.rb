@@ -17,6 +17,7 @@ describe VenuesController do
     require_admin_rights_appropriately :festival_id => "1"
   end
 
+=begin
   def do_get
     get :index, :festival_id => "1"
   end
@@ -27,7 +28,7 @@ describe VenuesController do
     it "should fail if ordinary html requested" do
       lambda {get :index, :festival_id => "1"}.should raise_error(NonAjaxEditsNotSupported)
     end
-  
+
 #    it "should be successful" do
 #      do_get
 #      response.should be_success
@@ -352,4 +353,5 @@ describe VenuesController do
 #      response.should redirect_to(venues_url)
 #    end
   end
+=end
 end
