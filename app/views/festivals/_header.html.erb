@@ -10,8 +10,4 @@
              :hide_tabs => hide_tabs
            } %>
 
-<h2>
-  <div><%= @festival.name %></div>
-  <span><%= @festival.location %> &mdash; <%= @festival.dates %></span>
-</h2>
-
+<%= render :partial => "festivals/title" %>
