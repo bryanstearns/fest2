@@ -1,0 +1,12 @@
+<%# The partial used to render one festival's locations, as part of /festivals/1/locations %>
+<% locations ||= locations_in_festival -%>
+
+<% if locations.empty? -%>
+<p><i>(No locations yet)</i></p>
+<% else %>
+  <ul id="festival_locations">
+    <%= render :partial => "locations/location_in_festival",
+               :collection => locations.sort_by(&:name),
+               :locals => { :festival => festival } %>
+  </ul>
+<% end %>

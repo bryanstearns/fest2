@@ -16,14 +16,14 @@ class ChangesFor2012 < ActiveRecord::Migration
       end
     end
 
-    create_table :venue_groups do |t|
+    create_table :locations do |t|
       t.string :name
       t.integer :festival_id
       t.timestamps
     end
-    add_column :venues, :group_id, :integer
+    add_column :venues, :location_id, :integer
 
-    say_with_time("converting venue groupings to actual models") do
+    say_with_time("converting venue groupings to location models") do
       Venue.reset_column_information
       fixed = ["Camera 12", "Cinema 21"]
       groups = Venue.all.inject(Hash.new {|h, k| h[k] = []}) do |h, venue|
@@ -40,9 +40,9 @@ class ChangesFor2012 < ActiveRecord::Migration
         h
       end
       groups.each do |(festival_name, name), venues|
-        group = venues.first.festival.venue_groups.create!(:name => name, :venues => venues)
+        location = venues.first.festival.locations.create!(:name => name, :venues => venues)
         venues.each do |venue|
-          venue.group_id = group.id
+          venue.location_id = location.id
           venue.save!
         end
       end
@@ -52,6 +52,6 @@ class ChangesFor2012 < ActiveRecord::Migration
   end
 
   def self.down
-    drop_table :venue_groups
+    drop_table :locations
   end
 end

@@ -5,8 +5,8 @@ class Festival < CachedModel
   include ActionController::UrlWriter
 
   has_many :films, :dependent => :destroy
-  has_many :venue_groups, :dependent => :destroy
-  has_many :venues # destroyed with venue group
+  has_many :locations, :dependent => :destroy
+  has_many :venues # destroyed with location
   has_many :screenings # destroyed with film
   has_many :picks # destroyed with film
   has_many :subscriptions, :dependent => :destroy

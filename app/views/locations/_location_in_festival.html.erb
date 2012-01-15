@@ -1,0 +1,14 @@
+<%# The partial used to render one location (and its venues), as part of /festivals/1/locations %>
+<% location ||= location_in_festival -%>
+  <li>
+    <% div_for(location) do %>
+      <span class="name"><%= location.name %></span>
+      (<%= pluralize(location.venues.count, "venue") %>)
+      <%= link_to "Edit", festival_path(festival) %>
+      <%= link_to "Delete", festival_path(festival) %>
+    <% end %>
+
+    <%= render :partial => "venues/venues_in_festival",
+               :object => location.venues,
+               :locals => {:location => location, :festival => festival } %>
+  </li>

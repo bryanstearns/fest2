@@ -84,6 +84,13 @@ ActiveRecord::Schema.define(:version => 20120113031549) do
 
   add_index "films", ["festival_id"], :name => "index_films_on_festival_id"
 
+  create_table "locations", :force => true do |t|
+    t.string   "name"
+    t.integer  "festival_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "picks", :force => true do |t|
     t.integer  "user_id",      :null => false
     t.integer  "film_id",      :null => false
@@ -151,20 +158,13 @@ ActiveRecord::Schema.define(:version => 20120113031549) do
   add_index "users", ["email"], :name => "index_users_on_email", :unique => true
   add_index "users", ["username"], :name => "index_users_on_username"
 
-  create_table "venue_groups", :force => true do |t|
-    t.string   "name"
-    t.integer  "festival_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
   create_table "venues", :force => true do |t|
     t.integer  "festival_id", :null => false
     t.string   "name"
     t.string   "abbrev"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "group_id"
+    t.integer  "location_id"
   end
 
   add_index "venues", ["festival_id"], :name => "index_venues_on_festival_id"

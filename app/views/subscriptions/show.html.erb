@@ -29,10 +29,10 @@
     </p>
     <p><%= f.text_field :restriction_text, :size => 80 %></p></li>
 
-    <% if @festival.venue_groups.any? %>
-      <li class="venue_groups">
+    <% if @festival.locations.any? %>
+      <li class="locations">
         <p>
-          What venues should we include? As a Festival Fanatic, you'll
+          What locations should we include? As a Festival Fanatic, you'll
           probably go to all of them, but if any are too inconvenient for you,
           just uncheck them here: we won't schedule any screenings at those
           theaters (though we'll still show them on the schedule, and you can

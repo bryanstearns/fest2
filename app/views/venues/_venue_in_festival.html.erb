@@ -1,16 +1,11 @@
-<%# The partial used to render one venue, as part of /festivals/1/edit %>
+<%# The partial used to render one venue, as part of /festivals/1/locations %>
 <% venue ||= venue_in_festival -%>
-  <% content_tag_for :tr, venue do %>
-    <td><%= h venue.name %></td>
-    <td><%= h venue.abbrev %></td>
-    <td><%= h venue.group %></td>
-		<td>
-				<%= link_to_remote "Edit",
-	          :url => edit_festival_venue_url(festival, venue),
-	          :method => :get %>
-				<%= link_to_remote "Delete",
-	          :url => festival_venue_url(festival, venue),
-	          :method => :delete,
-	          :confirm => "Are you sure you want to delete this venue?" %>			
-		</td>
+
+<li>
+  <% div_for(venue) do %>
+    <span class="name"><%= venue.name %></span>
+    <span class="abbrev">("<%= venue.abbrev %>")</span>
+    <%= link_to "Edit", festival_path(@festival) %>
+    <%= link_to "Delete", festival_path(@festival) %>
   <% end %>
+</li>

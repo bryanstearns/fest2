@@ -1,0 +1,11 @@
+<%# Show/edit locations of a festival: /festivals/x/locations -%>
+<% content_for :title do %>Edit <%= h @festival.name %> Locations<% end %>
+
+<%= render :partial => "festivals/edit_header",
+           :locals => { :festival => @festival } %>
+
+<h3>Locations</h3>
+
+<% render :partial => "locations/locations_in_festival",
+          :locals => { :festival => @festival, :locations => @festival.locations } %>
+
