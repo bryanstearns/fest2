@@ -6,7 +6,7 @@
       (<%= pluralize(location.venues.count, "venue") %>)
       <%= link_to "Edit", festival_path(festival) %>
       <%= link_to "Delete", festival_path(festival) %>
-    <% end %>
+  <% end %>
 
     <%= render :partial => "venues/venues_in_festival",
                :object => location.venues,

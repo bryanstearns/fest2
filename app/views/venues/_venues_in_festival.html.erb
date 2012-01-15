@@ -1,16 +1,8 @@
 <%# The partial used to render the venues list for a film, as part of /festivals/1/edit %>
 <% venues ||= venues_in_festival -%>
-<table id="festival_venues">
-  <% if venues.empty? %>
-	<tr><td><i>(No venues yet)</i></td></tr>
-  <% else %>
-	<tr>
-    <th>Name</th>
-    <th>Abbreviation</th>
-    <th>Group</th>
-  </tr>
-  <%= render :partial => "venues/venue_in_festival",
+<ul class="venues">
+	<%= render :partial => "venues/venue_in_festival",
              :collection => venues.sort_by(&:name),
              :locals => { :festival => festival } %>
-  <% end %>
-</table>
+  <li><%= link_to "Add Venue", new_location_venue_path(festival) %></li>
+</ul>
