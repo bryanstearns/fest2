@@ -1,11 +1,11 @@
 <% hide_tabs ||= nil
    unless hide_tabs -%>
     <% content_for :tab_items do -%>
-        <% tabs.each do |label, url| -%>
-            <% if current_page?(url) -%>
+        <% tabs.each do |label, *urls| -%>
+            <% if urls.any? {|url| current_page?(url) } -%>
                 <li class="current"><span><%= label %></span></li>
             <% else -%>
-                <li class="other"><%= link_to label, url %></li>
+                <li class="other"><%= link_to label, urls.first %></li>
             <% end -%>
         <% end -%>
     <% end -%>

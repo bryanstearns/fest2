@@ -4,7 +4,7 @@
 <%= render :partial => "application/tabs",
            :locals => {
              :tabs => [
-               ["Festival", edit_festival_path(@festival)],
+               ["Festival", edit_festival_path(@festival), festival_path(@festival)],
                ["Venues", festival_locations_path(@festival)],
                ["Films", festival_films_path(@festival)],
              ],

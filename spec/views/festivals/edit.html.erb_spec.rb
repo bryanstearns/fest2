@@ -6,13 +6,14 @@ describe "/festivals/edit.html.erb" do
   before do
     @festival = mock_model(Festival)
     fields = []
-    [:name, :location, :url, :film_url_format, :slug, :dates].each \
+    [:name, :location, :url, :film_url_format, :slug].each \
       { |f| @festival.stub!(f).and_return("MyString"); fields << f }
     [:starts, :ends].each \
       { |f| @festival.stub!(f).and_return(Date.today) }
     [:public, :scheduled].each \
-      { |f| @festival.stub!(f).and_return(true); fields << f }    
-    @festival_fields = fields    
+      { |f| @festival.stub!(f).and_return(true); fields << f }
+    @festival.stub!(:dates).and_return("MyString")
+    @festival_fields = fields
     @festival.stub!(:films).and_return([])
     @festival.stub!(:venues).and_return([])
     @festival.stub!(:revised_at).and_return(Time.zone.now)
