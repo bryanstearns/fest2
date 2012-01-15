@@ -142,13 +142,4 @@ class Festival < CachedModel
     self.slug_group = slug.split('_').first \
       if slug && (slug_changed? or slug_group.nil?)
   end
-
-  # TODO: replace
-  #def venue_groups
-  #  @venue_groups ||= venues.map {|v| v.group }.uniq.sort
-  #end
-  #
-  #def venues_grouped_by_key
-  #  @venues_grouped_by_key ||= venues.all(:order => :name).group_by {|v| v.group_key}
-  #end
 end

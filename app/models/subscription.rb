@@ -4,19 +4,19 @@ class Subscription < ActiveRecord::Base
   belongs_to :festival
   belongs_to :user
   serialize :restrictions
-  serialize :excluded_venues
-  
+  serialize :excluded_location_ids
+
   validates_presence_of :festival_id
   validates_presence_of :user_id
   validate :check_restrictions
-  validate :check_venue_exclusions
+  validate :check_location_exclusions
 
   before_save :make_sharable_key
 
   def can_see?(screening)
     return false if screening.press and not show_press
     return false if restrictions && restrictions.any? { |r| r.overlaps? screening }
-    # TODO: replace: return false if excluded_venues && excluded_venues.include?(screening.venue.group_key)
+    return false if excluded_location_ids && excluded_location_ids.include?(screening.venue.location_id)
     return true
   end
 
@@ -41,24 +41,23 @@ class Subscription < ActiveRecord::Base
     end
   end
 
-  def included_venue_groups
-    festival_venue_group_keys - (excluded_venues || [])
+  def included_location_ids
+    festival_location_ids - (excluded_location_ids || [])
   end
 
-  def included_venue_groups=(venue_keys)
-    excluded_list = festival.venues_grouped_by_key.keys - venue_keys.map{|vk| vk.to_sym }
-    self.excluded_venues = excluded_list.present? ? excluded_list : nil
+  def included_location_ids=(location_ids)
+    excluded_list = festival_location_ids - location_ids.map {|id| id.to_i}
+    self.excluded_location_ids = excluded_list.present? ? excluded_list : nil
   end
 
-  def festival_venue_group_keys
-    @festival_venue_group_keys ||= festival.venues_grouped_by_key.keys
+  def festival_location_ids
+    @festival_location_ids ||= festival.locations.all(:select => :id).map {|x| x.id }
   end
 
-  def check_venue_exclusions
-    # TODO: replace
-    #errors.add_to_base("You can't exclude all venues")\
-    #  if festival && excluded_venues && \
-    #     (festival_venue_group_keys.map {|k| k.to_s } == excluded_venues)
+  def check_location_exclusions
+    return unless excluded_location_ids.present?
+    errors.add_to_base("You can't exclude all locations")\
+      if excluded_location_ids.count == festival_location_ids.count
   end
 
 

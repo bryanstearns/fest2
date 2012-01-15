@@ -37,12 +37,16 @@
           just uncheck them here: we won't schedule any screenings at those
           theaters (though we'll still show them on the schedule, and you can
           still pick them manually).</p>
-      <% @festival.venues_grouped_by_key.each do |key, venues| -%>
+      <%= hidden_field_tag "subscription[included_location_ids][]", "",
+                           :name => "subscription[included_location_ids][]" %>
+      <% included_ids = @subscription.included_location_ids
+         @festival.locations.each do |location| -%>
         <div>
-          <%= check_box_tag "subscription[included_venue_groups][#{key}]", key,
-                            @subscription.included_venue_groups.include?(key),
-                            :name => "subscription[included_venue_groups][]" %>
-          <%= label_tag "subscription_included_venue_groups_#{key}", venues.first.group %>
+          <% id = location.id %>
+          <%= check_box_tag "subscription[included_location_ids][#{id}]", id,
+                            included_ids.include?(id),
+                            :name => "subscription[included_location_ids][]" %>
+          <%= label_tag "subscription_included_location_ids_#{id}", location.name %>
         </div>
       <% end -%>
       </li>

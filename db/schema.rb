@@ -128,15 +128,15 @@ ActiveRecord::Schema.define(:version => 20120113031549) do
   add_index "screenings", ["film_id"], :name => "index_screenings_on_film_id"
 
   create_table "subscriptions", :force => true do |t|
-    t.integer  "festival_id",                                      :null => false
-    t.integer  "user_id",                                          :null => false
-    t.boolean  "admin",                         :default => false
+    t.integer  "festival_id",                                            :null => false
+    t.integer  "user_id",                                                :null => false
+    t.boolean  "admin",                               :default => false
     t.boolean  "show_press"
     t.text     "restrictions"
-    t.string   "key",             :limit => 10
+    t.string   "key",                   :limit => 10
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.text     "excluded_venues"
+    t.string   "excluded_location_ids"
   end
 
   add_index "subscriptions", ["festival_id", "user_id"], :name => "index_subscriptions_on_festival_id_and_user_id"
