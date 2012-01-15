@@ -41,10 +41,12 @@
     or <%= link_to "log in", login_url %> if you already have an account
   </div>
 
+  <% if @announcements.any? %>
   <div id="announcements">
     <hr/>
     <%= render :partial => "announcements/announcement", :collection => @announcements %>
     <%= link_to "More news...", announcements_path %>
   </div>
+  <% end %>
 </div>
 <% end %><%# cache by festivals %>
