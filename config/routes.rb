@@ -15,10 +15,10 @@ ActionController::Routing::Routes.draw do |map|
     festival.priorities '/priorities', :controller => :picks, :action => :index
     festival.resource :assistant, :controller => 'subscriptions',
       :only => [:show, :update]
-    festival.user '/:other_user_id/:key.:format', :controller => 'festivals', :action => 'show', :method => :get
     festival.resources :films
     festival.resources :locations
     festival.resources :venues
+    festival.user '/:other_user_id/:key.:format', :controller => 'festivals', :action => 'show', :method => :get
   end
   map.resources :films, :controller => 'films', :only => [] do |film|
     film.resources :screenings

@@ -5,7 +5,9 @@
   <% div_for(venue) do %>
     <span class="name"><%= venue.name %></span>
     <span class="abbrev">("<%= venue.abbrev %>")</span>
-    <%= link_to "Edit", festival_path(@festival) %>
-    <%= link_to "Delete", festival_path(@festival) %>
-  <% end %>
+    <%= link_to "Edit", edit_venue_path(venue) %>
+    <%= link_to "Delete", venue_path(venue),
+                :method => :delete,
+                :confirm => "Are you sure you want to destroy this venue, its screenings, user picks, etc.?" %>
+<% end %>
 </li>

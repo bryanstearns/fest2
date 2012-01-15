@@ -4,6 +4,7 @@ class User < ActiveRecord::Base
   has_many :subscriptions, :dependent => :destroy
   has_many :festivals, :through => :subscriptions
   has_many :activity
+  has_many :buzz, :dependent => :destroy
 
   BLOCKED_EMAIL_PATTERN = /\@.*(tom.com)$/
 

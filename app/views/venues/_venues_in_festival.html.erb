@@ -4,5 +4,4 @@
 	<%= render :partial => "venues/venue_in_festival",
              :collection => venues.sort_by(&:name),
              :locals => { :festival => festival } %>
-  <li><%= link_to "Add Venue", new_location_venue_path(festival) %></li>
 </ul>

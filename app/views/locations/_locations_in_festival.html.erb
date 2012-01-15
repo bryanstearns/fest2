@@ -9,8 +9,6 @@
                :collection => locations.sort_by(&:name),
                :locals => { :festival => festival } %>
 
-    <li>
-      <%= link_to "Add a location", new_festival_location_path(festival) %>
-    </li>
   </ul>
+  <%= link_to "Add a location", new_festival_location_path(festival) %>
 <% end %>

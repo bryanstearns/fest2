@@ -1,0 +1,17 @@
+<%# The location-editing form in /festivals/x/location/{edit,new}.html.erb -%>
+<% location ||= form -%>
+<div id="location_form" class="form">
+  <%= error_messages_for :location %>
+  <% form_for [festival, location] do |f| %>
+    <table>
+      <tr>
+        <th rowspan="2"><%= location.new_record? ? "New" : "Edit" %> location name:</th>
+        <th>Name</th>
+      </tr>
+      <tr>
+        <td><%= f.text_field :name, :size => 30 %></td>
+        <td><%= f.submit %></td>
+      </tr>
+    </table>
+  <% end %>
+</div>

@@ -5,6 +5,7 @@ class Film < CachedModel
   has_many :public_screenings, :class_name => 'Screening',
            :conditions => ['press = ?', false]
   has_many :picks, :dependent => :destroy
+  has_many :buzz, :dependent => :destroy
 
   after_save :propagate_duration_change
 

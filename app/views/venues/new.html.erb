@@ -1,0 +1,12 @@
+<%# New venue on a location: /locations/1/venues/new -%>
+<% content_for :title do %>Add a venue within <%= h @location.name %><% end %>
+
+<%= render :partial => "festivals/edit_header",
+           :locals => { :festival => @festival } %>
+
+<h3><%= yield :title %></h3>
+
+<%= render :partial => "venues/form",
+           :object => @venue,
+           :locals => { :festival => @festival, :location => @location } %>
+
