@@ -60,6 +60,11 @@ class FestivalsController < ApplicationController
     
     respond_to do |format|
       format.html do
+        if params[:debug]
+          @sched_debug = AutoScheduler.new(current_user, @festival)
+          @sched_debug.resort
+          FestivalsHelper::ViewingInfo.sched_debug = @sched_debug
+        end
         @screening_javascript = screening_settings_to_js(@displaying_user)
         # show.html.erb
       end

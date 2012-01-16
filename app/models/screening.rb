@@ -63,7 +63,11 @@ class Screening < CachedModel
     result = Pick.conflicting(self, user.id)
     result
   end
-  
+
+  def priority_for(user)
+    film.picks.find_by_user_id(user.id).try(:priority)
+  end
+
   def set_state(user, state)
     # :pick or :unpick this screening for this user.
     # If we're picking, unpick any conflicting screenings
@@ -84,7 +88,7 @@ class Screening < CachedModel
       end
 
       # Note that the old picked screening changed (if any)
-      changed_screenings << pick.screening unless pick.screening.nil?
+      changed_screenings << pick.screening if pick.picked?
 
       # Pick this screening
       pick.screening = self

@@ -10,7 +10,7 @@
       Here's the festival schedule; if you log in, you'll be able to click on
       the grid to schedule screenings.
     </p>
-  <% elsif params[:debug] %>
+  <% elsif @sched_debug %>
     <%= render :partial => "debug_panel" %>
   <% else %>
     <%= render :partial => "instructions" %>

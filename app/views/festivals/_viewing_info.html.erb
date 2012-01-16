@@ -3,6 +3,7 @@
      class="screening unranked"
      style="height: <%= viewing_info.height %>px; margin-top: <%= viewing_info.space_before %>px"
      data-film_id="<%= viewing_info.film.id %>">
+  <a name="s<%= viewing_info.screening.id %>"></a>
   <span class="priority"></span>
   <h3><%= viewing_info.film_name %></h3>
   <div class="screeningtime">

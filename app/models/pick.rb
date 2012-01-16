@@ -18,6 +18,10 @@ class Pick < ActiveRecord::Base
     }
   }
 
+  def picked?
+    screening_id.present?
+  end
+
   def inspect
     festival_name = festival.slug rescue "nil"
     film_name = film.name rescue "nil"

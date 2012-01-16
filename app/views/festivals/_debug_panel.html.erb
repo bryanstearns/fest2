@@ -1,28 +1,35 @@
-<h3>Next screening to pick:</h3>
-<% sched = AutoScheduler.new(current_user, @festival)
-   sched.resort %>
-
+<h4>Next screening to pick:</h4>
 <div id="debugpanel">
-  <% if sched.prioritized_available_screenings.empty? %>
+  <% if @sched_debug.prioritized_available_screenings.empty? %>
     Nothing to pick.
   <% else %>
-    <% sched.prioritized_available_screenings[0..2].each_with_index do |(cost, screening, pick, conflicts), i| %>
-      <div>
+    <% @sched_debug.prioritized_available_screenings[0..2].each_with_index do |(cost, screening, pick, conflicts), i| %>
       <% if screening %>
-      <%= screening_label(screening, nil, :with_film) %>, cost <%= cost %>, versus:<ul>
-        <% conflicts.each do |conflict_screening| -%>
-        <li>
-          <%= screening_label(conflict_screening, nil, :with_film) %>,
-            cost <%= sched.screening_costs[conflict_screening].inspect %>
-        </li>
-        <% end -%>
-      </ul>
-      <%= button_to("Pick and continue",
-                    pick_screening_festival_path(@festival, :screening_id => screening.id,
-                                                 :state => 'picked', :debug => "1"),
-                    :method => :post) if i == 0 %>
+        <div>
+          <%= button_to("Pick and continue",
+                        pick_screening_festival_path(@festival, :screening_id => screening.id,
+                                                     :state => 'picked', :debug => "1"),
+                        :method => :post) if i == 0 %>
+          <a href="#s<%= screening.id %>"><%= screening_label(screening, nil, :with_film) %></a>,
+          priority <%= screening.priority_for(current_user).inspect %>,
+          cost <%= cost %>,
+          <%= @sched_debug.film_to_remaining_screenings[screening.film].count %> left,
+          <% if conflicts.empty? %>
+            no conflicts.
+          <% else %>
+            conflicts with:<ul>
+            <% conflicts.each do |conflict_screening| -%>
+              <li>
+                <%= screening_label(conflict_screening, nil, :with_film) %>,
+                  priority <%= conflict_screening.priority_for(current_user).inspect %>,
+                  cost <%= @sched_debug.screening_costs[conflict_screening].inspect %>,
+                  <%= @sched_debug.film_to_remaining_screenings[conflict_screening.film].count %> left
+              </li>
+            <% end -%>
+            </ul>
+          <% end -%>
+        </div>
       <% end %>
-      </div>
     <% end %>
   <% end %>
 </div>

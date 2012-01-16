@@ -6,7 +6,7 @@ namespace :db do
        "local development database"
   task :fetch do
     puts "Retrieving production data"
-    `ssh selfamusementpark.com -p3386 "mysqldump -ufest -pfest --opt --skip-extended-insert fest_production" > production.sql`
+    `ssh selfamusementpark.com -p3386 "mysqldump -ufest -pfest fest_production" > production.sql`
     load_data
   end
   

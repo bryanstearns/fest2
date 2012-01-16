@@ -5,7 +5,7 @@ module FestivalsHelper
     attr_reader :screening, :film, :space_before, :height, 
                 :other_screenings, :screening_index, :screening_count
 
-    cattr_accessor :show_ids
+    cattr_accessor :show_ids, :sched_debug
     self.show_ids = Rails.env.development?
     
     def initialize(screening, space_before, height, show_press)
@@ -28,7 +28,12 @@ module FestivalsHelper
 
     def film_name
       name = film.name
-      name = "[#{film.id}] #{name}" if self.show_ids
+      name = "[f#{film.id}, s#{screening.id}] #{name}" if self.show_ids
+      if self.sched_debug
+        cost = self.sched_debug.screening_costs[screening]
+        cost = cost ? '%.3f' % cost : 'nil'
+        name = "{#{cost}} #{name}"
+      end
       name
     end
 
