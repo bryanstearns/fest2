@@ -75,7 +75,13 @@ class ApplicationController < ActionController::Base
   def current_user_is_admin?
     current_user && current_user.admin
   end
-  
+
+  def load_festival(options={})
+    @festival = Festival.find_by_slug!(params[:festival_id], options)
+    check_festival_access
+    true
+  end
+
   def check_festival_access
     # Called by unprivileged operations: does nothing on public festivals, but
     # raises if the festival isn't public and the user doesn't have access.    

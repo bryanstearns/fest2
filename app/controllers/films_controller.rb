@@ -78,10 +78,4 @@ class FilmsController < ApplicationController
       format.xml  { head :ok }
     end
   end
-
-protected
-  def load_festival
-    @festival = Festival.find_by_slug!(params[:festival_id])
-    check_festival_access
-  end
 end

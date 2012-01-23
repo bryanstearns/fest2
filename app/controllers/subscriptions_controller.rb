@@ -1,6 +1,6 @@
 class SubscriptionsController < ApplicationController
   before_filter :login_required, :except => [ :show ]
-  before_filter :load_festival
+  before_filter :load_festival_with_screenings
 
   # GET /festivals/1/settings
   def show
@@ -52,8 +52,7 @@ class SubscriptionsController < ApplicationController
   end
 
 protected
-  def load_festival
-    @festival = Festival.find_by_slug!(params[:festival_id], :include => :screenings)
-    check_festival_access
+  def load_festival_with_screenings
+    load_festival(:include => :screenings)
   end
 end
