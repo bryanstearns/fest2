@@ -88,6 +88,15 @@ class Numeric
     name = name.pluralize if self != 1
     "#{self.in_words} #{name}"
   end
+
+  def to_duration
+    # Format a duration (in seconds) meaningfully: "0.100ms", "3s", "4.05m"
+    return sprintf("%0.3gd", self / 1.0.day) if self > 2.days
+    return sprintf("%0.3gh", self / 1.0.hour) if self > 2.hours
+    return sprintf("%0.3gm", self / 1.0.minute) if self > 2.minutes
+    return sprintf("%0.3gms", self * 1000.0) if self < 0.1.seconds
+    (self.truncate == self) ? "#{self}s" : sprintf("%0.3fs", self)
+  end
 end
 
 class Hash
