@@ -64,16 +64,43 @@ class ChangesFor2012 < ActiveRecord::Migration
     Venue.reset_column_information
     Subscription.reset_column_information
 
+    create_table :travel_intervals do |t|
+      t.references :festival, :location_1, :location_2, :null => false
+      t.references :user
+      t.integer :seconds_from, :seconds_to
+      t.timestamps
+    end
+    add_index :travel_interval_uniq, [:user_id, :festival_id, :location_1_id, :location_2_id],
+              :unique => true
+
+    year = Date.today.year
+    old_fest = Festival.find_by_slug("piff_#{year - 1}")
+
     say_with_time("Cloning piff 2011 -> 2012") do
-      year = Date.today.year
       number = 34 + (year - 2011)
+
+      # Load travel times into the old festival
+      ENV["FESTIVAL"] = old_fest.slug
+      ENV["CSV"] = "public/piff_travel_times.csv"
+      Rake::Task["intervals:load"].invoke
 
       # Remove the stub one
       Festival.find_by_slug("piff_#{year}").try(:destroy)
 
-      old_fest = Festival.find_by_slug("piff_#{year - 1}")
       old_fest.name = "Portland International Film Festival #{year - 1}"
       old_fest.save!
+
+      pp = old_fest.locations.create!(:name => "Pioneer Place")
+      old_fest.venues.create!(:location => pp, :name => "Pioneer Place 1", :abbrev => "PP1")
+      old_fest.venues.create!(:location => pp, :name => "Pioneer Place 2", :abbrev => "PP2")
+      wtc = old_fest.locations.create!(:name => "World Trade Center")
+      old_fest.venues.create!(:location => wtc, :name => "World Trade Center", :abbrev => "WTC")
+      lt = old_fest.locations.create!(:name => "Lake Twin")
+      old_fest.venues.create!(:location => lt, :name => "Lake Twin", :abbrev => "LT")
+      lm = old_fest.locations.create!(:name => "Lloyd Mall")
+      old_fest.venues.create!(:location => lm, :name => "Lloyd Mall 5", :abbrev => "LM5")
+      old_fest.venues.create!(:location => lm, :name => "Lloyd Mall 6", :abbrev => "LM6")
+      old_fest.reload
 
       new_fest = Festival.create!(
         :name => "Portland International Film Festival",
@@ -93,12 +120,20 @@ class ChangesFor2012 < ActiveRecord::Migration
       old_fest.locations.each do |old_location|
         location_map[old_location.id] = new_fest.locations.create!(:name => old_location.name).id
       end
+      old_fest.travel_intervals.each do |old_travel_interval|
+        new_fest.travel_intervals.create!(:location_1 => new_fest.locations.find_by_name(old_travel_interval.location_1.name),
+                                          :location_2 => new_fest.locations.find_by_name(old_travel_interval.location_2.name),
+                                          :seconds_from => old_travel_interval.seconds_from,
+                                          :seconds_to => old_travel_interval.seconds_to,
+                                          :user_id => old_travel_interval.user_id)
+      end
       old_fest.venues.each do |old_venue|
         new_fest.venues.create!(
           :name => old_venue.name,
           :abbrev => old_venue.abbrev,
           :location_id => location_map[old_venue.location_id]).id
       end
+
       old_fest.subscriptions.each do |old_subscription|
         excluded_location_ids = old_subscription.excluded_location_ids \
           ? old_subscription.excluded_location_ids.map {|id| location_map[id]} \
@@ -109,7 +144,7 @@ class ChangesFor2012 < ActiveRecord::Migration
           :show_press => old_subscription.show_press,
           :excluded_location_ids => excluded_location_ids)
       end
-    end
+    end if old_fest
   end
 
   def self.down

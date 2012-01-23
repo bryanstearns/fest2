@@ -46,13 +46,16 @@ task :fakefest => :environment do
                                 :public => true, :scheduled => true)
   puts sequelFest.inspect
 
-  # One room per day, plus one, in two venue groups
-  counts = {"Cinema" => 0, "Multiplex" => 0}
+  # One room per day, plus one, in two locations
+  location_counts = {
+    sequelFest.locations.create!(:name => 'Cinema') => 0,
+    sequelFest.locations.create!(:name => 'Multiplex') => 0,
+  }
   venues = (0 .. days+1).collect do |i|
-    group = counts.keys[i > ((days+1)/2) ? 0 : 1]
-    index = counts[group] += 1
-  	sequelFest.venues.create!(:name => "#{group} #{index}", :abbrev => "#{group[0..0]}#{index}",
-                              :group => group)
+    location = location_counts.keys[i > ((days+1)/2) ? 0 : 1]
+    index = location_counts[location] += 1
+  	sequelFest.venues.create!(:name => "#{location.name} #{index}", :abbrev => "#{location.name[0..0]}#{index}",
+                              :location => location)
   end
   puts "#{venues.size} venues created"
 

@@ -141,6 +141,17 @@ ActiveRecord::Schema.define(:version => 20120113031549) do
 
   add_index "subscriptions", ["festival_id", "user_id"], :name => "index_subscriptions_on_festival_id_and_user_id"
 
+  create_table "travel_intervals", :force => true do |t|
+    t.integer  "festival_id",   :null => false
+    t.integer  "location_1_id", :null => false
+    t.integer  "location_2_id", :null => false
+    t.integer  "user_id"
+    t.integer  "seconds_from"
+    t.integer  "seconds_to"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "users", :force => true do |t|
     t.string   "username"
     t.string   "email"

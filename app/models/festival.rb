@@ -11,7 +11,9 @@ class Festival < CachedModel
   has_many :picks # destroyed with film
   has_many :subscriptions, :dependent => :destroy
   has_many :users, :through => :subscriptions
-  
+  has_many :travel_intervals, # destroyed with location
+    :extend => TravelInterval::Extension
+
   validates_presence_of :name, :slug, :slug_group, :starts, :ends
   validates_uniqueness_of :name, :slug
   validates_each [:ends] do |record, attrib, value|
@@ -141,5 +143,9 @@ class Festival < CachedModel
   def save_slug_group
     self.slug_group = slug.split('_').first \
       if slug && (slug_changed? or slug_group.nil?)
+  end
+
+  def travel_interval_for(from_location, to_location)
+    travel_intervals.between(from_location, to_location)
   end
 end
