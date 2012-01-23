@@ -49,6 +49,7 @@ Rails::Initializer.run do |config|
   config.gem 'haml', :version => "3.0.24"
   config.gem "compass", :version => "0.10.5"
   config.gem "fancy-buttons", :version => "0.5.5"
+  config.gem 'fastercsv', :version => '=1.5.3'
 
   # Test stuff: here so that "rake gems:install" will install them
   config.gem 'rspec', :version => '1.3.1', :lib => false
