@@ -4,7 +4,9 @@ class Screening < CachedModel
   belongs_to :film
   belongs_to :festival
   belongs_to :venue
-  
+
+  delegate :location, :to => :venue
+
   has_many :picks, :dependent => :nullify
 
   before_destroy :notify_users
@@ -50,11 +52,20 @@ class Screening < CachedModel
     "#{starts.date.to_s(:day_month_date)}, #{times}"
   end
 
-  def conflicts_with(other)
+  def conflicts_with(other, user)
+    # test a couple of easy things
     return false unless festival_id == other.festival_id
-    minimum_start_break = minimum_end_break = 12.minutes
-    return (((starts - other.ends) < minimum_start_break) and \
-            ((ends - other.starts) > -minimum_end_break))
+    minimum_overlap = 5.minutes
+
+    return true if (((starts - other.ends) < minimum_overlap) and \
+                    ((ends - other.starts) > -minimum_overlap))
+
+    # they don't directly overlap; consider travel time. Which is first?
+    if starts < other.starts # we go from this to the other
+      (other.starts - ends) < festival.travel_interval_for(location, other.location, user)
+    else # we go from there to here
+      (starts - other.ends) < festival.travel_interval_for(other.location, location, user)
+    end
   end
   
   def conflicting_picks(user)

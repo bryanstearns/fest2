@@ -19,7 +19,10 @@ end
 
 describe "Screening with fixtures loaded" do 
   fixtures :users, :films, :venues, :screenings, :picks, :festivals
-  
+  before do
+    @user = users(:quentin)
+  end
+
   it "should return properly formatted times" do
     screenings(:early_one).times.should == "9:45 - 11:45 am" # same half of the day
     screenings(:early_two).times.should == "10:00 am - noon" # test "noon" case
@@ -28,8 +31,8 @@ describe "Screening with fixtures loaded" do
   end
   
   it "should detect individual conflicts properly" do
-    screenings(:early_one).conflicts_with(screenings(:late_two)).should == false
-    screenings(:early_two).conflicts_with(screenings(:early_three)).should == true
+    screenings(:early_one).conflicts_with(screenings(:late_two), @user).should == false
+    screenings(:early_two).conflicts_with(screenings(:early_three), @user).should == true
   end
   
   it "should gather conflicts properly" do

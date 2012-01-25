@@ -11,14 +11,14 @@ class TravelInterval < ActiveRecord::Base
 
   module Extension
     class IntervalCache
-      def initialize(festival, user_id)
-        @user_id = user_id
+      def initialize(festival, user)
+        @user = user
 
         @cache = Hash.new do |hf, fk|
           hf[fk] = {}
         end
 
-        conditions = user_id ? ['user_id is null or user_id = ?', user_id] : 'user_id is null'
+        conditions = user ? ['user_id is null or user_id = ?', user.id] : 'user_id is null'
         festival.travel_intervals.all(:conditions => conditions, :order => :user_id).inject(@cache) do |h, interval|
           h[interval.location_1_id][interval.location_2_id] = interval.seconds_from
           h[interval.location_2_id][interval.location_1_id] = interval.seconds_to
@@ -38,16 +38,17 @@ class TravelInterval < ActiveRecord::Base
       @interval_cache = nil
     end
 
-    def between(from_location, to_location)
-      interval_cache.between(from_location, to_location)
+    def between(from_location, to_location, user)
+      interval_cache(user).between(from_location, to_location)
     end
 
-    def interval_cache
-      @interval_cache ||= make_cache(ActiveRecord::Base.current_user.try(:id))
+    def interval_cache(user)
+      @interval_cache ||= {}
+      @interval_cache[user] ||= make_cache(user)
     end
 
-    def make_cache(user_id)
-      IntervalCache.new(proxy_owner, user_id)
+    def make_cache(user)
+      IntervalCache.new(proxy_owner, user)
     end
   end
 

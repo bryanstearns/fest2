@@ -145,7 +145,7 @@ class Festival < CachedModel
       if slug && (slug_changed? or slug_group.nil?)
   end
 
-  def travel_interval_for(from_location, to_location)
-    travel_intervals.between(from_location, to_location)
+  def travel_interval_for(from_location, to_location, user)
+    travel_intervals.between(from_location, to_location, user)
   end
 end

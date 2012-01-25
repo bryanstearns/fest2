@@ -70,7 +70,7 @@ module AutoScheduler::Initialization
 
   def collect_screening_conflicts
     @screening_conflicts = @all_screenings.inject(Hash.new {|h,k| h[k] = []}) do |h, s|
-      h[s] = @all_screenings.select { |sx| s != sx and s.conflicts_with(sx) }
+      h[s] = @all_screenings.select { |sx| s != sx and s.conflicts_with(sx, @user) }
       h
     end
   end
