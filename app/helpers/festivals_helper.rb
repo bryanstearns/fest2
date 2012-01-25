@@ -108,11 +108,10 @@ module FestivalsHelper
     end
   end
   
-  def days(festival, show_press)
+  def days(festival, show_press, first_date=nil)
     # Collect & return info about each day's screenings
-    today = Date.today
     days = DayInfo.collect(festival, show_press).sort_by do |d|
-      d.date # don't sort past days to end; was: d.date + (d.date < today ? 60.days : 0)
+      first_date ? d.date + (d.date < first_date ? 60.days : 0) : d.date
     end
     
     # Insert page breaks

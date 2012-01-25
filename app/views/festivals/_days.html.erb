@@ -1,6 +1,7 @@
 <div id="days" class="days" data-festival_slug="<%= @festival.slug %>">
+  <% first_date = @sched_debug.prioritized_available_screenings[0][1].starts.to_date rescue nil %>
   <%= render :partial => "day",
-             :collection => days(@festival, @show_press) %>
+             :collection => days(@festival, @show_press, first_date) %>
 </div>
 <%= content_tag(:div, content_tag(:span, festival_revision_info(@festival)),
                 :class => "revised") %>
