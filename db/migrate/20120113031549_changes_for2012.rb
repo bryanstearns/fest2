@@ -99,8 +99,7 @@ class ChangesFor2012 < ActiveRecord::Migration
       old_fest.save!
 
       pp = old_fest.locations.create!(:name => "Pioneer Place")
-      old_fest.venues.create!(:location => pp, :name => "Pioneer Place 1", :abbrev => "PP1")
-      old_fest.venues.create!(:location => pp, :name => "Pioneer Place 2", :abbrev => "PP2")
+      old_fest.venues.create!(:location => pp, :name => "Pioneer Place 5", :abbrev => "PP5")
       wtc = old_fest.locations.create!(:name => "World Trade Center")
       old_fest.venues.create!(:location => wtc, :name => "World Trade Center", :abbrev => "WTC")
       lt = old_fest.locations.create!(:name => "Lake Twin")
@@ -124,27 +123,34 @@ class ChangesFor2012 < ActiveRecord::Migration
         :slug_group => "piff",
         :updates_url => nil)
 
+      locations_2012 = ["Cinema 21", "Cinemagic", "Lake Twin", "Newmark Theatre", "Lloyd Mall", "Pioneer Place",
+                        "Whitsell Auditorium", "World Trade Center"]
       location_map = {}
-      old_fest.locations.each do |old_location|
+      old_fest.locations.find_all_by_name(locations_2012).each do |old_location|
         location_map[old_location.id] = new_fest.locations.create!(:name => old_location.name).id
       end
       old_fest.travel_intervals.each do |old_travel_interval|
-        new_fest.travel_intervals.create!(:location_1 => new_fest.locations.find_by_name(old_travel_interval.location_1.name),
-                                          :location_2 => new_fest.locations.find_by_name(old_travel_interval.location_2.name),
-                                          :seconds_from => old_travel_interval.seconds_from,
-                                          :seconds_to => old_travel_interval.seconds_to,
-                                          :user_id => old_travel_interval.user_id)
+        if location_map.has_key?(old_travel_interval.location_1_id) and \
+           location_map.has_key?(old_travel_interval.location_2_id)
+          new_fest.travel_intervals.create!(:location_1 => new_fest.locations.find_by_name(old_travel_interval.location_1.name),
+                                            :location_2 => new_fest.locations.find_by_name(old_travel_interval.location_2.name),
+                                            :seconds_from => old_travel_interval.seconds_from,
+                                            :seconds_to => old_travel_interval.seconds_to,
+                                            :user_id => old_travel_interval.user_id)
+        end
       end
       old_fest.venues.each do |old_venue|
-        new_fest.venues.create!(
-          :name => old_venue.name,
-          :abbrev => old_venue.abbrev,
-          :location_id => location_map[old_venue.location_id]).id
+        if location_map[old_venue.location_id]
+          new_fest.venues.create!(
+            :name => old_venue.name,
+            :abbrev => old_venue.abbrev,
+            :location_id => location_map[old_venue.location_id])
+        end
       end
 
       old_fest.subscriptions.each do |old_subscription|
         excluded_location_ids = old_subscription.excluded_location_ids \
-          ? old_subscription.excluded_location_ids.map {|id| location_map[id]} \
+          ? old_subscription.excluded_location_ids.map {|id| location_map[id]}.compact \
           : nil
         new_fest.subscriptions.create!(
           :user_id => old_subscription.user_id,
