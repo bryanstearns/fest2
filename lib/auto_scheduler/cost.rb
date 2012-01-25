@@ -32,7 +32,7 @@ module AutoScheduler::Cost
       return nil
     end
     cost = conflict_costs.sum
-    cost = -1000 if cost == 0
+    cost = -(1000 - (10 * conflict_costs.count)) if cost == 0
     if pick and !pick.picked?
       cost -= (pick.priority || 0) / @film_to_remaining_screenings[film].count.to_f
     end
