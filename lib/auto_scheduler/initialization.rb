@@ -1,11 +1,17 @@
 module AutoScheduler::Initialization
-  def initialize(user, festival, unselect_option = "none")
+
+  attr_accessor :all_screenings, :all_picks, :film_to_pick, :film_to_priority, :film_to_remaining_screenings,
+                :pick_to_screenings, :prioritized_available_screenings, :scheduled_count,
+                :screening_conflicts, :screening_costs, :screening_to_pick, :screenings_by_id
+
+  def initialize(user, festival, options={})
     @user = user
     @festival = festival
+    @options = options
     @scheduled_count = 0 # Haven't done anything yet.
 
-    maybe_fake_time
-    unselect_screenings(unselect_option)
+    maybe_fake_time(options[:now] || ENV["FAKE_TIME"])
+    unselect_screenings(options[:unselect] || "none")
     collect_user_visible_screenings
     collect_user_picks_and_films
     count_picks
@@ -13,7 +19,7 @@ module AutoScheduler::Initialization
     collect_screening_conflicts
     collect_pickable_screenings
     collect_remaining_screenings_by_film
-    collect_screening_costs
+    collect_screenings_by_cost
 
     # Make our to-do list: the prioritized picks without screenings selected,
     # for films that have remaining screenings
@@ -22,13 +28,9 @@ module AutoScheduler::Initialization
     #end
   end
 
-  def maybe_fake_time
+  def maybe_fake_time(fake_time)
     # Pretend it's before the sample festival?
-    @now = if Rails.env.development? && ENV["FAKE_TIME"]
-             Time.zone.parse(ENV["FAKE_TIME"])
-           else
-             Time.zone.now # - (Time.zone.now.year - 1996).years
-           end
+    @now = fake_time ? Time.zone.parse(fake_time) : Time.zone.now
   end
 
   def unselect_screenings(unselect_option)
@@ -88,14 +90,6 @@ module AutoScheduler::Initialization
     # Figure out what screenings remain available for each film
     @film_to_remaining_screenings = make_map_to_list(@all_screenings) do |s|
       [s.film, s] if s.starts > @now and @pickable_screenings.include?(s)
-    end
-  end
-
-  def collect_screening_costs
-    # Calculate the cost of each screening
-    @screening_costs = @all_screenings.inject({}) do |h, s|
-      h[s] = screening_cost(s)
-      h
     end
   end
 end

@@ -1,12 +1,12 @@
 require File.dirname(__FILE__) + '/../spec_helper'
 
 describe "Auto_scheduling setup" do
-  
   fixtures :festivals, :picks, :screenings, :users, :films
-  before do
+  before(:each) do
     quentin = users(:quentin)
     quentin.stub!(:can_see?).and_return(true)
-    @sched = AutoScheduler.new(quentin, festivals(:intramonth), "none")
+    @sched = AutoScheduler.new(quentin, festivals(:intramonth),
+                               :now => "1996/12/1")
     #pp @sched.all_screenings
     #pp @sched.all_picks
   end
@@ -20,11 +20,11 @@ describe "Auto_scheduling setup" do
   end
 
   it "should collect screening costs" do
+    @sched.collect_screenings_by_cost
     @sched.screening_costs.size.should == 7
     { :early_one => nil, :early_two => nil, :early_three => nil,
-      :mid_three => -3,
+      :mid_three => -1001.0,
       :late_one => nil, :late_two => nil, :late_three => nil }.each_pair do |s,c|
-      #puts "#{s.to_s} => #{c}, expected #{@sched.screening_costs[screenings(s)]}"
       @sched.screening_costs[screenings(s)].should == c
     end
   end

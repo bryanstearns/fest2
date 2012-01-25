@@ -17,7 +17,6 @@ quentin_three:
   festival: intramonth
   film: third_man
   user: quentin
-  screening: nil
   priority: 3
 
 aaron_three:

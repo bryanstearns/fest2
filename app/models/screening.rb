@@ -31,7 +31,7 @@ class Screening < CachedModel
     festival_name = festival.slug rescue "nil"
     film_name = film.name rescue "nil"
     venue_name = venue.name rescue "nil"
-    "#<Screening id: #{id}, festival: #{festival_name}, film: #{film_name}, times: #{starts.to_date} #{times}, venue: #{venue_name}, press: #{press.inspect}>"
+    "#<Screening id: #{id}, festival: #{festival_name}, film: #{film_name}, times: #{starts.to_date} #{times.gsub(/\s/, '')}, venue: #{venue_name}, press: #{press.inspect}>"
   end
   
   def times(in_parts=false)

@@ -24,7 +24,7 @@ class SubscriptionsController < ApplicationController
       if good
         # flash[:notice] = 'Settings successfully saved.'
         sched = AutoScheduler.new(current_user, @festival, 
-                                  @subscription.unselect)
+                                  :unselect => @subscription.unselect)
         begin
           scheduled_count, prioritized_count = sched.go
           notice = "#{scheduled_count} of the #{view_helper.pluralize(prioritized_count, "film")} you've prioritized #{scheduled_count == 1 ? "is" : "are"} scheduled for you."

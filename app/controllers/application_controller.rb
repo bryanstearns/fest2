@@ -10,6 +10,9 @@ end
 class AutoSchedulingError < Exception
 end
 
+class InternalAutoSchedulingError < Exception
+end
+
 class ApplicationController < ActionController::Base
   helper :all # include all helpers, all the time
   helper_method :current_user_is_admin?, :client_is?

@@ -1,5 +1,5 @@
 module AutoScheduler::Utilities
-  def logit msg
+  def logit(msg)
     puts msg
     RAILS_DEFAULT_LOGGER.info msg
     true # so we can do "logit xxx and return"
