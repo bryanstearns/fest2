@@ -31,8 +31,8 @@ describe "Screening with fixtures loaded" do
   end
   
   it "should detect individual conflicts properly" do
-    screenings(:early_one).conflicts_with(screenings(:late_two), @user).should == false
-    screenings(:early_two).conflicts_with(screenings(:early_three), @user).should == true
+    screenings(:early_one).conflicts_with?(screenings(:late_two), @user).should == false
+    screenings(:early_two).conflicts_with?(screenings(:early_three), @user).should == true
   end
   
   it "should gather conflicts properly" do

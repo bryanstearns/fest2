@@ -122,6 +122,7 @@ ActiveRecord::Schema.define(:version => 20120113031549) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.boolean  "press"
+    t.integer  "location_id"
   end
 
   add_index "screenings", ["festival_id"], :name => "index_screenings_on_festival_id"

@@ -1,21 +1,25 @@
 module AutoScheduler::Scheduling
   def go
-    while true do
+    log_it "Autoscheduling" do
+      while true do
+        log_it "Pass #{@scheduled_count}: resorting..." do
+          collect_screenings_by_cost
+        end
 
-      cost, screening, pick = @prioritized_available_screenings.shift || break
-
-      schedule(pick, screening)
-      @scheduled_count += 1
+        cost, screening, pick = @prioritized_available_screenings.shift || break
+        log_it "Pass #{@scheduled_count}: scheduling #{screening.inspect} at #{cost} for #{pick.priority rescue 'nil'}" do
+          schedule(pick, screening, cost)
+        end
+        @scheduled_count += 1
+      end
     end
 
     diagnose_problems if @scheduled_count == 0
     return (@scheduled_count + @old_picked_screening_count), @prioritized_count
   end
 
-  def schedule(pick, screening)
+  def schedule(pick, screening, cost)
     # Schedule this screening for this pick
-    logit "pass #{@scheduled_count}: scheduling #{screening.inspect} at #{cost} for #{pick.priority rescue 'nil'}"
-
     raise(InternalAutoSchedulingError, "oops: scheduling against a picked screening!") \
       if @screening_conflicts[screening].any? {|s| @screening_to_pick[s].screening rescue false }
 

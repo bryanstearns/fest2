@@ -4,8 +4,7 @@ class Screening < CachedModel
   belongs_to :film
   belongs_to :festival
   belongs_to :venue
-
-  delegate :location, :to => :venue
+  belongs_to :location
 
   has_many :picks, :dependent => :nullify
 
@@ -15,6 +14,7 @@ class Screening < CachedModel
   validates_presence_of :festival_id
   validates_presence_of :film_id
   validates_presence_of :venue_id
+  validates_presence_of :location_id
   validates_presence_of :starts
   validates_presence_of :ends
   validates_each [:ends] do |record, attrib, value|
@@ -24,6 +24,10 @@ class Screening < CachedModel
   end
   
   named_scope :with_press, lambda {|on| on ? {} : { :conditions => ['press = ?', false] } }
+
+  # When testing screenings for conflict, we'll assume no conflict if there's at least this much time
+  # between them
+  MAX_TRAVEL_TIME = 2.hours
 
   def duration
     ends - starts
@@ -52,13 +56,18 @@ class Screening < CachedModel
     "#{starts.date.to_s(:day_month_date)}, #{times}"
   end
 
-  def conflicts_with(other, user)
-    # test a couple of easy things
-    return false unless festival_id == other.festival_id
-    minimum_overlap = 5.minutes
-
-    return true if (((starts - other.ends) < minimum_overlap) and \
-                    ((ends - other.starts) > -minimum_overlap))
+  def conflicts_with?(other, user)
+    # easy tests: no conflict if any of:
+    #   - other is this screening
+    #   - other ends well before this starts
+    #   - other starts well after this ends
+    #   - same venue (can't possibly conflict)
+    #   - different festivals (a sanity check)
+    return false if (self == other) or \
+                    ((starts - other.ends) > MAX_TRAVEL_TIME) or \
+                    ((other.starts - ends) > MAX_TRAVEL_TIME) or \
+                    (venue_id == other.venue_id) or \
+                    (festival_id != other.festival_id)
 
     # they don't directly overlap; consider travel time. Which is first?
     if starts < other.starts # we go from this to the other
@@ -67,12 +76,16 @@ class Screening < CachedModel
       (starts - other.ends) < festival.travel_interval_for(other.location, location, user)
     end
   end
+
+  def conflicts(user, all_screenings_by_day=nil)
+    all_screenings_by_day ||= festival.screenings.all.group_by{|s| s.starts.to_date}
+    all_screenings_by_day[starts.to_date].select {|other| conflicts_with?(other, user) }
+  end
   
-  def conflicting_picks(user)
+  def conflicting_picks(user, all_screenings_by_day=nil)
     # Find this user's picks for screenings that conflict with this one
-    # (the resulting list will include this one too).
-    result = Pick.conflicting(self, user.id)
-    result
+    user.picks.all(:conditions => { :screening_id => conflicts(user, all_screenings_by_day).map {|s| s.id } },
+                   :include => [:screening, :film])
   end
 
   def priority_for(user)
@@ -92,7 +105,7 @@ class Screening < CachedModel
 
     if state == :picked # we're picking
       # Unpick conflicting screenings
-      conflicting_picks(user).reject {|p| p.id == pick.id }.each do |p|
+      conflicting_picks(user).each do |p|
         p.film.screenings.each { |s| changed_screenings << s }
         p.screening = nil
         p.save!
@@ -122,10 +135,11 @@ class Screening < CachedModel
     users = picks.map{|p| p.user }.select{|u| !u.mail_opt_out }
     Mailer.deliver_schedule_changed(self, users) unless users.empty?
   end
-  
+
 protected
   def check_foreign_keys
     self.festival_id = film.festival_id if festival_id.nil? and not film.nil?
+    self.location_id = venue.location_id if location_id.nil? and not venue.nil?
   end
   
   def check_duration

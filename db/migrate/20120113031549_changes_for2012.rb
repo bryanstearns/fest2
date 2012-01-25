@@ -42,6 +42,14 @@ class ChangesFor2012 < ActiveRecord::Migration
       end
     end
 
+    add_column :screenings, :location_id, :integer
+    say_with_time("copying venues' location_id to screenings") do
+      Screening.reset_column_information
+      Venue.find_each do |venue|
+        Screening.update_all({ :venue_id => venue.id }, { :location_id => venue.location_id })
+      end
+    end
+
     add_column :subscriptions, :excluded_location_ids, :string
 
     say_with_time("converting subscription venue group exclusions to use location ids") do

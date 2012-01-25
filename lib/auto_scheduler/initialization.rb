@@ -10,22 +10,35 @@ module AutoScheduler::Initialization
     @options = options
     @scheduled_count = 0 # Haven't done anything yet.
 
-    maybe_fake_time(options[:now] || ENV["FAKE_TIME"])
-    unselect_screenings(options[:unselect] || "none")
-    collect_user_visible_screenings
-    collect_user_picks_and_films
-    count_picks
-    make_screening_and_film_maps
-    collect_screening_conflicts
-    collect_pickable_screenings
-    collect_remaining_screenings_by_film
-    collect_screenings_by_cost
+    log_it "AutoScheduling setup for #{user.email}" do
+      maybe_fake_time(options[:now] || ENV["FAKE_TIME"])
+      unselect_screenings(options[:unselect] || "none")
 
-    # Make our to-do list: the prioritized picks without screenings selected,
-    # for films that have remaining screenings
-    #@prioritized_unselected_picks = @all_picks.select do |p|
-    #  p.screening.nil? and (p.priority || 0) > 0 and @film_to_remaining_screenings[p.film]
-    #end
+      log_it "Collecting user visible screenings" do
+        collect_user_visible_screenings
+      end
+      log_it "Caching travel times" do
+        collect_travel_times
+      end
+      log_it "Collecting user picks and films" do
+        collect_user_picks_and_films
+      end
+      log_it "Counting picks" do
+        count_picks
+      end
+      log_it "Making maps" do
+        make_screening_and_film_maps
+      end
+      log_it "Collecting conflicts" do
+        collect_screening_conflicts
+      end
+      log_it "Collecting pickable screenings" do
+        collect_pickable_screenings
+      end
+      log_it "Collecting remaining screenings by film" do
+        collect_remaining_screenings_by_film
+      end
+    end
   end
 
   def maybe_fake_time(fake_time)
@@ -35,12 +48,18 @@ module AutoScheduler::Initialization
 
   def unselect_screenings(unselect_option)
     # Unselect any screenings that need unselecting
-    @festival.reset_screenings(@user, unselect_option == "future") \
-      unless unselect_option == "none"
+    return if unselect_option == "none"
+    log_it "Unselecting screenings: #{unselect_option}" do
+      @festival.reset_screenings(@user, unselect_option == "future")
+    end
   end
 
   def collect_user_visible_screenings
     @all_screenings = @festival.screenings.select {|s| @user.can_see?(s) }
+  end
+
+  def collect_travel_times
+    @festival.travel_intervals.interval_cache(@user)
   end
 
   def collect_user_picks_and_films
@@ -66,11 +85,13 @@ module AutoScheduler::Initialization
     @screenings_by_id = make_map(@all_screenings) {|s| [s.id, s] }
     @film_to_pick = make_map(@all_picks) {|p| [p.film, p] }
     @screening_to_pick = make_map(@all_picks) {|p| [p.screening, p] }
+    @all_screenings_by_date = @all_screenings.group_by {|s| s.starts.to_date }
   end
 
   def collect_screening_conflicts
     @screening_conflicts = @all_screenings.inject(Hash.new {|h,k| h[k] = []}) do |h, s|
-      h[s] = @all_screenings.select { |sx| s != sx and s.conflicts_with(sx, @user) }
+      #h[s] = s.conflicts(@user, @all_screenings_by_date)
+      h[s] = @all_screenings.select { |sx| s != sx and s.conflicts_with?(sx, @user) }
       h
     end
   end
