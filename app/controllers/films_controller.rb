@@ -2,7 +2,12 @@ class FilmsController < ApplicationController
   before_filter :require_admin_subscription
 
   # before_filter :disallow_html_edits, :except => [ :show ]
-  before_filter :load_festival
+  before_filter :load_festival, :except => [ :index ]
+  before_filter :load_festival_venues_films_screenings, :only => [ :index ]
+
+  # GET /festivals/1/films
+  def index
+  end
 
   # GET /festivals/1/films/1
   # GET /festivals/1/films/1.xml
@@ -77,5 +82,12 @@ class FilmsController < ApplicationController
       format.js # destroy.rjs
       format.xml  { head :ok }
     end
+  end
+
+protected
+  def load_festival_venues_films_screenings
+    load_festival(:include => [:venues, { :films => :screenings }])
+    @films = @festival.films
+    @venues = @festival.venues
   end
 end
