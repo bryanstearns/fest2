@@ -51,6 +51,9 @@ Rails::Initializer.run do |config|
   config.gem "fancy-buttons", :version => "0.5.5"
   config.gem 'fastercsv', :version => '=1.5.3'
 
+  config.gem 'capistrano', :version => '=2.5.19', :lib => false
+  config.gem 'capistrano-ext', :version => '=1.2.1', :lib => false
+
   # Test stuff: here so that "rake gems:install" will install them
   config.gem 'rspec', :version => '1.3.1', :lib => false
   config.gem 'rspec-rails', :version => '1.3.3', :lib => false
