@@ -129,16 +129,6 @@ class ChangesFor2012 < ActiveRecord::Migration
       old_fest.locations.find_all_by_name(locations_2012).each do |old_location|
         location_map[old_location.id] = new_fest.locations.create!(:name => old_location.name).id
       end
-      old_fest.travel_intervals.each do |old_travel_interval|
-        if location_map.has_key?(old_travel_interval.location_1_id) and \
-           location_map.has_key?(old_travel_interval.location_2_id)
-          new_fest.travel_intervals.create!(:location_1 => new_fest.locations.find_by_name(old_travel_interval.location_1.name),
-                                            :location_2 => new_fest.locations.find_by_name(old_travel_interval.location_2.name),
-                                            :seconds_from => old_travel_interval.seconds_from,
-                                            :seconds_to => old_travel_interval.seconds_to,
-                                            :user_id => old_travel_interval.user_id)
-        end
-      end
       old_fest.venues.each do |old_venue|
         if location_map[old_venue.location_id]
           new_fest.venues.create!(
@@ -147,6 +137,12 @@ class ChangesFor2012 < ActiveRecord::Migration
             :location_id => location_map[old_venue.location_id])
         end
       end
+
+      # Load travel times into the new festival
+      ENV["FESTIVAL"] = new_fest.slug
+      ENV["CSV"] = "public/piff_travel_times.csv"
+      Rake::Task["intervals:load"].reenable
+      Rake::Task["intervals:load"].invoke
 
       old_fest.subscriptions.each do |old_subscription|
         excluded_location_ids = old_subscription.excluded_location_ids \
