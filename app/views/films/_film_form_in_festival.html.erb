@@ -8,13 +8,17 @@
   	  <th rowspan="2"><%= film.new_record? ? "New" : "Edit" %> Film:</th>
   		<th>Film</th>
   		<th>Minutes</th>
+      <% if festival.film_url_format.present? -%>
   		<th>Link</th>
+      <% end -%>
   		<th>Countries</th>
   	</tr>
 		<tr>
 		  <td><%= f.text_field :name, :size => 45 %></td>
 		  <td><%= f.text_field :minutes, :size => 8 %></td>
+      <% if festival.film_url_format.present? -%>
       <td><%= f.text_field :url_fragment, :size => 12 %></td>
+      <% end -%>
 		  <td>
 		    <%= f.text_field :country_names, :size => 8, :autocomplete => "off" %>
         <div class="film_country_names_auto_complete" id="country_list" style="display:none"></div>
