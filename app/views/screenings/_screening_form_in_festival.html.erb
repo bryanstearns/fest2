@@ -20,7 +20,7 @@
         <% end %>
       </td>
 		  <td><%= select 'screening', 'venue_id', 
-              festival.venues.collect {|v| [v.name, v.id]} %></td>
+              festival.venues.sort_by {|v| v.name }.collect {|v| [v.name, v.id]} %></td>
 		  <td><%= f.check_box :press %></td>
 			<td>
               <%# TODO: jQuery-ize this form submission %>
