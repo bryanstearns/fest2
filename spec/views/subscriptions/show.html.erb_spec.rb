@@ -5,8 +5,9 @@ describe "/subscriptions/show.html.erb" do
   
   before do
     @festival = mock_model(Festival, :name => "howdy", :dates => "dates",
-      :location => "bogusville", :locations => [], :has_press_screenings? => false)
-    @subscription = mock_model(Subscription, :show_press => false,
+      :location => "bogusville", :locations => [], :has_press_screenings? => false,
+      :has_travel_times? => true, :travel_time_filename => "foo.xls")
+    @subscription = mock_model(Subscription, :show_press => false, :use_travel_time => false,
       :restriction_text => "")
     assigns[:festival] = @festival
     assigns[:subscription] = @subscription

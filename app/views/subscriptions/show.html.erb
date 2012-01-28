@@ -52,6 +52,14 @@
       </li>
     <% end -%>
 
+    <% if @festival.has_travel_times? %>
+    <li><p><%= f.check_box :use_travel_time %>Consider travel time? (Travel time is new for 2012: we'll use
+      the travel times from <a href="<%= root_url + @festival.travel_time_filename %>">this spreadsheet</a> to make
+      sure you can get to your next screening in time. Without this, we'll pretend all the theaters are in the same
+      place and assume a flat <%= TravelInterval::DEFAULT_INTRA_INTERVAL / 60 %> minutes between screenings.)
+    </p></li>
+    <% end %>
+
     <% if @festival.has_press_screenings? %>
     <li><p><%= f.check_box :show_press %>Include the press screenings? (If this box isn't checked, we won't show them on your schedule.)</p></li>
     <% end %>

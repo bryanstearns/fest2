@@ -145,6 +145,14 @@ class Festival < CachedModel
       if slug && (slug_changed? or slug_group.nil?)
   end
 
+  def travel_time_filename
+    "#{slug_group}_travel_times.xls"
+  end
+
+  def has_travel_times?
+    travel_intervals.any? && File.exist?(Rails.root + "public/#{travel_time_filename}")
+  end
+
   def travel_interval_for(from_location, to_location, user)
     travel_intervals.between(from_location, to_location, user)
   end

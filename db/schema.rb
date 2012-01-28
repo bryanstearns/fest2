@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120113031549) do
+ActiveRecord::Schema.define(:version => 20120128195224) do
 
   create_table "activity", :force => true do |t|
     t.string   "name"
@@ -138,6 +138,7 @@ ActiveRecord::Schema.define(:version => 20120113031549) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "excluded_location_ids"
+    t.boolean  "use_travel_time",                     :default => true
   end
 
   add_index "subscriptions", ["festival_id", "user_id"], :name => "index_subscriptions_on_festival_id_and_user_id"
