@@ -10,7 +10,7 @@
     subdetails << h(activity.object.inspect) if activity.object_id
 
     details = []
-    details << activity.festival.slug if activity.festival_id
+    details << (activity.festival.slug rescue activity.festival_id) if activity.festival_id
     details << subdetails.join(' ') unless subdetails.empty?
     details << h(activity.details.inspect) if activity.details
   %>
