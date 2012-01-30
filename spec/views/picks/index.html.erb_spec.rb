@@ -66,14 +66,13 @@ describe "/picks/index.html.erb" do
     current_index.should satisfy {|i| i < future_index }
   end
 
-  it "shouldn't render picks unless logged in" do
+  it "should render picks" do
     render "/picks/index.html.erb"
-    response.should_not have_tag("img.priority")
+    response.should have_tag("input#film_1_priority")
   end
 
-  it "should render picks if logged in" do
-    template.should_receive(:logged_in?).any_number_of_times.and_return(true)
+  it "should render ratings" do
     render "/picks/index.html.erb"
-    response.should have_tag("input#film_1_pick_0")
+    response.should have_tag("input#film_1_rating")
   end
 end

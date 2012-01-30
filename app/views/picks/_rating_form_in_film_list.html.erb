@@ -1,13 +1,10 @@
+      <div id="<%= dom_id(film) %>_stars" class="stars"></div>
       <%
-      form_id = "#{dom_id(film)}_rating"
-      form_for [film, pick],
-               :url => film_picks_path(film, :format => :js),
-               :html => { :method => :post, :class => "rating",
-                          :id => form_id } do |f| %>
+         form_id = "#{dom_id(film)}_rating"
+         form_for [film, pick],
+                  :url => film_picks_path(film, :format => :js),
+                  :html => { :method => :post, :class => "rating",
+                             :id => form_id } do |f| %>
         <%= hidden_field_tag 'attribute', "rating" %>
-        <div class="large_pick stars">
-        <% ['cancel', 1, 2, 3, 4, 5].each do |p| %>
-          <%= f.radio_button :rating, p, :id => "#{form_id}_#{p}" %>
-        <% end %>
-        </div>
+        <%= f.hidden_field(:rating, :id => "#{dom_id(film)}_rating") %>
       <% end %>

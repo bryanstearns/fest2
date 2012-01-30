@@ -6,20 +6,69 @@ jQuery(function() {
   <%# Autosubmit the sort form -%>
   jQuery("#order").change(function(e) { jQuery("#sortform").submit(); });
 
-  <%# set up the Stars plugin -%>
-  var starsOptions = {
-    cancelValue: 'cancel',
-    callback: function(ui, type, value) {
+  <%# set up the Raty plugin -%>
+  function hidden_input_for(dots, attribute) {
+    var film_id = jQuery(dots).attr('id').split('_')[1];
+    return jQuery('input#film_' + film_id + '_' + attribute);
+  }
+  var ajaxParams = {
+    dataType: 'script',
+    success: function() { alert("yay!"); },
+    error: function() { window.location = "/500.html" },
+  }
+  jQuery('.dots').raty({
+    cancel: true,
+    cancelHint: 'Forget this priority',
+    number: 5,
+    hintList: [
+      "I don't want to see this; never schedule it for me",
+      "I'd see this, but only if there's room in my schedule",
+      "I'd see this",
+      "I want to see this",
+      "I *really* want to see this!"
+    ],
+    path: '/images/raty',
+    iconRange: [
+      { range: 1, on: 'face-a.png', off: 'face-a-off.png' },
+      { range: 5, on: 'face-b.png', off: 'face-b-off.png' },
+    ],
+    start: function() {
+      return {0: 1, 1: 2, 2: 3, 4: 4, 8: 5}[hidden_input_for(this, 'priority').val()];
+    },
+    click: function(score, evt) {
       <% if logged_in? -%>
-      var f = jQuery(ui.element).closest('form');
-      f.ajaxSubmit({dataType: 'script'});
+      hidden_input_for(this, 'priority').val({ 1: 0, 2: 1, 3: 2, 4: 4, 5: 8}[score])
+                                        .closest('form').ajaxSubmit({dataType: 'script'});
       <% else -%>
       alert("Log in to prioritize your films, or click the Sign Up link in the upper right corner to get started.");
       <% end -%>
     }
-  }
-  jQuery(".stars").stars(starsOptions);
-  jQuery(".dots").stars(starsOptions);
+  });
+
+  jQuery('.stars').raty({
+    cancel: true,
+    cancelHint: 'Forget this rating',
+    number: 5,
+    hintList: [
+      "0 stars: It was bad",
+      "1 star: It wasn't very good",
+      "2 stars: It was ok",
+      "3 stars: It was pretty good",
+      "4 stars: It was *really* good"
+    ],
+    path: '/images/raty',
+    start: function() {
+      return hidden_input_for(this, 'rating').val();
+    },
+    click: function(score, evt) {
+      <% if logged_in? -%>
+      hidden_input_for(this, 'rating').val(score)
+                                      .closest('form').ajaxSubmit(ajaxParams);
+      <% else -%>
+      alert("Log in to rate films, or click the Sign Up link in the upper right corner to get started.");
+      <% end -%>
+    }
+  });
 });
 <% end -%>
 
