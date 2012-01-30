@@ -124,9 +124,11 @@ module PrawnHelper
 
       @film_id_to_screening_id = {}
       @film_id_to_priority = {}
+      @film_id_to_rating = {}
       picks.each do |p| 
         @film_id_to_screening_id[p.film_id] = p.screening_id if p.screening_id
         @film_id_to_priority[p.film_id] = p.priority if p.priority
+        @film_id_to_rating[p.film_id] = p.rating if p.rating
       end
     end
 
@@ -292,13 +294,24 @@ module PrawnHelper
           end
 
           font(:small) do
-            priority = @film_id_to_priority[film.id]
-            if priority
-              pdf.image "public/images/priority/p#{priority}.png",
-                :at => [@left, @y], :height => pdf.font.height * 0.8
+            rating = @film_id_to_rating[film.id]
+            if rating
+              x = @left
+              rating.times do
+                pdf.image "public/images/priority/star.png",
+                          :at => [x, @y+1], :height => pdf.font.height
+                x += 7
+              end
               iw = image_width
             else
-              iw = 0
+              priority = @film_id_to_priority[film.id]
+              if priority
+                pdf.image "public/images/priority/p#{priority}.png",
+                  :at => [@left, @y], :height => pdf.font.height * 0.8
+                iw = image_width
+              else
+                iw = 0
+              end
             end
 
             countries = film.country_names
