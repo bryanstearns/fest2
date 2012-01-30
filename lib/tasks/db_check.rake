@@ -1,11 +1,11 @@
-require 'yaml'
-require 'erb'
-require 'ruby-debug'
-
 namespace :db do
   desc "Check integrity of the database"
 
   task :check => :environment do
+    require 'yaml'
+    require 'erb'
+    require 'ruby-debug'
+
     puts "# Loading..."
     festivals = make_map(Festival)
     films = make_map(Film)

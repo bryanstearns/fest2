@@ -60,6 +60,7 @@ Rails::Initializer.run do |config|
   config.gem 'gherkin', :version => "2.3.7", :lib => false # cucumber wants this
   config.gem 'cucumber', :version => "0.10.0", :lib => false
   config.gem 'factory_girl', :version => "1.2.3", :lib => false
+  config.gem 'ruby-debug', :lib => false
 
   # Only load the plugins named here, in the order given. By default, all plugins 
   # in vendor/plugins are loaded in alphabetical order.

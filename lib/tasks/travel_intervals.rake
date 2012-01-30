@@ -1,8 +1,7 @@
-require 'ruby-debug'
-
 namespace :intervals do
   desc "Load a festival's travel intervals from a CSV"
   task :load => :environment do
+    require 'ruby-debug'
     dry_run = ENV["DRY_RUN"]
     verbose = (ENV["VERBOSE"] || 0).to_i
     ActiveRecord::Base.transaction do

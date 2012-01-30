@@ -1,6 +1,3 @@
-require 'csv'
-require 'ruby-debug'
-
 class PIFFCSV
   def initialize(festival)
     @festival = festival
@@ -350,6 +347,9 @@ end
 
 desc "Load data from a PIFF csv"
 task :piff => :environment do
+  require 'csv'
+  require 'ruby-debug'
+
   ActiveRecord::Base.transaction do
     festival = Festival.find_by_slug("piff_2011")
     abort "Festival already has venues - aborting" \

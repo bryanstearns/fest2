@@ -1,7 +1,6 @@
-require 'ruby-debug'
-
 desc "Build my schedule (for debugging)"
 task :schedule => :environment do
+  require 'ruby-debug'
   me = User.find_by_username("Bryan Stearns")
   festival = Festival.find_by_slug!("piff_2010")
   sched = AutoScheduler.new(me, festival, :unselect => 'future')
