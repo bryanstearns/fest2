@@ -7,15 +7,20 @@
   <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
   <title>We're sorry, but something went wrong (500)</title>
 	<style type="text/css">
-		body { background-color: #fff; color: #666; text-align: center; font-family: arial, sans-serif; }
+		body { background-color: #fff; color: #666; font-family: arial, sans-serif; }
 		div.dialog {
-			width: 25em;
+      text-align: center;
+      width: 25em;
 			padding: 0 4em;
 			margin: 4em auto 0 auto;
 			border: 1px solid #ccc;
 			border-right-color: #999;
 			border-bottom-color: #999;
 		}
+    div.footnote {
+      padding-top: 20em;
+      font-size: 8pt;
+    }
 		h1 { font-size: 100%; color: #f00; line-height: 1.5em; }
 	</style>
 </head>
@@ -24,10 +29,11 @@
   <!-- This file lives in public/500.html -->
   <div class="dialog">
     <h1>We're sorry, but something went wrong.</h1>
-    <p>We've been notified about this issue and we'll take a look at it shortly.</p>
-    <p><small>(If you're the administrator of this website, then please read
-    the log file "<%=h RAILS_ENV %>.log"
-    to find out what went wrong.)</small></p>
+    <p>Bryan's been notified about the problem and he'll take a look at it shortly. *</p>
+  </div>
+
+  <div class="footnote">
+    (* As soon as he gets out of whatever movie he's in, that is.)
   </div>
 </body>
 </html>
