@@ -451,7 +451,7 @@ body.festivals_show
       float: right
 
 // The public film-list (ranking) page
-body.films_index
+body.picks_index
   th
     font-weight: normal
   td
@@ -469,11 +469,18 @@ body.films_index
     white-space: nowrap
   .name
     font-weight: bold
-  .screenings
-    ul
-      margin: 0px
-      list-style-type: none
-      padding-left: 1em
+  ul.screenings
+    margin: 0px
+    list-style-type: none
+    padding-left: 1em
+  ul.buzz
+    margin: 0px
+    list-style-type: none
+    padding-left: 1em
+    li
+      .attribution
+        font-style: italic
+        font-size: 90%
   label,input
     cursor: pointer
   label

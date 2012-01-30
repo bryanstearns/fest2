@@ -18,22 +18,6 @@
     </li>
   </ul>
 
-  <% if Festival.show_buzz %>
-    <% buzz = [] #film.buzz -%>
-    <% if buzz.empty? %>
-      <h4>
-        No buzz about this film yet...
-        <%= button_to("Add Buzz", home_path, :class => "button") if logged_in? %>
-      </h4>
-    <% else -%>
-      <h4>
-        Buzz!
-      </h4>
-      <%= render :partial => "buzz", :collection => buzz %>
-      <%= button_to("Add Buzz", home_path, :class => "button") if logged_in? %>
-  <% end -%>
-<% end -%>
-
   <% unless @other_screenings.empty? %>
   <h4>
     <% if @later_screenings.present? %>
@@ -56,7 +40,13 @@
   </ul>
   <% end %>
 
-  <% if false %><%# if logged_in? %>
+  <% if Festival.show_buzz and film.buzz.present? -%>
+    <ul class="buzz">
+    <%= render :partial => "buzz", :collection => film.buzz %>
+    </ul>
+  <% end -%>
+
+<% if false %><%# if logged_in? %>
   <ul class="controls">
     <li>Your priority:
       <%= render :partial => "picks/pick_form_in_film_list",

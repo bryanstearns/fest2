@@ -1,29 +1,31 @@
 <%# A film in the public festival list %>
-	<% content_tag_for :tr, film do %>
+  <% content_tag_for :tr, film do %>
     <td>
     <%= render :partial => "picks/pick_form_in_film_list",
                :locals => { :film => film, :pick => picks[film.id] } %>
     </td>
     <td>
-      <%= render :partial => "picks/rating_form_in_film_list",
-                 :locals => { :film => film, :pick => picks[film.id] } %>
+    <%= render :partial => "picks/rating_form_in_film_list",
+               :locals => { :film => film, :pick => picks[film.id] } %>
     </td>
     <td>
-	  <%= link_to_film film, :target => "_blank", :class => "name" %>
-	  <span class="duration">(<%= film.minutes %> minutes<%= ", #{film.country_names('/')}" unless film.countries.blank? %>)</span>
-	  <%= content_tag(:div, h(film.description), :class => "description") if film.description -%>
-	  <%
-        screenings = show_press ? film.screenings : film.public_screenings
-	    unless screenings.empty?
-          screenings = screenings.sort_by(&:starts)
-	  -%>
-	  <div class="screenings">
-	    <label><%= pluralize(screenings.size, "screening") %>:</label>
-          <ul>
-              <%= render :partial => "screenings/screening", :collection => screenings,
-                         :locals => { :pick => (logged_in? ? picks[film.id] : nil) } %>
-	    </ul>
-	  </div>
+      <%= link_to_film film, :target => "_blank", :class => "name" %>
+      <span class="duration">(<%= film.minutes %> minutes<%= ", #{film.country_names('/')}" unless film.countries.blank? %>)</span>
+      <%= content_tag(:div, h(film.description), :class => "description") if film.description -%>
+      <% screenings = show_press ? film.screenings : film.public_screenings -%>
+      <% unless screenings.empty? -%>
+        <% screenings = screenings.sort_by(&:starts) -%>
+        <ul class="screenings">
+          <%= render :partial => "screenings/screening", :collection => screenings,
+                     :locals => { :pick => (logged_in? ? picks[film.id] : nil) } %>
+        </ul>
+      <% end -%>
+
+      <% if Festival.show_buzz
+           buzz = film.buzz.select {|b| b.published_at? }.sort_by {|b| b.published_at } -%>
+        <ul class="buzz">
+          <%= render :partial => "buzz/buzz", :collection => buzz %>
+        </ul>
       <% end -%>
     </td>
-	<% end %>
+  <% end -%>

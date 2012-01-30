@@ -1,0 +1,6 @@
+<li>
+  <span class="message">“<%= h(buzz.content) %>”</span>
+  <span class="attribution">
+    &mdash; <%= buzz.user.username %>
+    (<%= buzz.updated_at.to_s(:day_month_date) %>)</span>
+</li>

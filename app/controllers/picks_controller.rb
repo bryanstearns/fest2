@@ -2,7 +2,7 @@ class PicksController < ApplicationController
   # GET /festivals/1/priorities
   # GET /festivals/1/priorities.xml
   def index
-    @festival = Festival.find_by_slug!(params[:festival_id], :include => :films)
+    @festival = Festival.find_by_slug!(params[:festival_id], :include => { :films => :buzz })
     @films = @festival.films
     user_id = logged_in? ? current_user.id : 0
     @picks = Hash.new {|h, film_id| h[film_id] = Pick.new(:user_id => user_id,
