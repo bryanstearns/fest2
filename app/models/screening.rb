@@ -8,6 +8,7 @@ class Screening < CachedModel
 
   has_many :picks, :dependent => :nullify
 
+  before_update :notify_users
   before_destroy :notify_users
 
   before_validation :check_foreign_keys, :check_duration

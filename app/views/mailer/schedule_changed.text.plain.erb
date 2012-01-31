@@ -3,10 +3,10 @@ BCC to: <%= @users.map(&:email).join(', ') %>
 
 Hi festival fanatic!
 
-Sorry, but one of your selected screenings has been cancelled:
+Sorry, but one of your selected screenings has been <%= change_type %>:
 
   <%= @screening.film.name %>
-    <%= @screening.times %>, in <%= screening.venue.name %>
+    <%= @screening.times %>, in <%= @screening.venue.name %>
 
 <% if @festival.updates_url.present? %>
 Visit the festival's schedule-updates page to see added screenings and other
@@ -16,7 +16,9 @@ changes:
 
 The schedule at Festival Fanatic has been updated; you can visit
 <%= link_to festival_path(@festival), festival_path(@festival) %> to view and
-edit your schedule; you can always return to the Schedule Assistant page and
+edit your schedule.
+
+Don't forget: you can always return to the Schedule Assistant page and
 regenerate your schedule from this point forward -- we'll keep the films
 you've already seen.
 
