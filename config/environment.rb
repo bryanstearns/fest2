@@ -50,6 +50,7 @@ Rails::Initializer.run do |config|
   config.gem "compass", :version => "0.10.5"
   config.gem "fancy-buttons", :version => "0.5.5"
   config.gem 'fastercsv', :version => '=1.5.3'
+  config.gem 'bsearch', :version => '=1.5.0'
 
   config.gem 'capistrano', :version => '=2.5.19', :lib => false
   config.gem 'capistrano-ext', :version => '=1.2.1', :lib => false
