@@ -9,6 +9,7 @@ module AutoScheduler::Initialization
     @festival = festival
     @options = options
     @scheduled_count = 0 # Haven't done anything yet.
+    @debug = options[:debug]
 
     log_it "AutoScheduling setup for #{user.email}" do
       maybe_fake_time(options[:now] || ENV["FAKE_TIME"])

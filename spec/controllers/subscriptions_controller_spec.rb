@@ -18,7 +18,7 @@ describe SubscriptionsController do
   describe "when logged in," do
     def make_subscription
       @subscription = mock(Subscription, :user_id => ordinary_user.id, 
-        :festival_id => @festival.id, :unselect => "future")
+        :festival_id => @festival.id, :unselect => "future", :debug => nil)
       controller.send(:current_user).stub!(:subscription_for)\
         .with(@festival, :create => true).and_return(@subscription)
     end

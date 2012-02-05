@@ -71,6 +71,14 @@
       ["Unselect all of them", "all"],
       ["Leave them selected; just fill in around them", "none"]]) %></li>
     <% end %>
+      
+    <% if current_user_is_admin? -%>
+    <li>Debug option?
+    <%= select("subscription", "debug", [
+      ["Run normally", "normal"],
+      ["Stop at first real conflict", "to_conflict"]]) %></li>
+    <% end -%>
+
     </ul>
   </fieldset>
 

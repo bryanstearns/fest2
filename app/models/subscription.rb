@@ -61,14 +61,19 @@ class Subscription < ActiveRecord::Base
   end
 
 
-  # A virtual attribute, set by the subscription-editing form
+  # virtual attributes, set by the subscription-editing form
   # for passing through to the autoscheduler
   def unselect
     @unselect || "future"
   end
-
   def unselect=(s)
     @unselect = s
+  end
+  def debug
+    @debug
+  end
+  def debug=(s)
+    @debug = (s == "normal") ? nil : s
   end
 
   def make_sharable_key

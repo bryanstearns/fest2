@@ -23,7 +23,7 @@ describe "Auto_scheduling setup" do
     @sched.collect_screenings_by_cost
     @sched.screening_costs.size.should == 7
     { :early_one => nil, :early_two => nil, :early_three => nil,
-      :mid_three => -1001.0,
+      :mid_three => -50.5,
       :late_one => nil, :late_two => nil, :late_three => nil }.each_pair do |s,c|
       @sched.screening_costs[screenings(s)].should == c
     end

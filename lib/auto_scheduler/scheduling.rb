@@ -7,6 +7,11 @@ module AutoScheduler::Scheduling
         end
 
         cost, screening, pick = @prioritized_available_screenings.shift || break
+        if @debug == "to_conflict" and cost > -10
+          log_it "Stopping at first conflict"
+          break
+        end
+
         log_it "Pass #{@scheduled_count}: scheduling #{screening.inspect} at #{cost} for #{pick.priority rescue 'nil'}" do
           schedule(pick, screening, cost)
         end
