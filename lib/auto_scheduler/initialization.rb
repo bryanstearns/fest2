@@ -1,8 +1,9 @@
 module AutoScheduler::Initialization
 
   attr_accessor :all_screenings, :all_picks, :film_to_pick, :film_to_priority, :film_to_remaining_screenings,
-                :pick_to_screenings, :prioritized_available_screenings, :scheduled_count,
-                :screening_conflicts, :screening_costs, :screening_to_pick, :screenings_by_id
+                :pick_to_screenings, :picked_screening_by_ends, :picked_screening_by_starts,
+                :prioritized_available_screenings, :scheduled_count, :screening_conflicts, :screening_costs,
+                :screening_to_pick, :screenings_by_id
 
   def initialize(user, festival, options={})
     @user = user
@@ -87,6 +88,13 @@ module AutoScheduler::Initialization
     @film_to_pick = make_map(@all_picks) {|p| [p.film, p] }
     @screening_to_pick = make_map(@all_picks) {|p| [p.screening, p] }
     @all_screenings_by_date = @all_screenings.group_by {|s| s.starts.to_date }
+    @picked_screening_by_ends = @picked_screening_by_starts = @all_picks.map {|p| p.screening }.compact
+    resort_picked_screening_lists
+  end
+
+  def resort_picked_screening_lists
+    @picked_screening_by_starts = @picked_screening_by_starts.sort_by {|s| s.starts }
+    @picked_screening_by_starts = @picked_screening_by_ends.sort_by {|s| s.ends }
   end
 
   def collect_screening_conflicts

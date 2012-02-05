@@ -32,6 +32,9 @@ module AutoScheduler::Scheduling
     pick.save!
 
     @screening_to_pick[screening] = pick
+    @picked_screening_by_starts << pick.screening
+    @picked_screening_by_ends << pick.screening
+    resort_picked_screening_lists
 
     def cleanup(screening)
       @screening_costs[screening] = nil
