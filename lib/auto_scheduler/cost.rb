@@ -18,29 +18,40 @@ module AutoScheduler::Cost
     end.compact.sort_by {|x| x[0] }
   end
 
-  def screening_cost(screening, verbose=false)
+  def screening_cost(screening)
+    # The full cost of picking this screening
     film = screening.film
     pick = @film_to_pick[film]
     return nil if pick.try(:picked?)
 
-    conflict_costs = @screening_conflicts[screening].map do |s|
-      puts "conflict: #{s.inspect}" if verbose
-      s == screening ? 0 : screening_conflict_cost(s, verbose)
-    end
-    if conflict_costs.include?(nil)
-      puts "cost of #{screening.inspect} is nil." if verbose
-      return nil
-    end
+    conflict_costs = screening_conflict_costs(screening)
+
+    # this screening is unpickable if any of its conflicts is picked.
+    return nil if conflict_costs.include?(nil)
+
+    # Base cost is the cost of missing out on the conflicts
+    # If the cost was 0, give it a big discount, less
+    # a bit for the number of free screenings; this makes sure
+    # standalone screenings will get picked first.
     cost = conflict_costs.sum
-    cost = -(1000 - (10 * conflict_costs.count)) if cost == 0
-    if pick and !pick.picked?
+    cost = -(10 - conflict_costs.count) if cost == 0
+
+    # Decrease the cost by the user's priority of this film
+    if pick
       cost -= (pick.priority || 0) / @film_to_remaining_screenings[film].count.to_f
     end
-    puts "cost of #{screening.inspect} is #{cost}" if verbose
     cost
   end
 
-  def screening_conflict_cost(conflicting_screening, verbose)
+
+  def screening_conflict_costs(screening)
+    # Return an array of the costs of picking screenings conflicting with this one
+    @screening_conflicts[screening].map do |conflict|
+      conflict == screening ? 0 : screening_conflict_cost(conflict)
+    end
+  end
+
+  def screening_conflict_cost(conflicting_screening)
     # The cost of picking a screening that conflicts with this one
     conflicting_film = conflicting_screening.film
     conflicting_pick = @film_to_pick[conflicting_film]
@@ -56,7 +67,6 @@ module AutoScheduler::Cost
       # number of pickable screenings remaining for it
       cost = (conflicting_pick.priority || 0) / @film_to_remaining_screenings[conflicting_film].count.to_f
     end
-    puts "conflict cost of #{conflicting_screening.inspect} is #{cost}" if verbose
     cost
   end
 end
