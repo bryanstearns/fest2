@@ -39,7 +39,7 @@ jQuery(function() {
     var instructions = jQuery("#instructions");
     var verb = instructions.css("display") != "none" ? "show" : "hide";
     jQuery("#showhide span").html(verb);
-    set_cookie("instructions", verb == "show" ? "hide" : null, "never")
+    set_cookie("instructions", verb == "show" ? "hide" : "show", "never");
     instructions.toggle('fast');
   });
 });
