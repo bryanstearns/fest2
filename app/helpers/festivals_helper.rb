@@ -29,11 +29,6 @@ module FestivalsHelper
     def film_name
       name = film.name
       name = "[f#{film.id}, s#{screening.id}] #{name}" if self.show_ids
-      if self.sched_debug
-        cost = self.sched_debug.screening_costs[screening]
-        cost = cost ? '%.3f' % cost : 'nil'
-        name = "{#{cost}} #{name}"
-      end
       name
     end
 

@@ -12,7 +12,7 @@
                         :method => :post) if i == 0 %>
           <a href="#s<%= screening.id %>"><%= screening_label(screening, nil, :with_film) %></a>,
           priority <%= screening.priority_for(current_user).inspect %>,
-          cost <%= cost %>,
+          cost <%= @sched_debug.screening_costs[screening].try(:details) || ("nil") %>,
           <%= @sched_debug.film_to_remaining_screenings[screening.film].count %> left,
           <% if conflicts.empty? %>
             no conflicts.
@@ -22,7 +22,7 @@
               <li>
                 <%= screening_label(conflict_screening, nil, :with_film) %>,
                   priority <%= conflict_screening.priority_for(current_user).inspect %>,
-                  cost <%= @sched_debug.screening_costs[conflict_screening].inspect %>,
+                  cost <%= @sched_debug.screening_costs[conflict_screening].try(:details) || ("nil") %>,
                   <%= @sched_debug.film_to_remaining_screenings[conflict_screening.film].count %> left
               </li>
             <% end -%>

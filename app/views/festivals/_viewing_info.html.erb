@@ -6,11 +6,16 @@
   <a name="s<%= viewing_info.screening.id %>"></a>
   <span class="priority"></span>
   <h3><%= viewing_info.film_name %></h3>
-  <div class="screeningtime">
-    <%= t = viewing_info.screening_times.split(' - ')
-        t[1] += ","
-        t.map {|t| '<span>' + t + '</span>' }.join(' &ndash; ') %>
-    <span><%= viewing_info.ordinalize %></span>
-    <%= "<span> (press)</span>" if viewing_info.screening.press %>
-  </div>
+  <% if @sched_debug -%>
+    <%= content_tag(:div, @sched_debug.screening_costs[viewing_info.screening].try(:details) || ("nil"),
+                    :class => "debug") %>
+  <% else -%>
+    <div class="screeningtime">
+      <%= t = viewing_info.screening_times.split(' - ')
+          t[1] += ","
+          t.map {|t| '<span>' + t + '</span>' }.join(' &ndash; ') %>
+      <span><%= viewing_info.ordinalize %></span>
+      <%= "<span> (press)</span>" if viewing_info.screening.press %>
+    </div>
+  <% end -%>
 </div>
