@@ -2,7 +2,7 @@ class UsersController < ApplicationController
   before_filter :require_admin, :only => [:index, :show]
 
   def index
-    @users = User.all(:order => "email")
+    @users = User.all(:order => "email", :include => { :subscriptions => :festival })
   end
 
   # render new.rhtml
