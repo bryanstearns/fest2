@@ -45,7 +45,7 @@ Rails::Initializer.run do |config|
   config.gem 'prawn', :version => "0.8.4"
   config.gem 'prawnto', :version => "0.0.4"
   config.gem 'icalendar', :version => "1.1.0"
-  config.gem 'hoptoad_notifier', :version => "2.4.2"
+  config.gem 'airbrake', :version => "3.0.9"
   config.gem 'haml', :version => "3.0.24"
   config.gem "compass", :version => "0.10.5"
   config.gem "fancy-buttons", :version => "0.5.5"
