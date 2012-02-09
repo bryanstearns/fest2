@@ -46,7 +46,9 @@ ActionController::Routing::Routes.draw do |map|
   map.feedback '/feedback', :controller => 'questions', :action => 'new'
 
   # Restful_Authentication
-  map.resources :users
+  map.resources :users do |users|
+    users.act_as '/act_as', :controller => 'session', :action => 'act_as', :method => :get
+  end
   map.resource :session, :controller => 'session'
   map.signup '/signup', :controller => 'users', :action => 'new'
   map.login  '/login', :controller => 'session', :action => 'new'
