@@ -238,16 +238,27 @@ private
       %Q[jQuery("#{screening_ids.map {|id| "#screening-" + id.to_s}.join(",")}").attr("class", "screening #{state}");]
     end.join("\n")
 
-    screenings_by_priority = screenings.group_by do |s|
+    screenings_by_priority_or_rating = screenings.group_by do |s|
       p = pick_by_film_id[s.film_id]
-      (p and p.priority)
+      if p.try(:rating)
+        -p.rating
+      elsif p.try(:priority)
+        p.priority
+      else
+        nil
+      end
     end
-    js += screenings_by_priority.map do |priority, screenings|
-      unless priority.nil?
-        priority_image_tag = view_helper.image_tag("priority/p#{priority}.png",
-                                                   :height => 10, :width => 46)
+    js += screenings_by_priority_or_rating.map do |priority_or_rating, screenings|
+      unless priority_or_rating.nil?
         id_list = screenings.map {|s| "#screening-" + s.id.to_s}.join(",")
-        %Q[jQuery("#{id_list}").find('.priority').html('#{priority_image_tag}');]
+        content = if priority_or_rating < 0 # it's -stars
+          view_helper.image_tag("priority/star.png",
+                                :height => 10, :width => 10) * -priority_or_rating
+        else
+          view_helper.image_tag("priority/p#{priority_or_rating}.png",
+                                :height => 10, :width => 46)
+        end
+        %Q[jQuery("#{id_list}").find('.priority').html('#{content}');]
       end
     end.join("\n")
 

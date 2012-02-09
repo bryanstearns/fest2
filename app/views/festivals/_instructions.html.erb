@@ -14,18 +14,15 @@
     You're not planning on seeing this film.
   </li>
   <li>
-    The priority you gave each film is shown
-    with little circles:
-    <%= image_tag "priority/p4.png", :height => 10, :width => 46 %>
+    The priority (or rating) you gave each film is shown
+    with little circles (or stars):
+    <%= image_tag "priority/p4.png", :height => 10, :width => 46 %> or
+      <%= image_tag "priority/star.png", :height => 10, :width => 10 %>
+      <%= image_tag "priority/star.png", :height => 10, :width => 10 %>
+      <%= image_tag "priority/star.png", :height => 10, :width => 10 %>
+      <%= image_tag "priority/star.png", :height => 10, :width => 10 %>
+      <%= image_tag "priority/star.png", :height => 10, :width => 10 %>
   </li>
-  <!--
-  <li>
-    The rating you gave the films you've seen is shown with stars:
-    <%= image_tag "priority/star.png", :height => 10, :width => 10 %>
-    <%= image_tag "priority/star.png", :height => 10, :width => 10 %>
-    <%= image_tag "priority/star.png", :height => 10, :width => 10 %>
-  </li>
-  -->
 </ul>
 <% if @read_only %>
   <p>
