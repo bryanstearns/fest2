@@ -18,7 +18,10 @@ ActionController::Routing::Routes.draw do |map|
     festival.resources :films
     festival.resources :locations
     festival.resources :venues
-    festival.user '/:other_user_id/:key.:format', :controller => 'festivals', :action => 'show', :method => :get
+    festival.ratings '/:other_user_id', :controller => 'festivals',
+      :action => :ratings, :method => :get
+    festival.user '/:other_user_id/:key.:format', :controller => 'festivals',
+      :action => 'show', :method => :get
   end
   map.resources :films, :controller => 'films', :only => [] do |film|
     film.resources :screenings

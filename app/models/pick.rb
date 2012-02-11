@@ -1,4 +1,13 @@
 class Pick < ActiveRecord::Base
+  RATING_HINTS = [
+    nil,
+    "It was bad",
+    "It wasn't very good",
+    "It was ok",
+    "It was pretty good",
+    "It was *really* good"
+  ]
+
   belongs_to :film
   belongs_to :user
   belongs_to :screening
@@ -9,6 +18,14 @@ class Pick < ActiveRecord::Base
   validates_presence_of :user_id
   validates_presence_of :festival_id
   # :screening_id can be nil until we or the user has picked one.
+
+  named_scope :for_user, lambda {|user|
+    { :conditions => ['picks.user_id = ?', user.id] }
+  }
+
+  named_scope :rated, :conditions => 'rating > 0',
+                      :order => 'rating desc, films.name',
+                      :include => 'film'
 
   def picked?
     screening_id.present?

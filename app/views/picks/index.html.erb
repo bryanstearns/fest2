@@ -49,11 +49,11 @@ jQuery(function() {
     cancelHint: 'Forget this rating',
     number: 5,
     hintList: [
-      "1 stars: It was bad",
-      "2 stars: It wasn't very good",
-      "3 stars: It was ok",
-      "4 stars: It was pretty good",
-      "5 stars: It was *really* good"
+      "1 star: <%= Pick::RATING_HINTS[1] %>",
+      "2 stars: <%= Pick::RATING_HINTS[2] %>",
+      "3 stars: <%= Pick::RATING_HINTS[3] %>",
+      "4 stars: <%= Pick::RATING_HINTS[4] %>",
+      "5 stars: <%= Pick::RATING_HINTS[5] %>"
     ],
     path: '/images/raty',
     start: function() {

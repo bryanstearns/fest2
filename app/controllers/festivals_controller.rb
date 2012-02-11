@@ -1,8 +1,10 @@
 class FestivalsController < ApplicationController
   before_filter :require_admin_subscription, :except => \
-    [:index, :show, :pick_screening, :reset_rankings, :reset_screenings]
+    [:index, :show, :pick_screening, :ratings, :reset_rankings,
+     :reset_screenings]
   before_filter :load_festival, :only => \
-    [:show, :pick_screening, :reset_rankings, :reset_screenings]
+    [:show, :pick_screening, :ratings, :reset_rankings,
+     :reset_screenings]
 
   # GET /festivals
   def index
@@ -95,6 +97,18 @@ class FestivalsController < ApplicationController
     end
   end
   
+  # GET /festivals/x_2009/stearns
+  def ratings
+    username = User.from_param(params[:other_user_id])
+    @displaying_user = User.find_by_username(username)
+    raise ActiveRecord::RecordNotFound unless @displaying_user
+
+    @rated_picks = @festival.picks.for_user(current_user).rated
+
+    Journal.viewing_user_ratings(:festival => @festival,
+                                 :subject => @displaying_user)
+  end
+
   # POST /festivals/1/pick_screening
   def pick_screening
     js = if logged_in?

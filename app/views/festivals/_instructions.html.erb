@@ -15,7 +15,7 @@
   </li>
   <li>
     The priority (or rating) you gave each film is shown
-    with little circles (or stars):
+    with little circles (or stars):</br>
     <%= image_tag "priority/p4.png", :height => 10, :width => 46 %> or
       <%= image_tag "priority/star.png", :height => 10, :width => 10 %>
       <%= image_tag "priority/star.png", :height => 10, :width => 10 %>
@@ -91,6 +91,13 @@
       You can share your schedule with your friends by giving them this link:
       <br/>
       <%= link_to h(readonly_festival_url), readonly_festival_url %>
+    </li>
+    <li>
+      (new for 2012!) When your friends ask you what you've seen that's good,
+      you can share your ratings by giving them this link (it's especially nice
+      for Twitter - don't forget the #piff35 hashtag!):
+      <br/>
+      <%= link_to h(ratings_url), ratings_url %>
     </li>
   <% end %>
 </ul>
