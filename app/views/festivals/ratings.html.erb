@@ -8,11 +8,11 @@
 <% rating_groups = @rated_picks.group_by {|p| p.rating } %>
 
 <h3>
-  <%= @displaying_user.username %>
   <% if rating_groups.count == 0 -%>
-    hasn't rated any films yet; come back soon!
+    I haven't rated any films yet; come back soon!
   <% else %>
-    has rated <%= pluralize(@rated_picks.count, "film") %> so far:
+    Here's what I think about the <%= pluralize(@rated_picks.count, "film") %>
+    I've rated so far (they're in alphabetical order within each rating):
   <% end %>
 </h3>
 
