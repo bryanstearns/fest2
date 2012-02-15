@@ -4,8 +4,11 @@
      style="height: <%= viewing_info.height %>px; margin-top: <%= viewing_info.space_before %>px"
      data-film_id="<%= viewing_info.film.id %>">
   <a name="s<%= viewing_info.screening.id %>"></a>
-  <span class="priority"></span>
-  <h3><%= viewing_info.film_name %></h3>
+  <h3>
+    <%= viewing_info.film_name %>
+    <span class="priority"></span>
+    <%= flag_icon_tag(viewing_info.film.countries, :class => "flag") %>
+  </h3>
   <% if @sched_debug -%>
     <%= content_tag(:div, @sched_debug.screening_costs[viewing_info.screening].try(:details) || ("nil"),
                     :class => "debug") %>
