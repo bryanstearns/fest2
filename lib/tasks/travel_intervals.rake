@@ -11,15 +11,19 @@ namespace :intervals do
       index_to_location = nil
       FasterCSV.foreach(csv) do |row|
         puts row.inspect if verbose > 2
-        if index_to_location.nil? # this is the header row
-          index_to_location = {}
-          row.each_with_index do |name, i|
-            location = locations_by_name[name]
-            if location
-              index_to_location[i-1] = location
-            elsif !name.ends_with?(":")
-              puts "Ignoring location column: #{name}" if verbose > 1
+        if index_to_location.nil? # we haven't extracted headers yet
+	  if row.compact.length > 3
+            index_to_location = {}
+            row.each_with_index do |name, i|
+              location = locations_by_name[name]
+              if location
+                index_to_location[i-1] = location
+              elsif !name.ends_with?(":")
+                puts "Ignoring location column: #{name}" if verbose > 1
+              end
             end
+          elsif verbose > 2
+            puts "Skipping pre-header row"
           end
         else
           from_location = locations_by_name[row[0]]
@@ -81,5 +85,15 @@ namespace :intervals do
     ensure
       csv.close if csv
     end
+  end
+
+  desc "Delete a user's festival travel intervals"
+  task :delete => :environment do
+    require 'ruby-debug'
+    festival = Festival.find_by_slug!(ENV['FESTIVAL'])
+    user = User.find_by_email!(ENV['USER'])
+    festival.travel_intervals\
+            .find_all_by_user_id(user.id)\
+            .map(&:destroy)
   end
 end
