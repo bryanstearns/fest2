@@ -18,6 +18,6 @@ config.action_controller.perform_caching             = false
 config.action_mailer.raise_delivery_errors = true
 
 unless $gems_rake_task
-  FestivalsHelper::ViewingInfo.show_ids = true # Add IDs to grid cells?
+  # FestivalsHelper::ViewingInfo.show_ids = true # Add IDs to grid cells?
   Festival.show_buzz = true # global control of buzz mechanisms
 end

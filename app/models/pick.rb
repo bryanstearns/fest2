@@ -3,8 +3,8 @@ class Pick < ActiveRecord::Base
     nil,
     "It was bad",
     "It wasn't very good",
-    "It was ok",
-    "It was pretty good",
+    "It was alright",
+    "It was good",
     "It was *really* good"
   ]
 

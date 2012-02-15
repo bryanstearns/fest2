@@ -6,7 +6,7 @@ module FestivalsHelper
                 :other_screenings, :screening_index, :screening_count
 
     cattr_accessor :show_ids, :sched_debug
-    self.show_ids = Rails.env.development?
+    self.show_ids = false #Rails.env.development?
     
     def initialize(screening, space_before, height, show_press)
       @screening = screening
