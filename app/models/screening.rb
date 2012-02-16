@@ -8,8 +8,8 @@ class Screening < CachedModel
 
   has_many :picks, :dependent => :nullify
 
-  before_update :notify_users
-  before_destroy :notify_users
+  before_update :notify_users_of_change
+  before_destroy :notify_users_of_cancellation
 
   before_validation :check_foreign_keys, :check_duration
   validates_presence_of :festival_id
@@ -132,9 +132,16 @@ class Screening < CachedModel
   end
   alias_method_chain :to_xml, :options
 
-  def notify_users
-    users = picks.map{|p| p.user }.select{|u| !u.mail_opt_out }
-    Mailer.deliver_schedule_changed(self, users) unless users.empty?
+  def users_to_notify
+    picks.map{|p| p.user }.select{|u| !u.mail_opt_out }
+  end
+
+  def notify_users_of_cancellation
+    Mailer.deliver_schedule_changed(self, users_to_notify, :cancellation)
+  end
+
+  def notify_users_of_change
+    Mailer.deliver_schedule_changed(self, users_to_notify, :change)
   end
 
 protected

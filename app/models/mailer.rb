@@ -2,6 +2,15 @@ class Mailer < ActionMailer::Base
   # This might be helpful when it comes time to embed images in messages...
   # http://www.caboo.se/articles/2006/02/19/how-to-send-multipart-alternative-e-mail-with-inline-attachments
 
+  default_url_options[:host] = case Rails.env
+  when "production"
+    "festivalfanatic.com"
+  when "stage"
+    "stage.festivalfanatic.com"
+  else
+    "localhost:3000"
+  end
+
   def mail_test
     # test message; send with
     # $ script/console
@@ -36,13 +45,13 @@ class Mailer < ActionMailer::Base
     body :details => details
   end
 
-  def schedule_changed(screening, users)
+  def schedule_changed(screening, users, change_type)
     festival = screening.festival
     common_setup("Schedule change for #{festival.name}, " +
                  Date.today.to_s(:mdy_numbers_slashed))
     recipients "Festival Fanatic <festfan@festivalfanatic.com>"
     body :festival => festival, :screening => screening,
-         :users => users
+         :users => users, :change_type => change_type
   end
 
 private
@@ -53,7 +62,7 @@ private
     subj = "[#{RAILS_ENV}] #{subj}" if RAILS_ENV != 'production'
     subject subj
   end
-  
+
   def common_admin_setup(subj)
     common_setup(subj)
     recipients "festfan@festivalfanatic.com"
