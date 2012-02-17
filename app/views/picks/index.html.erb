@@ -127,12 +127,15 @@ when "Country"
 when "Priority"
   @films.sort_by {|f| [-1 * (@picks[f.id].priority || -1), f.sort_name] }
 when "Rating"
- @films.sort_by {|f| [-1 * (@picks[f.id].rating || -1), f.sort_name] }
+  @films.sort_by {|f| [-1 * (@picks[f.id].rating || -1), f.sort_name] }
+when "Screening"
+  far_future = 30.years.from_now
+  @films.sort_by {|f| [@picks[f.id].screening.try(:starts) || far_future, f.sort_name] }
 else
   sort_order = "Name"
   @films.sort_by {|f| f.sort_name }
 end
-sort_options = %w[Name Country Priority Rating].map do |p|
+sort_options = %w[Name Country Priority Rating Screening].map do |p|
   selected = " selected='selected'" if p == sort_order
   "<option#{selected}>#{p}</option>"
 end.join("")
