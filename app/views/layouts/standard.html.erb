@@ -15,7 +15,8 @@
     Festival Fanatic<%= " (#{Rails.env})" unless Rails.env.production? %>
   </title>
 
-  <link rel="alternate" type="application/rss+xml" 
+  <link rel="shortcut icon" href="/images/favicon.ico" />
+  <link rel="alternate" type="application/rss+xml"
         title="FestivalFanatic.com News" 
         href="<%= announcements_url(:format => :rss) %>" />
 
