@@ -58,7 +58,7 @@ class Film < CachedModel
   alias_method_chain :to_xml, :options
 
   def propagate_duration_change
-    # TODO: Rails3 - don't do this unless duration changed
+    return true unless duration_changed?
     screenings.each do |screening|
       screening.ends = screening.starts + duration
       screening.save!
