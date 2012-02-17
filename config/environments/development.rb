@@ -17,6 +17,9 @@ config.action_controller.perform_caching             = false
 # BJS: I care: was false
 config.action_mailer.raise_delivery_errors = true
 
+# Don't send mail (though our mailcatcher initializer may override this)
+config.action_mailer.delivery_method = :test
+
 unless $gems_rake_task
   # FestivalsHelper::ViewingInfo.show_ids = true # Add IDs to grid cells?
   Festival.show_buzz = true # global control of buzz mechanisms
