@@ -11,6 +11,7 @@ describe FestivalsController do
                            :updated_at => Time.zone.now - 1.day,
                            :starts => Date.today, :ends => Date.today,
                            :slug => 'slug', :slug_group => 'slug_group')
+    @festival.stub!(:cache_key).and_return("cache_key")
     @festival.stub!(:to_ics).and_return("ICS")
     @festival.stub!(:to_xml).and_return("XML")
     @festivals = [@festival]

@@ -156,4 +156,19 @@ class Festival < CachedModel
   def travel_interval_for(from_location, to_location, user)
     travel_intervals.between(from_location, to_location, user)
   end
+
+  def cache_key(show_press=false)
+    # the key we use for one festival's grid fragment
+    key = "show/#{id}"
+    key += show_press ? "/press" : "/nopress"
+    key
+  end
+
+  def self.welcome_cache_key(role)
+    # the key we use for the list of festivals on the welcome page
+    # (which includes the announcements)
+    #
+    # role is :admin, :user, or :guest
+    "welcome_festivals/#{role}"
+  end
 end

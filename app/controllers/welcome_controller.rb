@@ -38,9 +38,6 @@ class WelcomeController < ApplicationController
   protected
 
   def cache_prefix
-    role = logged_in? \
-      ? (current_user_is_admin? ? "admin" : "user") \
-      : "guest"
-    "welcome/#{Date.today}/#{role}"
+    Festival.welcome_cache_key(current_user_role)
   end  
 end

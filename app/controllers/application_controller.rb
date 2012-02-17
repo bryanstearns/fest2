@@ -15,7 +15,7 @@ end
 
 class ApplicationController < ActionController::Base
   helper :all # include all helpers, all the time
-  helper_method :current_user_is_admin?, :client_is?
+  helper_method :client_is?, :current_user_is_admin?, :current_user_role
 
   # See ActionController::RequestForgeryProtection for details
   # Uncomment the :secret if you're not using the cookie session store
@@ -77,6 +77,14 @@ class ApplicationController < ActionController::Base
 
   def current_user_is_admin?
     current_user && current_user.admin
+  end
+
+  def current_user_role
+    if logged_in?
+      current_user_is_admin? ? :admin : :user
+    else
+      :guest
+    end
   end
 
   def load_festival(options={})

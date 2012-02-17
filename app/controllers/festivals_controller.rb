@@ -54,7 +54,7 @@ class FestivalsController < ApplicationController
     @show_press = params[:with_press] \
       ? (params[:with_press] == "1") \
       : (@displaying_user_subscription.show_press rescue false)
-    @cache_key = make_cache_key(@show_press)
+    @cache_key = @festival.cache_key(@show_press)
 
     filename = [@festival.slug, 
                 (@displaying_user.to_param rescue nil), 
@@ -278,12 +278,6 @@ private
 
     js += %Q[jQuery(".revised span").html("#{view_helper.festival_revision_info(@festival, picks)}");]
     js
-  end
-
-  def make_cache_key(show_press)
-    key = "show/#{params[:id]}/#{@festival.updated_at.to_i}"
-    key += show_press ? "/press" : "/nopress"
-    key
   end
 
   def festivals_grouped(festivals)
