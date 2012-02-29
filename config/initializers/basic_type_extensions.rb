@@ -99,6 +99,12 @@ class Numeric
   end
 end
 
+class Array
+  def average
+    sum.to_f / count
+  end
+end
+
 class Hash
   def without(*excludees)
     # Return a copy of this hash with these keys removed

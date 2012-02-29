@@ -157,6 +157,49 @@ class Festival < CachedModel
     travel_intervals.between(from_location, to_location, user)
   end
 
+  def statistics
+    def stats(picks, &block)
+      values = picks.map {|pick| yield pick }.compact
+      {:count => values.count, :min => values.min, :max => values.max, :average => values.average }
+    end
+
+    films.all(:include => :picks).map do |film|
+      {
+        :film => film,
+        :priority => stats(film.picks) {|p| p.priority },
+        :rating => stats(film.picks) {|p| p.rating },
+      }
+    end
+  end
+
+  def user_ratings_by_film
+    user_counts = {}
+    results = Hash.new {|h, k| h[k] = {} }
+    ratings_count = 0
+    picks.all(:conditions => "rating is not null", :include => [:user, :film]).each do |pick|
+      user_counts[pick.user] ||= 0
+      user_counts[pick.user] += 1
+      ratings_count += 1
+      results[pick.film][pick.user.email] = pick.rating
+    end
+
+    users = user_counts.keys.sort_by {|u| [-user_counts[u], u.username] }
+    films = results.keys.sort_by {|f| f.sort_name }
+
+    header_rows = [
+      ["Festival Fanatic: film ratings for #{name}"],
+      ["#{ratings_count} ratings of #{films.count} films from #{users.count} users"],
+      ["as of #{Time.zone.now.to_s}"],
+      [],
+      [nil] + users.map {|u| "#{u.username} #{u.email} (#{user_counts[u]})" }
+    ]
+    header_rows + films.map do |film|
+      [film.name] + users.map do |user|
+        results[film][user.email]
+      end
+    end
+  end
+
   def cache_key(show_press=false)
     # the key we use for one festival's grid fragment
     key = "show/#{id}"

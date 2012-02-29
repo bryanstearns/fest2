@@ -130,9 +130,9 @@ module FestivalsHelper
                       :format => format)
   end
 
-  def ratings_url(format = nil)
-    festival_ratings_url(@festival.to_param,
-                      :other_user_id => @displaying_user.to_param)
+  def user_ratings_url(format = nil)
+    festival_user_ratings_url(@festival.to_param,
+                              :other_user_id => @displaying_user.to_param)
   end
 
   def icalendar_festival_url

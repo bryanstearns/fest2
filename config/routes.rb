@@ -10,7 +10,8 @@ ActionController::Routing::Routes.draw do |map|
   map.resources :festivals, :controller => 'festivals', :member => {
     :pick_screening => :post, 
     :reset_rankings => :post,
-    :reset_screenings => :post
+    :reset_screenings => :post,
+    :statistics => :get
   } do |festival|
     festival.priorities '/priorities', :controller => :picks, :action => :index
     festival.resource :assistant, :controller => 'subscriptions',
@@ -18,7 +19,7 @@ ActionController::Routing::Routes.draw do |map|
     festival.resources :films
     festival.resources :locations
     festival.resources :venues
-    festival.ratings '/:other_user_id/ratings', :controller => 'festivals',
+    festival.user_ratings '/:other_user_id/ratings', :controller => 'festivals',
       :action => :ratings, :method => :get
     festival.user '/:other_user_id/:key.:format', :controller => 'festivals',
       :action => 'show', :method => :get

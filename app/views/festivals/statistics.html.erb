@@ -1,0 +1,49 @@
+<%# Display festival-wide ratings: /festivals/1/statistics -%>
+<% content_for :title do %><%= @festival.name %> Statistics<% end %>
+
+<%= render :partial => "festivals/header",
+           :locals => { :festival => @festival, :hide_tabs => true } %>
+
+<h3>
+  All Statistics
+</h3>
+
+<%
+  sort_order = params[:order] || "name"
+  hashed_stats = if sort_order == "name"
+    @statistics.inject({}) {|h, stat| h[stat[:film].sort_name] = stat; h }
+  else
+    value, statistic = sort_order.split('_').map(&:to_sym)
+    @statistics.inject({}) do |h, data|
+      sort_value = data[value][statistic]
+      sort_value = -9999999 if sort_value.nan?
+      key = [-sort_value, data[:film].sort_name]
+      h[key] = data
+      h
+    end
+  end
+  keys = hashed_stats.keys.sort 
+%>
+
+<table>
+  <tr>
+    <th>Film</th>
+    <% [:priority, :rating].each do |value| %>
+      <% [:count, :average, :min, :max].each do |statistic| %>
+        <th><%= [value, statistic].join(' ').titleize %></th>
+      <% end -%>
+    <% end -%>
+  </tr>
+
+  <% keys.each do |k| %>
+    <% stats = hashed_stats[k] %>
+    <tr>
+      <td><%= h stats[:film].name %></td>
+      <% [:priority, :rating].each do |value| %>
+        <% [:count, :average, :min, :max].each do |statistic| %>
+          <td><%= stats[value][statistic] %></td>
+        <% end -%>
+      <% end -%>
+    </tr>
+  <% end -%>
+</table>

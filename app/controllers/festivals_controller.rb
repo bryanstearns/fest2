@@ -4,7 +4,7 @@ class FestivalsController < ApplicationController
      :reset_screenings]
   before_filter :load_festival, :only => \
     [:show, :pick_screening, :ratings, :reset_rankings,
-     :reset_screenings]
+     :reset_screenings, :statistics]
 
   # GET /festivals
   def index
@@ -96,17 +96,34 @@ class FestivalsController < ApplicationController
       end
     end
   end
-  
+
   # GET /festivals/x_2009/stearns/ratings
   def ratings
     username = User.from_param(params[:other_user_id])
     @displaying_user = User.find_by_username(username)
     raise ActiveRecord::RecordNotFound unless @displaying_user
-
     @rated_picks = @festival.picks.for_user(@displaying_user).rated
-
     Journal.viewing_user_ratings(:festival => @festival,
                                  :subject => @displaying_user)
+  end
+
+  # GET /festivals/x_2009/statistics
+  def statistics
+    respond_to do |format|
+      format.html do
+        @statistics = @festival.statistics
+      end
+      format.csv do
+        csv_data = FasterCSV.generate do |csv|
+          @festival.user_ratings_by_film.each do |row|
+            csv << row
+          end
+        end
+        send_data(csv_data, :filename => "#{@festival.slug}.csv",
+                  :type => :csv)
+      end
+    end
+    Journal.viewing_statistics(:festival => @festival)
   end
 
   # POST /festivals/1/pick_screening
